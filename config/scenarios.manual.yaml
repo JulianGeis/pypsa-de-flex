@@ -236,3 +236,51 @@ KN2045_NFhoch:
       2040: 0.24
       2045: 0.29
       2050: 0.33
+
+# Definition of flexibility scenarios
+# dynamic line rating?
+# 
+
+LowFlex:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+      limits_capacity_max:
+        Link: # in GW
+          battery discharger: # Ariadne capa: 2020 (0.01 GW); 2025 (0.01 GW); 2030 (3.85 GW); 2035 (33.08 GW); 2040 (49.44 GW); 2045 (49.44 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 5
+              2035: 10
+              2040: 20
+              2045: 25
+              2050: 30
+
+MediumFlex:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.5
+    v2g: false
+
+
+HighFlex:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.8
+    v2g: true

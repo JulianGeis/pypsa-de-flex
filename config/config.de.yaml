@@ -4,14 +4,17 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20250807_merge_july
+  prefix: 20250820_flex_test_scenarios
   name:
   # - ExPol
-  - KN2045_Mix
+  # - KN2045_Mix
   # - KN2045_Elek
   # - KN2045_H2
   # - KN2045_NFniedrig
   # - KN2045_NFhoch
+  - LowFlex
+  - MediumFlex
+  - HighFlex
   scenarios:
     enable: true
     manual_file: config/scenarios.manual.yaml
@@ -52,8 +55,6 @@ foresight: myopic
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#scenario
 # Wildcard docs in https://pypsa-eur.readthedocs.io/en/latest/wildcards.html
 scenario:
-  ll:
-  - vopt
   clusters:
   - 27 #current options: 27, 49
   opts:

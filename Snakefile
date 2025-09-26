@@ -959,3 +959,32 @@ rule ariadne_report_only:
             RESULTS + "ariadne/report/elec_price_duration_curve.pdf",
             run=config_provider("run", "name"),
         ),
+
+
+####### Flexibility analysis rules #######
+
+rule flexibility_analysis:
+    params:
+        planning_horizons=config_provider("scenario", "planning_horizons"),
+        plotting=config_provider("plotting"),
+        run=config_provider("run", "name"),
+        foresight=config_provider("foresight"),
+        costs=config_provider("costs"),
+    input:
+        networks=expand(
+            RESULTS
+            + "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            **config["scenario"],
+            allow_missing=True,
+        ),
+    output:
+        flex_needs=RESULTS + "flexibility/flexibility_needs.png",
+        flexibility=directory(RESULTS + "flexibility"),
+    resources:
+        mem_mb=10000,
+    log:
+        RESULTS
+        + "logs/flexibility_analysis.log",
+    script:
+        "scripts/pypsa-de/flexibility_analysis.py"
+
