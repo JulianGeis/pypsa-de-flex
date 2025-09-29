@@ -30,6 +30,13 @@ run:
     - modify_existing_heating
   disable_progressbar: true
 
+# Flexibility comparison settings
+flexibility_comparison:
+  scenarios:
+  - LowFlex
+  - MediumFlex
+  - HighFlex
+
 iiasa_database:
   db_name: ariadne2
   leitmodelle:

@@ -963,13 +963,12 @@ rule ariadne_report_only:
 
 ####### Flexibility analysis rules #######
 
+
 rule flexibility_analysis:
     params:
         planning_horizons=config_provider("scenario", "planning_horizons"),
-        plotting=config_provider("plotting"),
         run=config_provider("run", "name"),
-        foresight=config_provider("foresight"),
-        costs=config_provider("costs"),
+        output_dir=directory(RESULTS + "flexibility/data"),
     input:
         networks=expand(
             RESULTS
@@ -978,13 +977,122 @@ rule flexibility_analysis:
             allow_missing=True,
         ),
     output:
-        flex_needs=RESULTS + "flexibility/flexibility_needs.png",
-        flexibility=directory(RESULTS + "flexibility"),
+        flex_needs=RESULTS + "flexibility/data/flexibility_needs.csv",
+        flex_causes_raw=RESULTS + "flexibility/data/flexibility_causes_raw.pkl",
+        flex_contributions_raw=RESULTS
+        + "flexibility/data/flexibility_contributions_raw.pkl",
+        flex_contributions_clean=RESULTS
+        + "flexibility/data/flexibility_contributions_clean.csv",
+        flex_needs_per_node=RESULTS + "flexibility/data/flexibility_needs_per_node.pkl",
+        flex_causes_per_node=RESULTS
+        + "flexibility/data/flexibility_causes_per_node.pkl",
+        flex_contributions_per_node=RESULTS
+        + "flexibility/data/flexibility_contributions_per_node.pkl",
     resources:
         mem_mb=10000,
     log:
-        RESULTS
-        + "logs/flexibility_analysis.log",
+        RESULTS + "logs/flexibility_analysis.log",
     script:
         "scripts/pypsa-de/flexibility_analysis.py"
 
+
+rule flexibility_plots:
+    params:
+        planning_horizons=config_provider("scenario", "planning_horizons"),
+        plotting=config_provider("plotting"),
+        run=config_provider("run", "name"),
+        output_dir=RESULTS + "flexibility/plots",
+    input:
+        networks=expand(
+            RESULTS
+            + "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            **config["scenario"],
+            allow_missing=True,
+        ),
+        flex_needs=RESULTS + "flexibility/data/flexibility_needs.csv",
+        flex_causes_raw=RESULTS + "flexibility/data/flexibility_causes_raw.pkl",
+        flex_contributions_raw=RESULTS
+        + "flexibility/data/flexibility_contributions_raw.pkl",
+        flex_needs_per_node=RESULTS + "flexibility/data/flexibility_needs_per_node.pkl",
+        flex_causes_per_node=RESULTS
+        + "flexibility/data/flexibility_causes_per_node.pkl",
+        flex_contributions_per_node=RESULTS
+        + "flexibility/data/flexibility_contributions_per_node.pkl",
+        flex_contributions_clean=RESULTS
+        + "flexibility/data/flexibility_contributions_clean.csv",
+        regions_onshore_clustered=expand(
+            resources("regions_onshore_base_s_{clusters}.geojson"),
+            clusters=config["scenario"]["clusters"],
+            allow_missing=True,
+        ),
+    resources:
+        mem_mb=10000,
+    output:
+        flex_needs_plot=RESULTS + "flexibility/plots/flexibility_needs.png",
+        flex_causes_plot=RESULTS + "flexibility/plots/flexibility_causes.png",
+        flex_contributions_plot=RESULTS
+        + "flexibility/plots/flexibility_contributions.png",
+    resources:
+        mem_mb=10000,
+    log:
+        RESULTS + "logs/flexibility_plots.log",
+    script:
+        "scripts/pypsa-de/flexibility_plots.py"
+
+
+rule flexibility_plots_scenario_comparison:
+    params:
+        planning_horizons=config_provider("scenario", "planning_horizons"),
+        scenarios_to_compare=config.get("flexibility_comparison", {}).get(
+            "scenarios", config["run"]["name"]
+        ),
+        run_prefix=config["run"]["prefix"],
+        output_dir="results/"
+        + config["run"]["prefix"]
+        + "/flexibility/scenario_comparison",
+    input:
+        networks=lambda w: expand(
+            "results/{run_prefix}/{scenario}/networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("flexibility_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+            **config["scenario"],
+            allow_missing=True,
+        ),
+        flex_needs=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_needs.csv",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("flexibility_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+        flex_causes_raw=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_causes_raw.pkl",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("flexibility_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+        flex_contributions_clean=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_contributions_clean.csv",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("flexibility_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+    output:
+        flex_needs_comparison="results/"
+        + config["run"]["prefix"]
+        + "/flexibility/scenario_comparison/flexibility_needs_comparison.png",
+        comparison_dir=directory(
+            "results/" + config["run"]["prefix"] + "/flexibility/scenario_comparison"
+        ),
+    resources:
+        mem_mb=16000,
+    log:
+        "results/"
+        + config["run"]["prefix"]
+        + "/logs/flexibility_plots_scenario_comparison.log",
+    script:
+        "scripts/pypsa-de/flexibility_plots_scenario_comparison.py"
