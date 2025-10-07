@@ -188,6 +188,6 @@ def find_project_root():
     """Find project root by looking for .git or Snakefile."""
     current = Path(__file__).resolve().parent
     for parent in [current] + list(current.parents):
-        if (parent / '.git').exists() or (parent / 'Snakefile').exists():
+        if (parent / ".git").exists() or (parent / "Snakefile").exists():
             return parent
     return current.parent

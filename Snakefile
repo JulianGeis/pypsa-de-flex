@@ -1097,6 +1097,9 @@ rule flexibility_plots_scenario_comparison:
 rule flex_all:
     """Run all flexibility analyses and plots."""
     input:
-        RESULTS + "flexibility/data/flexibility_needs.csv",                           # from flexibility_analysis
-        RESULTS + "flexibility/plots/flexibility_needs.png",                          # from flexibility_plots
-        # "results/" + config["run"]["prefix"] + "/flexibility/scenario_comparison/flex_needs_scenario_comparison.png",  # from flexibility_plots_scenario_comparison
+        expand(RESULTS + "flexibility/data/flexibility_needs.csv",  run=config_provider("run", "name"),
+        ),               
+        expand(RESULTS + "flexibility/plots/flexibility_needs.png", run=config_provider("run", "name"),
+        ),                                                            
+        "results/" + config["run"]["prefix"] + "/flexibility/scenario_comparison/flex_needs_scenario_comparison.png"
+

@@ -16,7 +16,12 @@ import pandas as pd
 import pypsa
 from _helpers import configure_logging, mock_snakemake
 from flexibility_analysis import aggregate_by_keywords
-from flexibility_utils import tech_colors, tech_groups, year_colors_gradient, find_project_root
+from flexibility_utils import (
+    find_project_root,
+    tech_colors,
+    tech_groups,
+    year_colors_gradient,
+)
 
 logger = logging.getLogger(__name__)
 
