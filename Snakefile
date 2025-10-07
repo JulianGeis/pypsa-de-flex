@@ -1084,10 +1084,7 @@ rule flexibility_plots_scenario_comparison:
     output:
         flex_needs_comparison="results/"
         + config["run"]["prefix"]
-        + "/flexibility/scenario_comparison/flexibility_needs_comparison.png",
-        comparison_dir=directory(
-            "results/" + config["run"]["prefix"] + "/flexibility/scenario_comparison"
-        ),
+        + "/flexibility/scenario_comparison/flex_needs_scenario_comparison.png",
     resources:
         mem_mb=16000,
     log:

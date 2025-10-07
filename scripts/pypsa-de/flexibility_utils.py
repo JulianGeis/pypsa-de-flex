@@ -1,3 +1,4 @@
+from pathlib import Path
 
 tech_colors = {
     "AC": "#70af1d",
@@ -164,20 +165,29 @@ year_colors_gradient = {
 
 # Technology grouping dictionary
 tech_groups = {
-        "gas (+CHP)": ["gas CHP", "OCGT", "CCGT"],
-        "heat pump": ["heat pump"],
-        "resistive heater": ["resistive heater"],
-        "biomass (+CHP)": ["biomass"],
-        "coal (+CHP)": ["coal", "lignite"],
-        "oil (+CHP)": ["oil"],
-        "waste CHP": ["waste"],
-        "H2 OCGT": ["H2 OCGT", "H2 retrofit OCGT"],
-        "H2 CHP": ["H2 CHP", "H2 retrofit CHP"],
-        "interconnectors": [
-            "AC",
-            "DC",
-            "import",
-            "export",
-            "electricity distribution grid losses",
-        ],
-    }
+    "gas (+CHP)": ["gas CHP", "OCGT", "CCGT"],
+    "heat pump": ["heat pump"],
+    "resistive heater": ["resistive heater"],
+    "biomass (+CHP)": ["biomass"],
+    "coal (+CHP)": ["coal", "lignite"],
+    "oil (+CHP)": ["oil"],
+    "waste CHP": ["waste"],
+    "H2 OCGT": ["H2 OCGT", "H2 retrofit OCGT"],
+    "H2 CHP": ["H2 CHP", "H2 retrofit CHP"],
+    "interconnectors": [
+        "AC",
+        "DC",
+        "import",
+        "export",
+        "electricity distribution grid losses",
+    ],
+}
+
+
+def find_project_root():
+    """Find project root by looking for .git or Snakefile."""
+    current = Path(__file__).resolve().parent
+    for parent in [current] + list(current.parents):
+        if (parent / '.git').exists() or (parent / 'Snakefile').exists():
+            return parent
+    return current.parent

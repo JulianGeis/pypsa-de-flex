@@ -258,11 +258,27 @@ LowFlex:
           DE:
             2020: 0
             2025: 0
-            2030: 5
+            2030: 1
             2035: 10
             2040: 20
             2045: 25
             2050: 30
+        home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
+          DE:
+            2020: 0
+            2025: 0
+            2030: 0
+            2035: 0
+            2040: 0
+            2045: 0
+            2050: 0
+
+  wasserstoff_kernnetz:
+    enable: false
+
+  lines:
+    dynamic_line_rating:
+      activate: false
 
 MediumFlex:
 

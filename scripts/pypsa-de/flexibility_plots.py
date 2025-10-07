@@ -5,17 +5,18 @@ import sys
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
 
+import pickle
+
+import cartopy
+import cartopy.crs as ccrs
+import geopandas as gpd
+import matplotlib.pyplot as plt
 import numpy as np
 import pandas as pd
-import geopandas as gpd
-import cartopy.crs as ccrs
-import cartopy
 import pypsa
-import pickle
-import matplotlib.pyplot as plt
-from flexibility_utils import tech_colors, year_colors_gradient, tech_groups
-from flexibility_analysis import aggregate_by_keywords
 from _helpers import configure_logging, mock_snakemake
+from flexibility_analysis import aggregate_by_keywords
+from flexibility_utils import tech_colors, tech_groups, year_colors_gradient, find_project_root
 
 logger = logging.getLogger(__name__)
 
@@ -88,7 +89,9 @@ def plot_flex_needs(
     )
     ax.set_xticklabels(flex_needs_t.columns, rotation=0)
     ax.set_ylabel("TWh/a", fontsize=12)
-    ax.set_title("Flexibility Needs by Granularity and Year", fontsize=14, fontweight="bold")
+    ax.set_title(
+        "Flexibility Needs by Granularity and Year", fontsize=14, fontweight="bold"
+    )
     ax.legend(title="Year", loc="upper right")
     ax.grid(True, alpha=0.3, axis="y")
 
@@ -304,8 +307,6 @@ def plot_flexibility_causes_multiyear(
     return fig, axes
 
 
-
-
 def plot_flexibility_provision_multiyear(
     flexibility_df, tech_colors, figsize=(16, 8), save_path=None
 ):
@@ -473,11 +474,11 @@ def plot_flexibility_needs_map(
     extent=None,
     figsize=(16, 12),
     dpi=300,
-    cmap="viridis_r"
+    cmap="viridis_r",
 ):
     """
     Plot flexibility needs maps for different time periods.
-    
+
     Parameters
     ----------
     flex_needs_per_node_year : pd.DataFrame
@@ -503,28 +504,26 @@ def plot_flexibility_needs_map(
     """
     if extent is None:
         extent = [5.5, 15.5, 47, 56]  # Default Germany extent
-    
+
     aspect_ratio = (extent[1] - extent[0]) / (extent[3] - extent[2])
     display_projection = ccrs.EqualEarth()
-    
+
     # Prepare data
     df = onshore_regions.copy()
     for period in ["daily", "weekly", "monthly", "annual"]:
         df[f"flex_{period}"] = pd.to_numeric(
-            (flex_needs_per_node_year / load_buses.values.T).loc[period], 
-            errors="coerce"
+            (flex_needs_per_node_year / load_buses.values.T).loc[period],
+            errors="coerce",
         )
-    
+
     df_region = df[df.index.str.contains(region)].copy()
-    
+
     # Create subplots
     fig, axes = plt.subplots(
-        2, 2, 
-        subplot_kw={"projection": display_projection}, 
-        figsize=figsize
+        2, 2, subplot_kw={"projection": display_projection}, figsize=figsize
     )
     axes = axes.flatten()
-    
+
     periods = ["daily", "weekly", "monthly", "annual"]
     titles = [
         "Daily Flexibility Needs",
@@ -532,20 +531,23 @@ def plot_flexibility_needs_map(
         "Monthly Flexibility Needs",
         "Annual Flexibility Needs",
     ]
-    
+
     for i, (period, title) in enumerate(zip(periods, titles)):
         ax = axes[i]
-        
+
         # Calculate vmin/vmax for this period
-        vmin, vmax = df_region[f"flex_{period}"].min(), df_region[f"flex_{period}"].max()
-        
+        vmin, vmax = (
+            df_region[f"flex_{period}"].min(),
+            df_region[f"flex_{period}"].max(),
+        )
+
         # Add map features
         ax.add_feature(cartopy.feature.BORDERS, edgecolor="black", linewidth=0.5)
         ax.coastlines(edgecolor="black", linewidth=0.5)
         ax.set_facecolor("white")
         ax.add_feature(cartopy.feature.OCEAN, color="azure")
         ax.set_title(title, pad=15)
-        
+
         # Plot data
         df_region.to_crs(display_projection.proj4_init).plot(
             column=f"flex_{period}",
@@ -557,26 +559,24 @@ def plot_flexibility_needs_map(
             vmax=vmax,
             cmap=cmap,
         )
-        
+
         # Set extent and aspect
         ax.set_extent(extent, ccrs.PlateCarree())
         ax.set_aspect(aspect_ratio)
-        
+
         # Add colorbar
-        sm = plt.cm.ScalarMappable(
-            cmap=cmap, norm=plt.Normalize(vmin=vmin, vmax=vmax)
-        )
+        sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=vmin, vmax=vmax))
         sm.set_array([])
         cbar = plt.colorbar(sm, ax=ax, shrink=0.8, pad=0.02)
         cbar.set_label(f"{title} (normalised by load)", rotation=270, labelpad=15)
-    
+
     # Add overall title with year
     fig.suptitle(f"Flexibility Needs - {year}", fontsize=16, y=0.98)
-    
+
     plt.tight_layout()
-    fig.savefig(output_path, dpi=dpi, bbox_inches='tight')
+    fig.savefig(output_path, dpi=dpi, bbox_inches="tight")
     plt.close()
-    
+
     return fig, axes
 
 
@@ -592,11 +592,11 @@ def plot_flexibility_causes_map(
     extent=None,
     figsize=(16, 14),
     dpi=300,
-    size_legend_values=None
+    size_legend_values=None,
 ):
     """
     Plot flexibility causes maps for different time periods with pie charts at each bus.
-    
+
     Parameters
     ----------
     inflex_cause_bus : dict
@@ -626,13 +626,13 @@ def plot_flexibility_causes_map(
     """
     if extent is None:
         extent = [5.5, 15.5, 47, 55.5]  # Default Germany extent
-    
+
     if size_legend_values is None:
         size_legend_values = [5, 25]
-    
+
     # Create output directory if needed
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    
+
     # Create 4 subplots for different time scales
     display_projection = ccrs.EqualEarth()
     fig, axes = plt.subplots(
@@ -801,10 +801,10 @@ def plot_flexibility_causes_map(
     # Adjust layout to make room for legend
     plt.subplots_adjust(bottom=0.12)
     plt.tight_layout()
-    
+
     fig.savefig(output_path, dpi=dpi, bbox_inches="tight")
     plt.close()
-    
+
     return fig, axes
 
 
@@ -823,11 +823,11 @@ def plot_flexibility_provision_map(
     dpi=300,
     size_legend_values=None,
     small_tech_threshold=0.1,
-    other_threshold=0.01
+    other_threshold=0.01,
 ):
     """
     Plot flexibility provision maps for different time periods with pie charts at each bus.
-    
+
     Parameters
     ----------
     flex_contribution_bus : dict
@@ -863,13 +863,13 @@ def plot_flexibility_provision_map(
     """
     if extent is None:
         extent = [5.5, 15.5, 47, 55.5]  # Default Germany extent
-    
+
     if size_legend_values is None:
         size_legend_values = [5, 25]
-    
+
     # Create output directory if needed
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
-    
+
     # Create 4 subplots for different time scales
     display_projection = ccrs.EqualEarth()
     fig, axes = plt.subplots(
@@ -927,12 +927,24 @@ def plot_flexibility_provision_map(
 
                 # Group small contributions into "Other"
                 if cleaned_data:
-                    small_techs = {k: v for k, v in cleaned_data.items() if v < small_tech_threshold}
-                    large_techs = {k: v for k, v in cleaned_data.items() if v >= small_tech_threshold}
+                    small_techs = {
+                        k: v
+                        for k, v in cleaned_data.items()
+                        if v < small_tech_threshold
+                    }
+                    large_techs = {
+                        k: v
+                        for k, v in cleaned_data.items()
+                        if v >= small_tech_threshold
+                    }
 
-                    if small_techs and len(large_techs) > 0:  # Only create "Other" if there are also large techs
+                    if (
+                        small_techs and len(large_techs) > 0
+                    ):  # Only create "Other" if there are also large techs
                         other_sum = sum(small_techs.values())
-                        if other_sum > other_threshold:  # Only add "Other" if non-negligible
+                        if (
+                            other_sum > other_threshold
+                        ):  # Only add "Other" if non-negligible
                             large_techs["Other"] = other_sum
                         cleaned_data = large_techs
 
@@ -1056,10 +1068,10 @@ def plot_flexibility_provision_map(
     # Adjust layout to make room for legend
     plt.subplots_adjust(bottom=0.12)
     plt.tight_layout()
-    
+
     fig.savefig(output_path, dpi=dpi, bbox_inches="tight")
     plt.close()
-    
+
     return fig, axes
 
 
@@ -1068,7 +1080,7 @@ if __name__ == "__main__":
         import os
         import sys
 
-        project_root = os.path.dirname(os.getcwd())  # Go up one level from 'scripts'
+        project_root = find_project_root()
         os.chdir(project_root)
 
         snakemake = mock_snakemake(
@@ -1095,12 +1107,14 @@ if __name__ == "__main__":
     with open(snakemake.input.flex_causes_raw, "rb") as f:
         flex_causes_raw = pickle.load(f)
     flex_contributions_clean = pd.read_csv(
-        snakemake.input.flex_contributions_clean, index_col=[0,1])
+        snakemake.input.flex_contributions_clean, index_col=[0, 1]
+    )
     flex_needs_per_node = pd.read_pickle(snakemake.input.flex_needs_per_node)
     flex_causes_per_node = pd.read_pickle(snakemake.input.flex_causes_per_node)
-    flex_contributions_per_node = pd.read_pickle(snakemake.input.flex_contributions_per_node)
+    flex_contributions_per_node = pd.read_pickle(
+        snakemake.input.flex_contributions_per_node
+    )
     logger.info("Loaded results.")
-
 
     ####### Plotting
 
@@ -1137,7 +1151,9 @@ if __name__ == "__main__":
     # Plotting flexibility needs per node
 
     # load regions
-    onshore_regions = gpd.read_file(snakemake.input.regions_onshore_clustered).set_index("name")
+    onshore_regions = gpd.read_file(
+        snakemake.input.regions_onshore_clustered
+    ).set_index("name")
 
     region = "DE"
     bus_carrier = ["AC"]
@@ -1153,9 +1169,11 @@ if __name__ == "__main__":
 
         for bus in buses_de:
             load_buses.loc[bus, "Load (TWh/year)"] = (
-                n.loads_t.p[n.loads[n.loads.bus == bus + " low voltage"].index].values.sum()
+                n.loads_t.p[
+                    n.loads[n.loads.bus == bus + " low voltage"].index
+                ].values.sum()
                 / 1e6
-            ) 
+            )
 
         logger.info(f"Plotting flexibility needs map for year {year}...")
 
@@ -1168,7 +1186,6 @@ if __name__ == "__main__":
         )
 
     for year in planning_horizons:
-
         logger.info(f"Plotting flexibility causes map for year {year}...")
 
         plot_flexibility_causes_map(
@@ -1178,11 +1195,10 @@ if __name__ == "__main__":
             onshore_regions=onshore_regions,
             tech_colors=tech_colors,
             year=year,
-            output_path=f"{snakemake.params.output_dir}/flex_causes_maps_{year}.png"
+            output_path=f"{snakemake.params.output_dir}/flex_causes_maps_{year}.png",
         )
 
     for year in planning_horizons:
-        
         logger.info(f"Plotting flexibility contributions map for year {year}...")
 
         plot_flexibility_provision_map(
@@ -1193,9 +1209,5 @@ if __name__ == "__main__":
             tech_colors=tech_colors,
             tech_groups=tech_groups,
             year=year,
-            output_path=f"{snakemake.params.output_dir}/flex_contributions_maps_{year}.png"
+            output_path=f"{snakemake.params.output_dir}/flex_contributions_maps_{year}.png",
         )
-
-
-
-
