@@ -191,10 +191,10 @@ renewable:
   hydro:
     cutout: europe-2019-sarah3-era5
 
-lines:
-  dynamic_line_rating:
-    activate: true
-    cutout: europe-2019-sarah3-era5
+# lines:
+#   dynamic_line_rating:
+#     activate: true
+#     cutout: europe-2019-sarah3-era5
 
 clustering:
   # simplify_network:

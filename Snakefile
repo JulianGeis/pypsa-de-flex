@@ -963,7 +963,6 @@ rule ariadne_report_only:
 
 ####### Flexibility analysis rules #######
 
-
 rule flexibility_analysis:
     params:
         planning_horizons=config_provider("scenario", "planning_horizons"),
@@ -1093,3 +1092,11 @@ rule flexibility_plots_scenario_comparison:
         + "/logs/flexibility_plots_scenario_comparison.log",
     script:
         "scripts/pypsa-de/flexibility_plots_scenario_comparison.py"
+
+
+rule flex_all:
+    """Run all flexibility analyses and plots."""
+    input:
+        RESULTS + "flexibility/data/flexibility_needs.csv",                           # from flexibility_analysis
+        RESULTS + "flexibility/plots/flexibility_needs.png",                          # from flexibility_plots
+        # "results/" + config["run"]["prefix"] + "/flexibility/scenario_comparison/flex_needs_scenario_comparison.png",  # from flexibility_plots_scenario_comparison

@@ -276,9 +276,9 @@ LowFlex:
   wasserstoff_kernnetz:
     enable: false
 
-  lines:
-    dynamic_line_rating:
-      activate: false
+  # lines:
+  #   dynamic_line_rating:
+  #     activate: false
 
 MediumFlex:
 
