@@ -30,13 +30,6 @@ run:
     - modify_existing_heating
   disable_progressbar: true
 
-# Flexibility comparison settings
-flexibility_comparison:
-  scenarios:
-  - LowFlex
-  - MediumFlex
-  - HighFlex
-
 iiasa_database:
   db_name: ariadne2
   leitmodelle:
@@ -670,6 +663,9 @@ plotting:
     H2 CCGT: '#ff0000'
     urban central H2 CHP: '#ff0000'
     renewable gas: '#e05b09'
+    DSM: '#ff7f0e'
+    DSM ramp down: '#ff7f0e'
+    DSM compensate: '#ffbb78'
   countries:
   - all
   - DE
@@ -746,3 +742,34 @@ scale_capacity:
     DE:
       CCGT: 10000
       "urban central gas CHP": 22000
+
+
+### Flexibility options
+
+# Flexibility comparison settings
+flexibility_comparison:
+  scenarios:
+  - LowFlex
+  - MediumFlex
+  - HighFlex
+
+industry_dsm:
+  enable: false
+  2030:
+    shift_capacity: 5  # GW
+    holding_hours: 4
+    compensate_hours: 24
+    ramp_down_cost: 0
+    compensate_cost: 0
+  2035:
+    shift_capacity: 6  # GW
+    holding_hours: 4
+  2040:
+    shift_capacity: 8  # GW
+    holding_hours: 6
+  2045:
+    shift_capacity: 10  # GW
+    holding_hours: 4
+  2050:
+    shift_capacity: 10  # GW
+    holding_hours: 4

@@ -555,6 +555,7 @@ rule modify_prenetwork:
         bev_charge_rate=config_provider("sector", "bev_charge_rate"),
         bev_energy=config_provider("sector", "bev_energy"),
         bev_dsm_availability=config_provider("sector", "bev_dsm_availability"),
+        industry_dsm=config_provider("industry_dsm"),
     input:
         costs_modifications="ariadne-data/costs_{planning_horizons}-modifications.csv",
         network=resources(
@@ -963,6 +964,7 @@ rule ariadne_report_only:
 
 ####### Flexibility analysis rules #######
 
+
 rule flexibility_analysis:
     params:
         planning_horizons=config_provider("scenario", "planning_horizons"),
@@ -1097,9 +1099,14 @@ rule flexibility_plots_scenario_comparison:
 rule flex_all:
     """Run all flexibility analyses and plots."""
     input:
-        expand(RESULTS + "flexibility/data/flexibility_needs.csv",  run=config_provider("run", "name"),
-        ),               
-        expand(RESULTS + "flexibility/plots/flexibility_needs.png", run=config_provider("run", "name"),
-        ),                                                            
-        "results/" + config["run"]["prefix"] + "/flexibility/scenario_comparison/flex_needs_scenario_comparison.png"
-
+        expand(
+            RESULTS + "flexibility/data/flexibility_needs.csv",
+            run=config_provider("run", "name"),
+        ),
+        expand(
+            RESULTS + "flexibility/plots/flexibility_needs.png",
+            run=config_provider("run", "name"),
+        ),
+        "results/"
+        + config["run"]["prefix"]
+        + "/flexibility/scenario_comparison/flex_needs_scenario_comparison.png",

@@ -1,10 +1,17 @@
 import logging
+import os
+import sys
 
 import geopandas as gpd
 import numpy as np
 import pandas as pd
 import pypsa
 from shapely.geometry import Point
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.abspath(os.path.join(current_dir, "../.."))
+if repo_root not in sys.path:
+    sys.path.append(repo_root)
 
 from scripts._helpers import configure_logging, mock_snakemake, sanitize_custom_columns
 from scripts.add_electricity import load_costs
@@ -1255,6 +1262,144 @@ def scale_capacity(n, scaling):
                 ]
 
 
+def add_industry_dsm(n, dsm_config):
+    """
+    Add demand-side management (DSM) for industrial loads in Germany.
+
+    Creates distributed DSM capacity across industrial load buses, weighted by
+    their load. DSM is implemented as a debt-tracking system where load can be
+    reduced (creating debt) and must be compensated later.
+
+    Parameters
+    ----------
+    n : pypsa.Network
+        The energy system network.
+    dsm_config : dict
+        Configuration dictionary with keys under 'industry_dsm_de':
+        - shift_capacity: float, total DSM capacity in GW
+        - holding_hours: float, maximum hours debt can be held
+        - ramp_down_cost: float, marginal cost of reducing load (€/MWh)
+    """
+
+    logger.info("Adding demand-side management (DSM) for industrial loads in Germany.")
+
+    # Filter industrial loads in Germany
+    industrial_loads = n.loads[
+        (n.loads.carrier == "industry electricity")
+        & (n.loads.bus.str.contains("DE", na=False))
+    ]
+
+    if industrial_loads.empty:
+        logger.warning("No industrial loads found in Germany. Skipping DSM addition.")
+        return
+
+    # Calculate weights based on average load at each bus
+    load_by_bus = {}
+
+    for load_name in industrial_loads.index:
+        bus = n.loads.at[load_name, "bus"]
+
+        # Get average load for weighting
+        if load_name in n.loads_t.p_set.columns:
+            avg_load = n.loads_t.p_set[load_name].mean()
+        elif hasattr(n.loads.at[load_name, "p_set"], "__iter__"):
+            avg_load = n.loads.at[load_name, "p_set"].mean()
+        else:
+            avg_load = n.loads.at[load_name, "p_set"]
+
+        if bus in load_by_bus:
+            load_by_bus[bus] += avg_load
+        else:
+            load_by_bus[bus] = avg_load
+
+    total_load = sum(load_by_bus.values())
+
+    if total_load == 0:
+        logger.warning(
+            "Total industrial load in Germany is zero. Skipping DSM addition."
+        )
+        return
+
+    # Extract config parameters
+    total_shift_capacity = dsm_config["shift_capacity"] * 1e3  # Convert GW to MW
+    holding_hours = dsm_config["holding_hours"]
+    ramp_down_cost = dsm_config.get("ramp_down_cost", 0)
+    compensate_cost = dsm_config.get("compensate_cost", 0)
+
+    logger.info(
+        f"Total DSM capacity: {dsm_config['shift_capacity']} GW, "
+        f"Holding time: {holding_hours} hours, "
+        f"distributed across {len(load_by_bus)} buses"
+    )
+
+    # Define carriers
+    n.add("Carrier", "industry DSM")
+    n.add("Carrier", "industry DSM ramp down")
+    n.add("Carrier", "industry DSM compensate")
+
+    # Add DSM components for each bus
+    for bus, load in load_by_bus.items():
+        # Calculate this bus's share of DSM capacity based on load weight
+        weight = load / total_load
+        bus_shift_capacity = total_shift_capacity * weight  # MW
+        bus_debt_capacity = bus_shift_capacity * holding_hours  # MWh
+
+        logger.debug(
+            f"Bus {bus}: {bus_shift_capacity:.1f} MW DSM ({weight * 100:.1f}%)"
+        )
+
+        # Create bus for debt tracking
+        dsm_bus_name = f"{bus} DSM debt bus"
+        n.add("Bus", dsm_bus_name, carrier="DSM")
+
+        # Store to track production debt
+        n.add(
+            "Store",
+            f"{bus}_DSM_debt",
+            bus=dsm_bus_name,
+            e_nom=bus_debt_capacity,
+            e_initial=0,
+            standing_loss=0,
+            capital_cost=0,
+            carrier="industry DSM",
+            overwrite=True,
+        )
+
+        # Link: Ramp DOWN = reduce load, charges the debt store
+        n.add(
+            "Link",
+            f"{bus} DSM ramp down",
+            bus0=bus,  # Takes from grid
+            bus1=dsm_bus_name,  # Charges debt
+            p_nom=bus_shift_capacity,
+            efficiency=1.0,
+            marginal_cost=ramp_down_cost,
+            capital_cost=0,
+            carrier="industry DSM ramp down",
+            overwrite=True,
+        )
+
+        # Link: Compensate = increase load later to catch up, discharges debt
+        n.add(
+            "Link",
+            f"{bus} DSM compensate",
+            bus0=dsm_bus_name,  # Discharges debt
+            bus1=bus,  # Adds load to grid
+            p_nom=bus_shift_capacity,
+            efficiency=1.0,
+            marginal_cost=compensate_cost,
+            capital_cost=0,
+            carrier="industry DSM compensate",
+            overwrite=True,
+        )
+
+    logger.info(
+        f"Added DSM components to {len(load_by_bus)} buses. "
+        f"Total capacity: {total_shift_capacity / 1e3:.2f} GW, "
+        f"Total storage: {total_shift_capacity * holding_hours / 1e3:.2f} GWh"
+    )
+
+
 if __name__ == "__main__":
     if "snakemake" not in globals():
         snakemake = mock_snakemake(
@@ -1265,7 +1410,7 @@ if __name__ == "__main__":
             ll="vopt",
             sector_opts="none",
             planning_horizons="2025",
-            run="KN2045_Mix",
+            run="MediumFlex",
         )
 
     configure_logging(snakemake)
@@ -1334,6 +1479,11 @@ if __name__ == "__main__":
     force_connection_nep_offshore(n, current_year, costs)
 
     scale_capacity(n, snakemake.params.scale_capacity)
+
+    if (snakemake.params.industry_dsm["enable"]) & (
+        current_year in snakemake.params.industry_dsm.keys()
+    ):
+        add_industry_dsm(n, snakemake.params.industry_dsm[current_year])
 
     sanitize_custom_columns(n)
 

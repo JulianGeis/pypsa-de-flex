@@ -300,3 +300,24 @@ HighFlex:
     bev_dsm: 2030
     bev_dsm_availability: 0.8
     v2g: true
+
+  industry_dsm:
+    enable: true
+    2030:
+      shift_capacity: 5  # GW
+      holding_hours: 4
+      compensate_hours: 24
+      ramp_down_cost: 0
+      compensate_cost: 0
+    2035:
+      shift_capacity: 6  # GW
+      holding_hours: 4
+    2040:
+      shift_capacity: 8  # GW
+      holding_hours: 4
+    2045:
+      shift_capacity: 10  # GW
+      holding_hours: 4
+    2050:
+      shift_capacity: 10  # GW
+      holding_hours: 4

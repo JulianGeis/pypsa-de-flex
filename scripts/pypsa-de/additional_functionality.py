@@ -735,6 +735,94 @@ def adapt_nuclear_output(n):
     )
 
 
+def add_industry_dsm_cycling_constraint(n, industry_dsm):
+    """
+    Add constraint to ensure DSM debt stores are empty every X hours.
+
+    Works with any temporal resolution, including coarse resolutions like 365H.
+
+    Parameters
+    ----------
+    n : pypsa.Network
+        The energy system network with DSM components already added.
+    industry_dsm : dict
+        Configuration dictionary containing:
+        - compensate_hours: int, hours between forced zero debt (e.g. 24 or 48)
+    """
+    compensate_hours = industry_dsm.get("compensate_hours", 24)
+
+    logger.info(
+        f"Adding DSM cycling constraint: debt must be zero every {compensate_hours} hours"
+    )
+
+    # Find all DSM debt stores
+    dsm_stores = n.stores.index[n.stores.carrier == "industry DSM"]
+
+    if dsm_stores.empty:
+        logger.warning("No DSM debt stores found. Skipping cycling constraint.")
+        return
+
+    # Convert snapshots to hours from start
+    start_time = n.snapshots[0]
+    snapshot_hours = [
+        (snap - start_time).total_seconds() / 3600 for snap in n.snapshots
+    ]
+
+    # Find snapshots that are at multiples of compensate_hours
+    # Allow some tolerance for floating point comparison
+    tolerance = 0.1  # hours
+    cycle_snapshots = []
+
+    for i, hours in enumerate(snapshot_hours):
+        # Check if this snapshot is at a multiple of compensate_hours
+        remainder = hours % compensate_hours
+        # Check both remainder near 0 or near compensate_hours (wrapping)
+        if remainder < tolerance or (compensate_hours - remainder) < tolerance:
+            cycle_snapshots.append(n.snapshots[i])
+
+    # Always include the last snapshot to ensure debt is cleared at end
+    if n.snapshots[-1] not in cycle_snapshots:
+        cycle_snapshots.append(n.snapshots[-1])
+
+    if not cycle_snapshots:
+        logger.warning(
+            f"No snapshots found at {compensate_hours}h intervals. "
+            f"Temporal resolution may be too coarse. Adding constraint only at last snapshot."
+        )
+        cycle_snapshots = [n.snapshots[-1]]
+
+    # Calculate average snapshot duration for info
+    if len(n.snapshots) > 1:
+        avg_duration = sum(
+            (n.snapshots[i + 1] - n.snapshots[i]).total_seconds() / 3600
+            for i in range(len(n.snapshots) - 1)
+        ) / (len(n.snapshots) - 1)
+        logger.info(f"Average snapshot duration: {avg_duration:.2f} hours")
+
+    logger.info(
+        f"DSM debt must be zero at {len(cycle_snapshots)} snapshots "
+        f"(approximately every {compensate_hours} hours)"
+    )
+
+    # Add constraints for each store at each cycle point
+    constraint_count = 0
+    for store in dsm_stores:
+        for snapshot in cycle_snapshots:
+            cname = f"DSM_cycling-{store}-{snapshot}"
+
+            # Store state of charge must be zero at this snapshot
+            lhs = n.model["Store-e"].loc[snapshot, store]
+
+            n.model.add_constraints(lhs == 0, name=cname)
+            constraint_count += 1
+
+    # not adding to network as the shadow prices are not needed
+
+    logger.info(
+        f"Added {constraint_count} DSM cycling constraints across {len(dsm_stores)} stores"
+    )
+
+
 def additional_functionality(n, snapshots, snakemake):
     logger.info("Adding Ariadne-specific functionality")
 
@@ -781,3 +869,10 @@ def additional_functionality(n, snapshots, snakemake):
 
     if investment_year == 2020:
         adapt_nuclear_output(n)
+
+    if (snakemake.params.industry_dsm["enable"]) & (
+        investment_year in snakemake.params.industry_dsm.keys()
+    ):
+        add_industry_dsm_cycling_constraint(
+            n, snakemake.params.industry_dsm[investment_year]
+        )
