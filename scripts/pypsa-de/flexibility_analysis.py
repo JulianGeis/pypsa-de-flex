@@ -873,7 +873,7 @@ if __name__ == "__main__":
 
         for bus in buses_de:
             s, d = calc_supply_demand(
-                n,
+                networks[year],
                 energy=False,
                 interconnectors=True,
                 merge_dist_grid=True,
