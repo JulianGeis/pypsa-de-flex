@@ -17,6 +17,48 @@ from flexibility_utils import find_project_root, tech_colors
 logger = logging.getLogger(__name__)
 
 
+groups = {
+    "gas": ["gas CHP", "OCGT", "CCGT", "gas"],
+    "heat vent": ["heat vent"],
+    "water tanks": ["water tank", "water pit"],
+    "heat pump": ["heat pump"],
+    "resistive heater": ["resistive heater"],
+    "biomass": ["biomass"],
+    "lignite": ["lignite"],
+    "coal": ["coal"],
+    "oil": ["oil"],
+    "waste": ["waste"],
+    "solar": ["solar"],
+    "offwind": ["offwind"],
+}
+
+
+def aggregate_by_keywords(opex_comp_agg, groups):
+    """
+    Aggregate rows in opex_comp_agg according to keyword groups.
+
+    Parameters
+    ----------
+    opex_comp_agg : pd.DataFrame
+        DataFrame with row index as technology names.
+    groups : dict
+        Keys = new aggregated name,
+        Values = list of substrings to match in the index.
+
+    Returns
+    -------
+    pd.DataFrame
+    """
+    df_out = opex_comp_agg.copy()
+    for new_name, keywords in groups.items():
+        mask = df_out.index.to_series().str.contains("|".join(keywords))
+        if mask.any():
+            summed = df_out.loc[mask].sum()
+            df_out = df_out.drop(df_out.index[mask])
+            df_out.loc[new_name] = summed
+    return df_out
+
+
 def plot_flex_needs_comparison(
     flex_needs_dict,
     output_file,
@@ -52,8 +94,6 @@ def plot_flex_needs_comparison(
         List of matplotlib colormap names (e.g., ['Blues', 'Oranges', 'Greens']).
         If None, uses default colormaps.
     """
-    import matplotlib.pyplot as plt
-    import numpy as np
 
     # Default colormaps for scenarios (distinct but gradient within each)
     if colormaps is None:
@@ -687,6 +727,86 @@ def plot_flexibility_provision_scenario_comparison(
     logger.info(f"Saved flexibility provision comparison plot to {output_file}")
 
 
+def plot_price_duration_curves(networks, scenarios, planning_horizons, 
+                                carriers=["AC", "low voltage"], regions=["DE"], 
+                                output_dir=Path(".")):
+    """Plot electricity price duration curves comparison across scenarios and years."""
+    fig, ax = plt.subplots(len(planning_horizons), 1, figsize=(4*len(scenarios), 5*len(planning_horizons)))
+    ax = np.atleast_1d(ax)
+    
+    for i, year in enumerate(planning_horizons):
+        for scenario in scenarios:
+            buses = networks[scenario][year].buses[
+                networks[scenario][year].buses.carrier.isin(carriers) & 
+                networks[scenario][year].buses.index.str.startswith(tuple(regions))
+            ].index
+            
+            lmps = networks[scenario][year].buses_t.marginal_price[buses].values.flatten()
+            lmps_sorted = np.sort(lmps)[::-1]
+            pct = np.arange(len(lmps_sorted)) / len(lmps_sorted) * 100
+            
+            ax[i].plot(pct, lmps_sorted, label=f"{scenario} (avg: {lmps_sorted.mean():.2f})")
+        
+        ax[i].set(ylim=(-50, 400), xlabel="Percentage of time", 
+                  ylabel="€/MWh", title=f"Price duration curves {year}")
+        ax[i].legend()
+    
+    plt.tight_layout()
+    plt.savefig(output_dir / "elec_pdc_scenario_comparison.png", bbox_inches="tight")
+    plt.close()
+
+
+def plot_opex_stacked(networks, scenarios, planning_horizons, groups, tech_colors, 
+                      output_dir, region="DE", threshold=0.1):
+    """Plot stacked OPEX composition across scenarios and years."""
+    kwargs = {"groupby": ["bus", "carrier"], "at_port": True, "nice_names": False}
+    
+    fig, axes = plt.subplots(len(planning_horizons), 1, 
+                            figsize=(6 * len(scenarios), 6 * len(planning_horizons)))
+    axes = np.atleast_1d(axes)
+    all_handles = {}
+    
+    for i, year in enumerate(planning_horizons):
+        opex_agg = aggregate_by_keywords(
+            pd.DataFrame({
+                s: networks[s][year].statistics.opex(**kwargs)
+                   .filter(like=region).groupby("carrier").sum().multiply(1e-9)
+                for s in scenarios
+            }), groups
+        )
+        
+        small_mask = opex_agg.abs().max(axis=1) < threshold
+        other_values = opex_agg[small_mask].sum()  # Calculate before filtering
+        opex_agg = opex_agg[~small_mask]           # Filter out small rows
+        opex_agg.loc["Other"] = other_values       # Add "Other" after filtering
+        
+        ax, bottom = axes[i], np.zeros(len(scenarios))
+        for tech in opex_agg.index:
+            values = opex_agg.loc[tech].values
+            all_handles[tech] = ax.bar(scenarios, values, bottom=bottom, 
+                                       color=tech_colors.get(tech, "#333333"))
+            
+            if tech != "Other":
+                for j, val in enumerate(values):
+                    if val > 0:
+                        ax.text(j, bottom[j] + val/2, f"{val:.2f}", 
+                               ha="center", va="center", fontsize=8, color="white")
+            bottom += values
+        
+        totals = opex_agg.sum()
+        for j, total in enumerate(totals):
+            ax.text(j, total * 1.02, f"{total:.2f}", ha="center", va="bottom", fontsize=10)
+        
+        ax.set(ylim=(0, totals.max() * 1.08), ylabel="OPEX [billion €]",
+               title=f"Stacked OPEX composition by technology, {year}")
+    
+    fig.legend(all_handles.values(), all_handles.keys(), 
+              loc="center left", bbox_to_anchor=(1, 0.5))
+    plt.tight_layout()
+    plt.savefig(output_dir / f"opex_comp_{region.lower()}.png", bbox_inches="tight")
+    plt.close()
+
+
 if __name__ == "__main__":
     if "snakemake" not in globals():
         import os
@@ -788,4 +908,47 @@ if __name__ == "__main__":
         output_dir / "flex_provision_scenario_comparison.png",
     )
 
+    # Price duration curves comparison
+    logger.info("Plotting electricity price duration curves comparison...")
+    plot_price_duration_curves(
+        networks,
+        scenarios,
+        planning_horizons,
+        carriers=["AC", "low voltage"],
+        regions=["DE"],
+        output_dir=output_dir,
+    )
+
     # System cost comparison
+
+    # OPEX-DE
+    logger.info("Plotting OPEX composition comparison for DE...")
+    plot_opex_stacked(networks, scenarios, planning_horizons, groups, tech_colors, output_dir)
+
+    # CAPEX-DE
+    logger.info("Plotting CAPEX composition comparison for DE...")
+
+    # OPEX+CAPEX-DE
+    logger.info("Plotting total cost composition comparison for DE...")
+
+    # OPEX+CAPEX-EU
+    logger.info("Plotting total cost composition comparison for EU...")
+
+    def calculate_costs(n: pypsa.Network) -> pd.Series:
+        """
+        Calculate optimized total costs for each technology split by marginal and capital costs.
+
+        Returns
+        -------
+        pd.Series
+            MultiIndex Series with levels ["cost", "component", "carrier"]
+        """
+        costs = pd.concat(
+            {
+                "capital": n.statistics.capex(),
+                "marginal": n.statistics.opex(),
+            }
+        )
+        costs.index.names = ["cost", "component", "carrier"]
+
+        return costs

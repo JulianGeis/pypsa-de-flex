@@ -5,8 +5,9 @@
 Adds all sector-coupling components to the network, including demand and supply
 technologies for the buildings, transport and industry sectors.
 """
-import sys
+
 import os
+import sys
 
 sys.path.append(os.path.abspath(os.path.dirname(__file__)))
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
@@ -5333,18 +5334,20 @@ def add_industry(
         n.loads_t.p_set[loads_i] *= factor
 
     # Check if temporal profiles should be used
-    use_temporal = snakemake.params.industry_load.get("temporal_electricity_demand", False)
-    
+    use_temporal = snakemake.params.industry_load.get(
+        "temporal_electricity_demand", False
+    )
+
     if use_temporal and snakemake.input.industrial_electricity_profiles:
         logger.info("Using temporal industrial electricity demand profiles")
-        
+
         # Load hourly profiles (MW)
         industrial_elec_profiles = pd.read_csv(
             snakemake.input.industrial_electricity_profiles,
             index_col=0,
-            parse_dates=True
+            parse_dates=True,
         )
-        
+
         # Add temporal loads to the network for each node
         for node in industrial_elec_profiles.columns:
             # The profile is already in MW for each hour
@@ -5356,7 +5359,7 @@ def add_industry(
                 p_set=industrial_elec_profiles[node],  # MW per hour
             )
     else:
-        logger.info("Using constant industrial electricity demand") 
+        logger.info("Using constant industrial electricity demand")
         n.add(
             "Load",
             nodes,
@@ -5365,7 +5368,6 @@ def add_industry(
             carrier="industry electricity",
             p_set=industrial_demand.loc[nodes, "electricity"] / nhours,
         )
-
 
     n.add(
         "Bus",

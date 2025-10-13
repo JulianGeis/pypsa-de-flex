@@ -663,9 +663,9 @@ plotting:
     H2 CCGT: '#ff0000'
     urban central H2 CHP: '#ff0000'
     renewable gas: '#e05b09'
-    "DSM": 'navy',
-    "DSM ramp down": 'mediumslateblue',
-    "DSM compensate": 'cornflowerblue',
+    DSM: 'navy'
+    DSM ramp down: 'mediumslateblue'
+    DSM compensate: 'cornflowerblue'
   countries:
   - all
   - DE
@@ -775,4 +775,4 @@ industry_dsm:
     holding_hours: 4
 
 industry_load:
-  temporal_electricity_demand: true 
+  temporal_electricity_demand: true

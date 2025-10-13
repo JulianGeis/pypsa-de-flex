@@ -823,7 +823,7 @@ rule plot_ariadne_variables:
         all_prices=RESULTS + "ariadne/all_prices.png",
         policy_carbon=RESULTS + "ariadne/policy_carbon.png",
         investment_energy_supply=RESULTS + "ariadne/investment_energy_supply.png",
-        elec_val_2020=RESULTS + "ariadne/elec_val_2020.png",
+        # elec_val_2020=RESULTS + "ariadne/elec_val_2020.png",
         trade=RESULTS + "ariadne/trade.png",
         NEP_plot=RESULTS + "ariadne/NEP_plot.png",
         NEP_Trassen_plot=RESULTS + "ariadne/NEP_Trassen_plot.png",

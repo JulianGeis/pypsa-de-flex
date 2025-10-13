@@ -814,9 +814,9 @@ if __name__ == "__main__":
         .groupby(["Variable", "Unit"], dropna=False)
         .sum()
     ).round(5)
-    elec_val_plot(df, savepath=snakemake.output.elec_val_2020)
+    # elec_val_plot(df, savepath=snakemake.output.elec_val_2020)
 
-    df.drop(columns=[2020], inplace=True)
+    # df.drop(columns=[2020], inplace=True)
     df.columns = df.columns.astype(str)
     leitmodell = "REMIND-EU v1.1"
 

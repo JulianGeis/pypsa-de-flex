@@ -150,9 +150,9 @@ tech_colors = {
     "resistive heater": "khaki",
     "Import/Export": "dimgrey",
     "Sonstige": "gainsboro",
-    "DSM": 'navy',
-    "DSM ramp down": 'mediumslateblue',
-    "DSM compensate": 'cornflowerblue',
+    "DSM": "navy",
+    "DSM ramp down": "mediumslateblue",
+    "DSM compensate": "cornflowerblue",
 }
 
 
