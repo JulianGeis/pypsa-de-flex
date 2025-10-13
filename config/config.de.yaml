@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251007_flex-scenarios-start
+  prefix: 20251010_flex-scenarios-temporal-industry-load
   name:
   # - ExPol
   # - KN2045_Mix
@@ -663,9 +663,9 @@ plotting:
     H2 CCGT: '#ff0000'
     urban central H2 CHP: '#ff0000'
     renewable gas: '#e05b09'
-    DSM: '#ff7f0e'
-    DSM ramp down: '#ff7f0e'
-    DSM compensate: '#ffbb78'
+    "DSM": 'navy',
+    "DSM ramp down": 'mediumslateblue',
+    "DSM compensate": 'cornflowerblue',
   countries:
   - all
   - DE
@@ -773,3 +773,6 @@ industry_dsm:
   2050:
     shift_capacity: 10  # GW
     holding_hours: 4
+
+industry_load:
+  temporal_electricity_demand: true 
