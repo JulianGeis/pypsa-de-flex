@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251010_flex-scenarios-temporal-industry-load
+  prefix: 20251015-flex-scenario-update
   name:
   # - ExPol
   # - KN2045_Mix
@@ -776,3 +776,17 @@ industry_dsm:
 
 industry_load:
   temporal_electricity_demand: true
+
+unit_commitment:
+  enable: false
+  params: custom # options: conservative, average, optimistic, custom
+  carriers: ["OCGT", "CCGT", "coal", "lignite", "nuclear", "oil", "urban central solid biomass CHP"] # subset of ["OCGT", "CCGT", "coal", "lignite", "nuclear", "oil","urban central solid biomass CHP"]
+  regions: ['DE'] # subset of ['AT', 'BE', 'CH', 'CZ', 'DE', 'DK', 'FR', 'GB', 'LU', 'NL', 'NO', 'PL', 'SE', 'ES', 'IT']
+
+restrict_cross_border_flows: # restricts cross border flows between all countries (AC)
+  2025: 0.5
+  2030: 0.5
+  2035: 0.5
+  2040: 0.6
+  2045: 0.6
+  2050: 0.7

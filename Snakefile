@@ -556,6 +556,8 @@ rule modify_prenetwork:
         bev_energy=config_provider("sector", "bev_energy"),
         bev_dsm_availability=config_provider("sector", "bev_dsm_availability"),
         industry_dsm=config_provider("industry_dsm"),
+        unit_commitment=config_provider("unit_commitment"),
+        restrict_cross_border_flows=config_provider("restrict_cross_border_flows"),
     input:
         costs_modifications="ariadne-data/costs_{planning_horizons}-modifications.csv",
         network=resources(
@@ -1100,6 +1102,17 @@ rule flex_all:
     """Run all flexibility analyses and plots."""
     input:
         expand(
+            RESULTS + "ariadne/capacity_detailed.png",
+            run=config_provider("run", "name"),
+        ),
+        expand(
+            RESULTS
+            + "maps/base_s_{clusters}_{opts}_{sector_opts}-h2_network_incl_kernnetz_{planning_horizons}.pdf",
+            run=config_provider("run", "name"),
+            **config["scenario"],
+            allow_missing=True,
+        ),
+        expand(
             RESULTS + "flexibility/data/flexibility_needs.csv",
             run=config_provider("run", "name"),
         ),
@@ -1110,3 +1123,9 @@ rule flex_all:
         "results/"
         + config["run"]["prefix"]
         + "/flexibility/scenario_comparison/flex_needs_scenario_comparison.png",
+        exported_variables=expand(
+            RESULTS + "ariadne/exported_variables_full.xlsx",
+            run=config_provider("run", "name"),
+        ),
+    script:
+        "scripts/pypsa-de/plot_ariadne_scenario_comparison.py"

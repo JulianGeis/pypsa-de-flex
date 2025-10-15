@@ -1399,6 +1399,332 @@ def add_industry_dsm(n, dsm_config):
         f"Total storage: {total_shift_capacity * holding_hours / 1e3:.2f} GWh"
     )
 
+uc_params_custom = {
+    "OCGT": {
+        "p_min_pu": 0.2,
+        "start_up_cost": 20,
+        "shut_down_cost": 20,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 1,
+    },
+    "CCGT": {
+        "p_min_pu": 0.45,
+        "start_up_cost": 80,
+        "shut_down_cost": 80,
+        "min_up_time": 3,
+        "min_down_time": 2,
+        "ramp_limit_up": 1,
+    },
+    "coal": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 200,
+        "shut_down_cost": 200,
+        "min_up_time": 24,
+        "min_down_time": 24,
+        "ramp_limit_up": 1,
+    },
+    "lignite": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 200,
+        "shut_down_cost": 200,
+        "min_up_time": 24,
+        "min_down_time": 24,
+        "ramp_limit_up": 1,
+    },
+    "nuclear": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 100,
+        "shut_down_cost": 100,
+        "min_up_time": 8,
+        "min_down_time": 10,
+    },
+    "oil": {
+        "p_min_pu": 0.2,
+        "start_up_cost": 30,
+        "shut_down_cost": 30,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 1,
+    },
+    "urban central solid biomass CHP": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 150,
+        "shut_down_cost": 150,
+        "min_up_time": 5,
+        "min_down_time": 5,
+    },
+}
+
+uc_params_optimistic = {
+    "OCGT": {
+        "p_min_pu": 0.15,
+        "start_up_cost": 20,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 1,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+    "CCGT": {
+        "p_min_pu": 0.4,
+        "start_up_cost": 100,
+        "min_up_time": 2,
+        "min_down_time": 2,
+        "ramp_limit_up": 1,
+        "ramp_limit_start_up": 0.5,
+        "ramp_limit_shut_down": 0.5,
+    },
+    "coal": {
+        "p_min_pu": 0.3,
+        "start_up_cost": 80,
+        "min_up_time": 4,
+        "min_down_time": 4,
+        "ramp_limit_up": 0.8,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+    "lignite": {
+        "p_min_pu": 0.3,
+        "start_up_cost": 120,
+        "min_up_time": 5,
+        "min_down_time": 5,
+        "ramp_limit_up": 0.7,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+    "nuclear": {
+        "p_min_pu": 0.45,
+        "start_up_cost": 200,
+        "min_up_time": 6,
+        "min_down_time": 8,
+        "ramp_limit_up": 0.2,
+        "ramp_limit_start_up": 0.2,
+        "ramp_limit_shut_down": 0.2,
+    },
+    "oil": {
+        "p_min_pu": 0.2,
+        "start_up_cost": 30,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 1,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+    "urban central solid biomass CHP": {
+        "p_min_pu": 0.35,
+        "start_up_cost": 50,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 0.9,
+        "ramp_limit_start_up": 0.4,
+        "ramp_limit_shut_down": 0.4,
+    },
+}
+
+uc_params_average = {
+    "OCGT": {
+        "p_min_pu": 0.2,
+        "start_up_cost": 40,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 1,
+        "ramp_limit_start_up": 0.2,
+        "ramp_limit_shut_down": 0.2,
+    },
+    "CCGT": {
+        "p_min_pu": 0.45,
+        "start_up_cost": 150,
+        "min_up_time": 3,
+        "min_down_time": 2,
+        "ramp_limit_up": 1,
+        "ramp_limit_start_up": 0.45,
+        "ramp_limit_shut_down": 0.45,
+    },
+    "coal": {
+        "p_min_pu": 0.325,
+        "start_up_cost": 120,
+        "min_up_time": 5,
+        "min_down_time": 6,
+        "ramp_limit_up": 0.7,
+        "ramp_limit_start_up": 0.38,
+        "ramp_limit_shut_down": 0.38,
+    },
+    "lignite": {
+        "p_min_pu": 0.325,
+        "start_up_cost": 150,
+        "min_up_time": 7,
+        "min_down_time": 6,
+        "ramp_limit_up": 0.6,
+        "ramp_limit_start_up": 0.4,
+        "ramp_limit_shut_down": 0.4,
+    },
+    "nuclear": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 250,
+        "min_up_time": 6,
+        "min_down_time": 10,
+        "ramp_limit_up": 0.3,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+    "oil": {
+        "p_min_pu": 0.2,
+        "start_up_cost": 50,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 0.8,
+        "ramp_limit_start_up": 0.2,
+        "ramp_limit_shut_down": 0.2,
+    },
+    "urban central solid biomass CHP": {
+        "p_min_pu": 0.38,
+        "start_up_cost": 80,
+        "min_up_time": 2,
+        "min_down_time": 2,
+        "ramp_limit_up": 0.7,
+        "ramp_limit_start_up": 0.38,
+        "ramp_limit_shut_down": 0.38,
+    },
+}
+
+uc_params_conservative = {
+    "OCGT": {
+        "p_min_pu": 0.25,
+        "start_up_cost": 60,
+        "min_up_time": 2,
+        "min_down_time": 2,
+        "ramp_limit_up": 0.9,
+        "ramp_limit_start_up": 0.15,
+        "ramp_limit_shut_down": 0.15,
+    },
+    "CCGT": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 200,
+        "min_up_time": 4,
+        "min_down_time": 3,
+        "ramp_limit_up": 0.8,
+        "ramp_limit_start_up": 0.35,
+        "ramp_limit_shut_down": 0.35,
+    },
+    "coal": {
+        "p_min_pu": 0.35,
+        "start_up_cost": 160,
+        "min_up_time": 6,
+        "min_down_time": 8,
+        "ramp_limit_up": 0.5,
+        "ramp_limit_start_up": 0.25,
+        "ramp_limit_shut_down": 0.25,
+    },
+    "lignite": {
+        "p_min_pu": 0.35,
+        "start_up_cost": 200,
+        "min_up_time": 8,
+        "min_down_time": 10,
+        "ramp_limit_up": 0.4,
+        "ramp_limit_start_up": 0.2,
+        "ramp_limit_shut_down": 0.2,
+    },
+    "nuclear": {
+        "p_min_pu": 0.55,
+        "start_up_cost": 400,
+        "min_up_time": 10,
+        "min_down_time": 12,
+        "ramp_limit_up": 0.15,
+        "ramp_limit_start_up": 0.15,
+        "ramp_limit_shut_down": 0.15,
+    },
+    "oil": {
+        "p_min_pu": 0.25,
+        "start_up_cost": 80,
+        "min_up_time": 2,
+        "min_down_time": 2,
+        "ramp_limit_up": 0.6,
+        "ramp_limit_start_up": 0.15,
+        "ramp_limit_shut_down": 0.15,
+    },
+    "urban central solid biomass CHP": {
+        "p_min_pu": 0.4,
+        "start_up_cost": 120,
+        "min_up_time": 3,
+        "min_down_time": 3,
+        "ramp_limit_up": 0.5,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+}
+
+
+def add_unit_commitment(
+        n,
+        uc_params=uc_params_average,
+        carriers=["OCGT", "coal", "lignite", "urban central solid biomass CHP"],
+        regions=["DE"],
+    ):
+        """
+        Add unit commitment parameters to links in the network based on a UC parameter dictionary.
+
+        Parameters
+        ----------
+        n : pypsa.Network
+            The PyPSA network.
+
+        uc_params : dict
+            Nested dict with carrier names as keys and dict of UC parameters as values.
+            Example:
+            {
+                "OCGT": {
+                    "p_min_pu": 0.2,
+                    "start_up_cost": 40,
+                    "min_up_time": 1,
+                    "min_down_time": 1,
+                    "ramp_limit_up": 1,
+                    "ramp_limit_start_up": 0.2,
+                    "ramp_limit_shut_down": 0.2,
+                },
+                ...
+            }
+
+        carriers : list, optional
+            List of carriers to process (default = all carriers in uc_params).
+
+        regions : list
+            List of region codes to filter buses (default = ["DE"]).
+        """
+
+        def get_filtered_links(carrier_list):
+            carrier_mask = n.links.carrier.isin(carrier_list)
+            region_mask = n.links.bus0.str.contains(
+                "|".join(regions), na=False
+            ) | n.links.bus1.str.contains("|".join(regions), na=False)
+            return n.links[carrier_mask & region_mask].index
+
+        # If no carriers specified, use all available in uc_params
+        carriers_to_process = carriers if carriers is not None else list(uc_params.keys())
+
+        available_carriers = set(carriers_to_process) & set(n.links.carrier.unique())
+
+        for carrier in available_carriers:
+            links_i = get_filtered_links([carrier])
+            if len(links_i) == 0:
+                continue
+
+            # apply UC parameters from dict
+            for param, value in uc_params[carrier].items():
+                if param in n.links.columns:
+                    n.links.loc[links_i, param] = value
+
+            # ensure committable flag
+            n.links.loc[links_i, "committable"] = True
+
+
+def restrict_cross_border_flows(n, s_max_pu):
+    logger.info(
+        f"Restricting cross-border flows between all countries (AC) to {s_max_pu}."
+    )
+    cross_border_lines = n.lines.index[n.lines.bus0.str[:2] != n.lines.bus1.str[:2]]
+    n.lines.loc[cross_border_lines, "s_max_pu"] = s_max_pu
+
 
 if __name__ == "__main__":
     if "snakemake" not in globals():
@@ -1480,10 +1806,43 @@ if __name__ == "__main__":
 
     scale_capacity(n, snakemake.params.scale_capacity)
 
+    # Start Flexibility implementations
+
     if (snakemake.params.industry_dsm["enable"]) & (
         current_year in snakemake.params.industry_dsm.keys()
     ):
         add_industry_dsm(n, snakemake.params.industry_dsm[current_year])
+
+    unit_commitment = snakemake.params.get("unit_commitment")
+
+    if unit_commitment["enable"]:
+        logger.info(
+            f"Add unit commitment in {unit_commitment['regions']} for carriers {unit_commitment['carriers']} with parameter set '{unit_commitment['params']}' to the network."
+        )
+
+        uc_params_str = unit_commitment["params"]
+        if uc_params_str == "custom":
+            uc_params = uc_params_custom
+        elif uc_params_str == "optimistic":
+            uc_params = uc_params_optimistic
+        elif uc_params_str == "conservative":
+            uc_params = uc_params_conservative
+        elif uc_params_str == "average":
+            uc_params = uc_params_average
+
+        add_unit_commitment(
+            n,
+            uc_params,
+            carriers=unit_commitment["carriers"],
+            regions=unit_commitment["regions"],
+        )
+
+    if current_year in snakemake.params.restrict_cross_border_flows:
+        restrict_cross_border_flows(
+            n, snakemake.params.restrict_cross_border_flows[current_year]
+        )
+
+    # End Flexibility implementations
 
     sanitize_custom_columns(n)
 

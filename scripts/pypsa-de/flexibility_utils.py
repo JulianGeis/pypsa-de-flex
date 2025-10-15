@@ -136,8 +136,7 @@ tech_colors = {
     "urban central H2 retrofit CHP": "#edd1c2",
     "interconnectors": "darkorange",
     "coal CHP": "#b40426",
-    "gas CHP": "#8d5e56",
-    "H2 CHP": "#c9d7f0",
+    "H2 CHP": "pink",
     "biomass CHP": "#9d9042",
     "Fuel Cell": "#c251ae",
     "import": "orchid",
@@ -153,6 +152,16 @@ tech_colors = {
     "DSM": "navy",
     "DSM ramp down": "mediumslateblue",
     "DSM compensate": "cornflowerblue",
+    "Onshore wind": "#235ebc",
+    "Offshore wind": "#6788ee",
+    "Solar": "#ffea80",
+    "Gas": "navajowhite",
+    "Gas CHP": "navajowhite",
+    "Pumped storage": "#51dbcc",
+    "Battery": "palegreen",
+    "Power-to-heat": "crimson",
+    "Electrolysis": "#ff29d9",
+    "Others": "grey"
 }
 
 

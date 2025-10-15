@@ -807,6 +807,128 @@ def plot_opex_stacked(networks, scenarios, planning_horizons, groups, tech_color
     plt.close()
 
 
+    # capacity comp
+    # Carrier groupings
+capa_groups = {
+    'Wind + Solar': {
+        'Onshore wind': ['onwind'],
+        'Offshore wind': ['offwind-ac', 'offwind-dc'],
+        'Solar': ['solar', 'solar rooftop', 'solar-hsat']
+    },
+    'Dispatchable': {
+        'Gas': ['OCGT', 'CCGT'],
+        'Gas CHP': ['urban central gas CHP', 'urban central gas CHP CC'],
+        'H2': ['H2 turbine', 'H2 OCGT'],
+        'H2 CHP': ['H2 CCGT', 'urban central H2 CHP', 'H2 Fuel Cell'],
+        'Others': ['coal', 'lignite', 'urban central coal CHP', 'urban central lignite CHP',
+                   'solid biomass', 'urban central solid biomass CHP', 'urban central solid biomass CHP CC',
+                   'waste CHP', 'waste CHP CC', 'oil', 'urban central oil CHP']
+    },
+    'Storage': {
+        'Pumped storage': ['PHS'],
+        'Battery': ['battery discharger', 'home battery discharger']
+    },
+    'Demand-side flex': {
+        'Power-to-heat': ['rural air heat pump', 'rural ground heat pump', 'rural resistive heater',
+                          'urban central air heat pump', 'urban central resistive heater',
+                          'urban decentral air heat pump', 'urban decentral resistive heater'],
+        'Electrolysis': ['H2 Electrolysis']
+    }
+}
+
+def get_capacities(networks, scenarios, years):
+    """Extract and group capacities for all scenarios and years"""
+    kwargs = {"groupby": ["bus", "carrier"], "at_port": True, "nice_names": False}
+    
+    all_data = {}
+    
+    for scenario in scenarios:
+        for year in years:
+            n = networks[scenario][year]
+            caps = (n.statistics.optimal_capacity(bus_carrier=["AC", "low voltage"], **kwargs)
+                    .filter(like="DE").groupby("carrier").sum()
+                    .drop(["AC", "DC", "electricity distribution grid"], errors="ignore"))
+            
+            # Group by technology
+            grouped = {}
+            for group_name, techs in capa_groups.items():
+                grouped[group_name] = {}
+                for tech_name, carriers in techs.items():
+                    val = caps[caps.index.isin(carriers)].sum()
+                    grouped[group_name][tech_name] = abs(val) / 1000  # Convert to GW
+            
+            all_data[(scenario, year)] = grouped
+    
+    return all_data
+
+def plot_capacity_comparison(data, scenarios, years, tech_colors):
+    """Create stacked bar chart comparing scenarios across years"""
+    fig, axes = plt.subplots(len(years), 4, figsize=(16, 4*len(years)), 
+                             gridspec_kw={'wspace': 0.3, 'hspace': 0.4})
+    if len(years) == 1:
+        axes = axes.reshape(1, -1)
+
+    group_names = list(capa_groups.keys())
+    x = np.arange(len(scenarios))
+    width = 0.6
+    
+    for year_idx, year in enumerate(years):
+        for group_idx, group_name in enumerate(group_names):
+            ax = axes[year_idx, group_idx]
+
+            tech_names = list(capa_groups[group_name].keys())
+            bottoms = np.zeros(len(scenarios))
+            
+            for tech_name in tech_names:
+                values = [data[(sc, year)][group_name].get(tech_name, 0) for sc in scenarios]
+                
+                color = tech_colors.get(tech_name, '#CCCCCC')
+                hatch = '///' if 'CHP' in tech_name else None
+                
+                bars = ax.bar(x, values, width, bottom=bottoms, color=color, label=tech_name, 
+                             hatch=hatch, edgecolor='white' if hatch else None, linewidth=0.5)
+                
+                # Add value labels
+                for i, (bar, val) in enumerate(zip(bars, values)):
+                    if val > 1:
+                        ax.text(bar.get_x() + bar.get_width()/2, bottoms[i] + val/2,
+                               f'{int(val)}', ha='center', va='center', fontsize=9, 
+                               color='white', weight='bold')
+                
+                bottoms += values
+            
+            # Add total on top
+            for i, total in enumerate(bottoms):
+                if total > 0:
+                    ax.text(i, total + max(bottoms)*0.02, f'{int(total)}', 
+                           ha='center', va='bottom', fontsize=10, weight='bold')
+            
+            # Formatting
+            ax.set_xticks(x)
+            ax.set_xticklabels([sc[:3].lower() for sc in scenarios])
+            ax.set_ylabel('Installed capacity (GW)', fontsize=10)
+            ax.set_ylim(0, max(bottoms) * 1.15)
+            ax.grid(axis='y', alpha=0.3)
+            
+            if year_idx == 0:
+                ax.set_title(group_name, fontsize=12, weight='bold')
+            
+            if group_idx == len(group_names) - 1:
+                ax.text(1.05, 0.5, str(year), transform=ax.transAxes, 
+                       rotation=270, va='center', fontsize=14, weight='bold')
+            
+            ax.set_xlabel('Scenario', fontsize=10)
+            
+            # Add legend below (only for bottom row)
+            if year_idx == len(years) - 1:
+                handles, labels = ax.get_legend_handles_labels()
+                ax.legend(handles, labels, loc='upper center', 
+                         bbox_to_anchor=(0.5, -0.15), ncol=1, fontsize=9, frameon=False)
+    
+    plt.tight_layout()
+    return fig
+
+
 if __name__ == "__main__":
     if "snakemake" not in globals():
         import os
@@ -952,3 +1074,10 @@ if __name__ == "__main__":
         costs.index.names = ["cost", "component", "carrier"]
 
         return costs
+    
+    # Capacity comparison
+    logger.info("Plotting capacity comparison for DE")
+    data = get_capacities(networks, scenarios, planning_horizons)
+    fig = plot_capacity_comparison(data, scenarios, planning_horizons, tech_colors)
+    # fig.savefig("capacity_comparison.pdf", dpi=300, bbox_inches='tight')
+    fig.savefig(output_dir / "capacity_comparison.png", dpi=300, bbox_inches='tight')
