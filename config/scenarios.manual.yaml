@@ -237,9 +237,10 @@ KN2045_NFhoch:
       2045: 0.29
       2050: 0.33
 
-# Definition of flexibility scenarios
-# dynamic line rating?
-# 
+####### Definition of flexibility scenarios #######
+
+NoFlex:
+
 
 LowFlex:
 
@@ -273,10 +274,6 @@ LowFlex:
               2040: 0
               2045: 0
               2050: 0
-
-  wasserstoff_kernnetz:
-    enable: false
-
 
 MediumFlex:
 
@@ -320,6 +317,230 @@ HighFlex:
       shift_capacity: 10  # GW
       holding_hours: 4
 
-  # lines:
-  #   dynamic_line_rating:
-  #     activate: true
+  lines:
+    dynamic_line_rating:
+      activate: true
+
+LowFlexBattery:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+    constraints:
+      limits_capacity_max:
+        Link: # in GW
+          battery discharger:   # Ariadne capa: 2020 (0.01 GW); 2025 (0.01 GW); 2030 (3.85 GW); 2035 (33.08 GW); 2040 (49.44 GW); 2045 (49.44 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 1
+              2035: 10
+              2040: 20
+              2045: 25
+              2050: 30
+          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+
+
+LowFlexHeat:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+    constraints:
+      limits_capacity_max:
+        Link: # in GW
+          urban central water pits discharger:   # MediumFlex capa: 2020 (- GW); 2025 (10 GW); 2030 (- GW); 2035 (44 GW); 2040 (- GW); 2045 (54 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 1
+              2035: 10
+              2040: 20
+              2045: 25
+              2050: 30
+          urban central water tanks discharger:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+          urban decentral water pits discharger:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 1
+              2035: 10
+              2040: 20
+              2045: 25
+              2050: 30
+          urban decentral water tanks discharger:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (11 GW); 2040 (- GW); 2045 (11 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+          rural water pits discharger:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 1
+              2035: 10
+              2040: 20
+              2045: 25
+              2050: 30
+          rural water tanks discharger:   # MediumFlex capa: 2020 (- GW); 2025 (6 GW); 2030 (- GW); 2035 (10 GW); 2040 (- GW); 2045 (10 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+
+LowFlexH2:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+    constraints:
+      limits_capacity_max:
+        Store: # in GWh
+          H2 Store:  # MediumFlex capa: 2020 (- ); 2025 (5 GWh); 2030 (- ); 2035 (6 TWh); 2040 (- TWh); 2045 (20 TWh)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 2
+              2035: 3000
+              2040: 5000
+              2045: 10000
+              2050: 10000
+
+LowFlexDSM:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+    constraints:
+      limits_capacity_max:
+        Link: # in GW
+          rural air heat pump:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+          rural ground heat pump:   # MediumFlex capa: 2020 (- GW); 2025 (1 GW); 2030 (- GW); 2035 (6 GW); 2040 (- GW); 2045 (7 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 3
+              2040: 3
+              2045: 5
+              2050: 5
+          rural resistive heater:   # MediumFlex capa: 2020 (- GW); 2025 (1 GW); 2030 (- GW); 2035 (19 GW); 2040 (- GW); 2045 (18 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 10
+              2040: 10
+              2045: 10
+              2050: 10
+          urban central air heat pump:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (1 GW); 2040 (- GW); 2045 (2 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 1
+              2040: 1
+              2045: 1
+              2050: 1
+          urban central resisitive heater:   # MediumFlex capa: 2020 (- GW); 2025 (5 GW); 2030 (- GW); 2035 (41 GW); 2040 (- GW); 2045 (43 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 5
+              2035: 15
+              2040: 15
+              2045: 25
+              2050: 25
+          urban decentral air heat pump:   # MediumFlex capa: 2020 (- GW); 2025 (1 GW); 2030 (- GW); 2035 (6 GW); 2040 (- GW); 2045 (10 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 3
+              2040: 3
+              2045: 5
+              2050: 5
+          urban decentral resisitive heater:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (21 GW); 2040 (- GW); 2045 (34 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 5
+              2035: 10
+              2040: 10
+              2045: 15
+              2050: 15
+          H2 Electrolysis:  # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (23 GW); 2040 (- GW); 2045 (33 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 5
+              2035: 10
+              2040: 15
+              2045: 20
+              2050: 20
+
+LowFlexTransmission:
+
+  electricity:
+    transmission_limit: v1.25
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false

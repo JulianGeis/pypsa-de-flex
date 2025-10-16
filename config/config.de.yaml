@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251015-flex-scenario-update
+  prefix: 20251016-flex-more-scenarios
   name:
   # - ExPol
   # - KN2045_Mix
@@ -15,6 +15,11 @@ run:
   - LowFlex
   - MediumFlex
   - HighFlex
+  - LowFlexBattery
+  - LowFlexH2
+  - LowFlexHeat
+  - LowFlexDSM
+  - LowFlexTransmission
   scenarios:
     enable: true
     manual_file: config/scenarios.manual.yaml
@@ -749,9 +754,13 @@ scale_capacity:
 # Flexibility comparison settings
 flexibility_comparison:
   scenarios:
-  - LowFlex
-  - MediumFlex
-  - HighFlex
+  # - LowFlex
+  # - MediumFlex
+  # - HighFlex
+  - LowFlexH2
+  - LowFlexHeat
+  - LowFlexDSM
+  - LowFlexTransmission
 
 industry_dsm:
   enable: false
