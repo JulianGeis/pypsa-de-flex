@@ -498,7 +498,7 @@ LowFlexDSM:
               2040: 1
               2045: 1
               2050: 1
-          urban central resisitive heater:   # MediumFlex capa: 2020 (- GW); 2025 (5 GW); 2030 (- GW); 2035 (41 GW); 2040 (- GW); 2045 (43 GW)
+          urban central resistive heater:   # MediumFlex capa: 2020 (- GW); 2025 (5 GW); 2030 (- GW); 2035 (41 GW); 2040 (- GW); 2045 (43 GW)
             DE:
               2020: 0
               2025: 0
@@ -516,7 +516,7 @@ LowFlexDSM:
               2040: 3
               2045: 5
               2050: 5
-          urban decentral resisitive heater:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (21 GW); 2040 (- GW); 2045 (34 GW)
+          urban decentral resistive heater:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (21 GW); 2040 (- GW); 2045 (34 GW)
             DE:
               2020: 0
               2025: 0
@@ -544,3 +544,112 @@ LowFlexTransmission:
     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
+
+
+LowFlexBattery_70:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+    constraints:
+      limits_capacity_max:
+        Link: # in GW
+          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      battery discharger: 0.70
+
+LowFlexBattery_50:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+    constraints:
+      limits_capacity_max:
+        Link: # in GW
+          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      battery discharger: 0.50
+
+LowFlexDSM_50:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      rural air heat pump: 0.50
+      rural ground heat pump: 0.50
+      rural resistive heater: 0.50
+      urban central air heat pump: 0.50
+      urban central resistive heater: 0.50
+      urban decentral air heat pump: 0.50
+      urban decentral resistive heater: 0.50
+      H2 Electrolysis: 0.50
+
+LowFlexH2_50:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Store:
+      H2 Store: 0.50
+
+LowFlexHeat_50:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      urban central water pits discharger: 0.50
+      urban central water tanks discharger: 0.50
+      urban decentral water pits discharger: 0.50
+      urban decentral water tanks discharger: 0.50  

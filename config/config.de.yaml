@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251016-flex-more-scenarios
+  prefix: 20251017-flex-percentage-scenarios
   name:
   # - ExPol
   # - KN2045_Mix
@@ -12,14 +12,19 @@ run:
   # - KN2045_H2
   # - KN2045_NFniedrig
   # - KN2045_NFhoch
-  - LowFlex
-  - MediumFlex
-  - HighFlex
-  - LowFlexBattery
-  - LowFlexH2
-  - LowFlexHeat
-  - LowFlexDSM
-  - LowFlexTransmission
+  # - LowFlex
+  # - MediumFlex
+  # - HighFlex
+  # - LowFlexBattery
+  # - LowFlexH2
+  # - LowFlexHeat
+  # - LowFlexDSM
+  # - LowFlexTransmission
+  - LowFlexBattery_50
+  - LowFlexBattery_70
+  - LowFlexH2_50
+  - LowFlexHeat_50
+  - LowFlexDSM_50
   scenarios:
     enable: true
     manual_file: config/scenarios.manual.yaml
@@ -757,10 +762,15 @@ flexibility_comparison:
   # - LowFlex
   # - MediumFlex
   # - HighFlex
-  - LowFlexH2
-  - LowFlexHeat
-  - LowFlexDSM
-  - LowFlexTransmission
+  # - LowFlexH2
+  # - LowFlexHeat
+  # - LowFlexDSM
+  # - LowFlexTransmission
+  - LowFlexBattery_50
+  - LowFlexBattery_70
+  - LowFlexH2_50
+  - LowFlexHeat_50
+  - LowFlexDSM_50
 
 industry_dsm:
   enable: false

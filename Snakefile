@@ -558,6 +558,7 @@ rule modify_prenetwork:
         industry_dsm=config_provider("industry_dsm"),
         unit_commitment=config_provider("unit_commitment"),
         restrict_cross_border_flows=config_provider("restrict_cross_border_flows"),
+        restrict_component_buildout=config_provider("restrict_component_buildout"),
     input:
         costs_modifications="ariadne-data/costs_{planning_horizons}-modifications.csv",
         network=resources(
@@ -585,6 +586,8 @@ rule modify_prenetwork:
         regions_onshore=resources("regions_onshore_base_s_{clusters}.geojson"),
         regions_offshore=resources("regions_offshore_base_s_{clusters}.geojson"),
         offshore_connection_points="ariadne-data/offshore_connection_points.csv",
+        medium_flex_capacities_3H="flex-data/MediumFlex_capacities_{clusters}cl_3H.csv",
+        medium_flex_capacities_1H="flex-data/MediumFlex_capacities_{clusters}cl_1H.csv",
     output:
         network=resources(
             "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}_final.nc"
