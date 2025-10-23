@@ -239,10 +239,7 @@ KN2045_NFhoch:
 
 ####### Definition of flexibility scenarios #######
 
-NoFlex:
-
-
-LowFlex:
+LowFlex50:
 
   electricity:
     transmission_limit: v1.5
@@ -256,15 +253,6 @@ LowFlex:
     constraints:
       limits_capacity_max:
         Link: # in GW
-          battery discharger:   # Ariadne capa: 2020 (0.01 GW); 2025 (0.01 GW); 2030 (3.85 GW); 2035 (33.08 GW); 2040 (49.44 GW); 2045 (49.44 GW)
-            DE:
-              2020: 0
-              2025: 0
-              2030: 1
-              2035: 10
-              2040: 20
-              2045: 25
-              2050: 30
           home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
             DE:
               2020: 0
@@ -275,7 +263,69 @@ LowFlex:
               2045: 0
               2050: 0
 
-MediumFlex:
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      battery discharger: 0.50
+      rural air heat pump: 0.50
+      rural ground heat pump: 0.50
+      rural resistive heater: 0.50
+      urban central air heat pump: 0.50
+      urban central resistive heater: 0.50
+      urban decentral air heat pump: 0.50
+      urban decentral resistive heater: 0.50
+      H2 Electrolysis: 0.50
+      urban central water pits discharger: 0.50
+      urban central water tanks discharger: 0.50
+      urban decentral water pits discharger: 0.50
+      urban decentral water tanks discharger: 0.50
+    Store:
+      H2 Store: 0.50
+
+
+LowFlex75:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+    constraints:
+      limits_capacity_max:
+        Link: # in GW
+          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      battery discharger: 0.75
+      rural air heat pump: 0.75
+      rural ground heat pump: 0.75
+      rural resistive heater: 0.75
+      urban central air heat pump: 0.75
+      urban central resistive heater: 0.75
+      urban decentral air heat pump: 0.75
+      urban decentral resistive heater: 0.75
+      H2 Electrolysis: 0.75
+      urban central water pits discharger: 0.75
+      urban central water tanks discharger: 0.75
+      urban decentral water pits discharger: 0.75
+      urban decentral water tanks discharger: 0.75
+    Store:
+      H2 Store: 0.75
+
+
+MedFlex:
 
   electricity:
     transmission_limit: v1.5
@@ -286,7 +336,7 @@ MediumFlex:
     v2g: false
 
 
-HighFlex:
+HigFlex:
 
   electricity:
     transmission_limit: v1.5
@@ -321,7 +371,284 @@ HighFlex:
     dynamic_line_rating:
       activate: true
 
-LowFlexBattery:
+####### Definition of sensitivity scenarios #######
+
+LowTransmission125:
+
+  electricity:
+    transmission_limit: v1.25
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+
+LowTransmission110:
+
+  electricity:
+    transmission_limit: v1.1
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+
+LowBatt75:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+    constraints:
+      limits_capacity_max:
+        Link: # in GW
+          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      battery discharger: 0.75
+
+
+LowBatt50:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+    constraints:
+      limits_capacity_max:
+        Link: # in GW
+          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      battery discharger: 0.5
+
+
+LowBatt25:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  solving:
+    constraints:
+      limits_capacity_max:
+        Link: # in GW
+          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
+            DE:
+              2020: 0
+              2025: 0
+              2030: 0
+              2035: 0
+              2040: 0
+              2045: 0
+              2050: 0
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      battery discharger: 0.25
+
+
+LowPtX75:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      rural air heat pump: 0.75
+      rural ground heat pump: 0.75
+      rural resistive heater: 0.75
+      urban central air heat pump: 0.75
+      urban central resistive heater: 0.75
+      urban decentral air heat pump: 0.75
+      urban decentral resistive heater: 0.75
+      H2 Electrolysis: 0.75
+
+
+LowPtX50:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      rural air heat pump: 0.50
+      rural ground heat pump: 0.50
+      rural resistive heater: 0.50
+      urban central air heat pump: 0.50
+      urban central resistive heater: 0.50
+      urban decentral air heat pump: 0.50
+      urban decentral resistive heater: 0.50
+      H2 Electrolysis: 0.50
+
+
+LowPtX25:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      rural air heat pump: 0.25
+      rural ground heat pump: 0.25
+      rural resistive heater: 0.25
+      urban central air heat pump: 0.25
+      urban central resistive heater: 0.25
+      urban decentral air heat pump: 0.25
+      urban decentral resistive heater: 0.25
+      H2 Electrolysis: 0.25
+
+
+LowH2Store75:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Store:
+      H2 Store: 0.75
+
+
+LowH2Store50:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Store:
+      H2 Store: 0.50
+
+
+LowH2Store25:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Store:
+      H2 Store: 0.25
+
+
+LowHeatStore75:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      urban central water pits discharger: 0.75
+      urban central water tanks discharger: 0.75
+      urban decentral water pits discharger: 0.75
+      urban decentral water tanks discharger: 0.75
+
+
+LowHeatStore50:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      urban central water pits discharger: 0.50
+      urban central water tanks discharger: 0.50
+      urban decentral water pits discharger: 0.50
+      urban decentral water tanks discharger: 0.50  
+
+
+LowHeatStore25:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      urban central water pits discharger: 0.25
+      urban central water tanks discharger: 0.25
+      urban decentral water pits discharger: 0.25
+      urban decentral water tanks discharger: 0.25
+
+####### Old scenarios ####### 
+
+LowBatt:
 
   electricity:
     transmission_limit: v1.5
@@ -544,112 +871,3 @@ LowFlexTransmission:
     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
-
-
-LowFlexBattery_70:
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-
-  solving:
-    constraints:
-      limits_capacity_max:
-        Link: # in GW
-          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
-            DE:
-              2020: 0
-              2025: 0
-              2030: 0
-              2035: 0
-              2040: 0
-              2045: 0
-              2050: 0
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.70
-
-LowFlexBattery_50:
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-
-  solving:
-    constraints:
-      limits_capacity_max:
-        Link: # in GW
-          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
-            DE:
-              2020: 0
-              2025: 0
-              2030: 0
-              2035: 0
-              2040: 0
-              2045: 0
-              2050: 0
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.50
-
-LowFlexDSM_50:
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      rural air heat pump: 0.50
-      rural ground heat pump: 0.50
-      rural resistive heater: 0.50
-      urban central air heat pump: 0.50
-      urban central resistive heater: 0.50
-      urban decentral air heat pump: 0.50
-      urban decentral resistive heater: 0.50
-      H2 Electrolysis: 0.50
-
-LowFlexH2_50:
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Store:
-      H2 Store: 0.50
-
-LowFlexHeat_50:
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      urban central water pits discharger: 0.50
-      urban central water tanks discharger: 0.50
-      urban decentral water pits discharger: 0.50
-      urban decentral water tanks discharger: 0.50  

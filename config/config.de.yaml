@@ -4,27 +4,32 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251017-flex-percentage-scenarios
+  prefix: 20251023-flex-scenario-update
   name:
+  - LowFlex50
+  # - LowFlex75
+  # - LowBatt50
+  # - MedFlex
+  # - HigFlex
+  # - LowTransmission110
+  # - LowTransmission125
+  # - LowBatt75
+  # - LowBatt25
+  # - LowPtX75
+  # - LowPtX50
+  # - LowPtX25
+  # - LowH2Store75
+  # - LowH2Store50
+  # - LowH2Store25
+  # - LowHeatStore75
+  # - LowHeatStore50
+  # - LowHeatStore25
   # - ExPol
   # - KN2045_Mix
   # - KN2045_Elek
   # - KN2045_H2
   # - KN2045_NFniedrig
   # - KN2045_NFhoch
-  # - LowFlex
-  # - MediumFlex
-  # - HighFlex
-  # - LowFlexBattery
-  # - LowFlexH2
-  # - LowFlexHeat
-  # - LowFlexDSM
-  # - LowFlexTransmission
-  - LowFlexBattery_50
-  - LowFlexBattery_70
-  - LowFlexH2_50
-  - LowFlexHeat_50
-  - LowFlexDSM_50
   scenarios:
     enable: true
     manual_file: config/scenarios.manual.yaml
@@ -75,9 +80,9 @@ scenario:
   # - 2020
   - 2025
   # - 2030
-  - 2035
+  # - 2035
   # - 2040
-  - 2045
+  # - 2045
   # - 2050
 
 existing_capacities:
@@ -760,17 +765,17 @@ scale_capacity:
 flexibility_comparison:
   scenarios:
   # - LowFlex
-  # - MediumFlex
+  - MediumFlex
   # - HighFlex
   # - LowFlexH2
   # - LowFlexHeat
   # - LowFlexDSM
   # - LowFlexTransmission
-  - LowFlexBattery_50
-  - LowFlexBattery_70
-  - LowFlexH2_50
-  - LowFlexHeat_50
-  - LowFlexDSM_50
+  # - LowFlexBattery_50
+  # - LowFlexBattery_70
+  # - LowFlexH2_50
+  # - LowFlexHeat_50
+  # - LowFlexDSM_50
 
 industry_dsm:
   enable: false

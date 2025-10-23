@@ -137,6 +137,7 @@ tech_colors = {
     "interconnectors": "darkorange",
     "coal CHP": "#b40426",
     "H2 CHP": "pink",
+    "H2 (+CHP)": "pink",
     "biomass CHP": "#9d9042",
     "Fuel Cell": "#c251ae",
     "import": "orchid",
@@ -149,9 +150,9 @@ tech_colors = {
     "resistive heater": "khaki",
     "Import/Export": "dimgrey",
     "Sonstige": "gainsboro",
-    "DSM": "navy",
-    "DSM ramp down": "mediumslateblue",
-    "DSM compensate": "cornflowerblue",
+    "industry DSM": "navy",
+    "industry DSM ramp down": "mediumslateblue",
+    "industry DSM compensate": "cornflowerblue",
     "Onshore wind": "#235ebc",
     "Offshore wind": "#6788ee",
     "Solar": "#ffea80",
@@ -161,7 +162,8 @@ tech_colors = {
     "Battery": "palegreen",
     "Power-to-heat": "crimson",
     "Electrolysis": "#ff29d9",
-    "Others": "grey"
+    "Others": "grey",
+    "V2G": "tomato",
 }
 
 
@@ -178,14 +180,14 @@ year_colors_gradient = {
 # Technology grouping dictionary
 tech_groups = {
     "gas (+CHP)": ["gas CHP", "OCGT", "CCGT"],
-    "heat pump": ["heat pump"],
-    "resistive heater": ["resistive heater"],
-    "biomass (+CHP)": ["biomass"],
     "coal (+CHP)": ["coal", "lignite"],
     "oil (+CHP)": ["oil"],
-    "waste CHP": ["waste"],
-    "H2 OCGT": ["H2 OCGT", "H2 retrofit OCGT"],
-    "H2 CHP": ["H2 CHP", "H2 retrofit CHP"],
+    "waste (+CHP)": ["waste"],
+    "H2 (+CHP)": ["H2 retrofit", "H2  CCGT", "H2 OCGT", "H2 CHP"],
+    "biomass (+CHP)": ["biomass"],
+    "heat pump": ["heat pump"],
+    "resistive heater": ["resistive heater"],
+    "industry DSM": ["industry DSM"],
     "interconnectors": [
         "AC",
         "DC",
