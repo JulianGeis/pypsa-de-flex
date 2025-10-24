@@ -1727,6 +1727,7 @@ def restrict_cross_border_flows(n, s_max_pu):
 
 
 def restrict_component_buildout(n, component_limits, capacities_csv):
+    
     investment_year = snakemake.wildcards.planning_horizons
     capacities = pd.read_csv(capacities_csv, index_col=[0, 1, 2])
     
@@ -1759,66 +1760,49 @@ def restrict_component_buildout(n, component_limits, capacities_csv):
             limits = component_limits[c.name][carrier] * capacities[investment_year].xs(carrier, level=2)
             limits = limits.droplevel(0)
             
-            components = c.df[
+            extendable_components = c.df[
                 (c.df[bus].isin(limits.index)) & 
                 (c.df.carrier == carrier) & 
                 (c.df[f"{attr}_nom_extendable"])
             ].index
             
             for limits_bus in limits.index:
-                # Cache the filtered components for this bus
-                components_at_bus = c.df.loc[components][c.df.loc[components][bus] == limits_bus]
+
+                extendable_components_at_bus = c.df.loc[extendable_components][c.df.loc[extendable_components][bus] == limits_bus]
+
+                # Calculate total already installed capacity at bus
+                total_installed = c.df[(c.df[bus] == limits_bus) & (c.df.carrier == carrier)][f"{attr}_nom"].sum()
+                limit = limits.loc[limits_bus] - total_installed
                 
-                if len(components_at_bus) == 1:
-                    limit = limits.loc[limits_bus]
-                    component_idx = components_at_bus.index[0]
-                    installed_capacity = c.df.at[component_idx, f"{attr}_nom"]
-                    
-                    # Check if limit is lower than already installed capacity
-                    if limit < installed_capacity:
-                        logger.warning(
-                            f"Calculated limit {limit:.2f} {units} for {c.name} {carrier} at bus {limits_bus} "
-                            f"is lower than already installed capacity {installed_capacity:.2f} {units}. "
-                            f"Setting limit to installed capacity to avoid infeasibility."
-                        )
-                        limit = installed_capacity
-                    
-                    c.df.at[component_idx, f"{attr}_nom_max"] = limit
+                if limit < 0:
+                    logger.warning(
+                        f"Total installed capacity {total_installed:.2f} {units} for {c.name} {carrier} at bus {limits_bus} "
+                        f"exceeds the limit of {limits.loc[limits_bus]:.2f} {units}. "
+                        f"Setting {attr}_nom_max to 0"
+                    )
+                    limit = 0
+
+                if len(extendable_components_at_bus) == 1:
+                    component_idx = extendable_components_at_bus.index[0]
+                    c.df.at[component_idx, f"{attr}_nom_max"] = max(limit, c.df.at[component_idx, f"{attr}_nom"])
                     logger.info(
                         f"Restricting {attr}_nom_max of {c.name} {carrier} at bus {limits_bus} "
                         f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Medium Flex capacities)"
                     )
-                    
-                elif len(components_at_bus) > 1:
-                    # Limit latest component to limit - sum(other components)
-                    # Sort by build year ascending and take the last (latest) component
-                    limit = limits.loc[limits_bus]
-                    component_idxs = components_at_bus.sort_values(by="build_year", ascending=True).index
-                    
-                    # Sum existing capacities of all but the latest component
-                    other_sum = c.df.loc[component_idxs[:-1], f"{attr}_nom"].sum()
-                    component_idx = component_idxs[-1]
-                    installed_capacity = c.df.at[component_idx, f"{attr}_nom"]
-                    
-                    # Calculate new limit
-                    new_limit = max(0, limit - other_sum)
-                    
-                    # Check if new limit is lower than already installed capacity
-                    if new_limit < installed_capacity:
-                        logger.warning(
-                            f"Calculated limit {new_limit:.2f} {units} for {c.name} {carrier} at bus {limits_bus} "
-                            f"is lower than already installed capacity {installed_capacity:.2f} {units}. "
-                            f"Setting limit to installed capacity to avoid infeasibility. "
-                            f"(Total limit: {limit:.2f} {units}, other components: {other_sum:.2f} {units})"
-                        )
-                        new_limit = installed_capacity
-                    
-                    c.df.at[component_idx, f"{attr}_nom_max"] = new_limit
-                    
+
+                elif len(extendable_components_at_bus) > 1:
+                    # Limit latest component (sort by build year)
+                    component_idxs = extendable_components_at_bus.sort_values(by="build_year", ascending=True).index
+                    latest_component_idx = component_idxs[-1]
+                    c.df.at[latest_component_idx, f"{attr}_nom_max"] = max(limit, c.df.at[latest_component_idx, f"{attr}_nom"])
+                   
+                    # Set older components to not extendable
+                    for idx in component_idxs[:-1]:
+                        c.df.at[idx, f"{attr}_nom_extendable"] = False
+
                     logger.info(
-                        f"Restricting {attr}_nom_max of {c.name} {carrier} at bus {limits_bus} "
-                        f"to {new_limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Medium Flex capacities, "
-                        f"after subtracting {other_sum:.2f} {units} from existing components)"
+                        f"Restricting {attr}_nom_max of latest {c.name} {carrier} at bus {limits_bus} "
+                        f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Medium Flex capacities)"
                     )
                     
                 else:
@@ -1947,6 +1931,8 @@ if __name__ == "__main__":
     restrict_components_config = snakemake.params.restrict_component_buildout
     if n.snapshot_weightings.generators.iloc[0] == 1.0:
         medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_1H
+    elif n.snapshot_weightings.generators.iloc[0] == 365.0:
+        medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_365H
     else:
         medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_3H
 

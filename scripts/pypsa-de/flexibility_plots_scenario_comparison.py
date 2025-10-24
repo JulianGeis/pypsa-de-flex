@@ -12,7 +12,7 @@ import numpy as np
 import pandas as pd
 import pypsa
 from _helpers import configure_logging, mock_snakemake
-from flexibility_utils import find_project_root, tech_colors
+from flexibility_utils import find_project_root, tech_colors, scenario_abbrev
 
 logger = logging.getLogger(__name__)
 
@@ -861,6 +861,7 @@ def get_capacities(networks, scenarios, years):
     
     return all_data
 
+
 def plot_capacity_comparison(data, scenarios, years, tech_colors):
     """Create stacked bar chart comparing scenarios across years"""
     fig, axes = plt.subplots(len(years), 4, figsize=(16, 4*len(years)), 
@@ -905,7 +906,7 @@ def plot_capacity_comparison(data, scenarios, years, tech_colors):
             
             # Formatting
             ax.set_xticks(x)
-            ax.set_xticklabels([sc[:3].lower() for sc in scenarios])
+            ax.set_xticklabels([scenario_abbrev.get(sc, sc[:4]) for sc in scenarios])
             ax.set_ylabel('Installed capacity (GW)', fontsize=10)
             ax.set_ylim(0, max(bottoms) * 1.15)
             ax.grid(axis='y', alpha=0.3)

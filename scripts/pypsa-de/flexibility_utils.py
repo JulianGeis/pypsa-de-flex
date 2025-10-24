@@ -205,3 +205,26 @@ def find_project_root():
         if (parent / ".git").exists() or (parent / "Snakefile").exists():
             return parent
     return current.parent
+
+
+# Scenario abbreviations dictionary
+scenario_abbrev = {
+    'LowFlex50': 'LF50',
+    'LowFlex75': 'LF75',
+    'LowBatt50': 'LB50',
+    'LowBatt75': 'LB75',
+    'LowBatt25': 'LB25',
+    'MedFlex': 'MedF',
+    'HigFlex': 'HigF',
+    'LowTransmission110': 'LT10',
+    'LowTransmission125': 'LT25',
+    'LowPtX75': 'LX75',
+    'LowPtX50': 'LX50',
+    'LowPtX25': 'LX25',
+    'LowH2Store75': 'LH75',
+    'LowH2Store50': 'LH50',
+    'LowH2Store25': 'LH25',
+    'LowHeatStore75': 'HS75',
+    'LowHeatStore50': 'HS50',
+    'LowHeatStore25': 'HS25',
+}
