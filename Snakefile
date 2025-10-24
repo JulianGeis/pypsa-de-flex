@@ -588,6 +588,7 @@ rule modify_prenetwork:
         offshore_connection_points="ariadne-data/offshore_connection_points.csv",
         medium_flex_capacities_3H="flex-data/MediumFlex_capacities_{clusters}cl_3H.csv",
         medium_flex_capacities_1H="flex-data/MediumFlex_capacities_{clusters}cl_1H.csv",
+        medium_flex_capacities_365H="flex-data/MediumFlex_capacities_{clusters}cl_365H.csv",
     output:
         network=resources(
             "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}_final.nc"
@@ -1126,6 +1127,10 @@ rule flex_all:
         "results/"
         + config["run"]["prefix"]
         + "/flexibility/scenario_comparison/flex_needs_scenario_comparison.png",
+        expand(
+            RESULTS + "ariadne/report/elec_price_duration_curve.pdf",
+            run=config_provider("run", "name"),
+        ),
         exported_variables=expand(
             RESULTS + "ariadne/exported_variables_full.xlsx",
             run=config_provider("run", "name"),

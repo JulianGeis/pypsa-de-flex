@@ -1931,8 +1931,8 @@ if __name__ == "__main__":
     restrict_components_config = snakemake.params.restrict_component_buildout
     if n.snapshot_weightings.generators.iloc[0] == 1.0:
         medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_1H
-    elif n.snapshot_weightings.generators.iloc[0] == 365.0:
-        medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_365H
+    # elif n.snapshot_weightings.generators.iloc[0] == 365.0:
+    #     medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_365H
     else:
         medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_3H
 

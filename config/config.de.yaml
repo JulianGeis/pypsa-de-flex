@@ -4,12 +4,12 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251023-flex-scenario-update
+  prefix: 20251024-flex-restrict-component-buildout-test
   name:
-  - LowFlex50
-  # - LowFlex75
-  # - LowBatt50
-  # - MedFlex
+  # - LowFlex50 # Infeasible for 365H
+  - LowFlex75
+  - LowBatt50
+  - MedFlex
   # - HigFlex
   # - LowTransmission110
   # - LowTransmission125
@@ -80,9 +80,9 @@ scenario:
   # - 2020
   - 2025
   # - 2030
-  # - 2035
+  - 2035
   # - 2040
-  # - 2045
+  - 2045
   # - 2050
 
 existing_capacities:
@@ -764,18 +764,24 @@ scale_capacity:
 # Flexibility comparison settings
 flexibility_comparison:
   scenarios:
-  # - LowFlex
-  - MediumFlex
-  # - HighFlex
-  # - LowFlexH2
-  # - LowFlexHeat
-  # - LowFlexDSM
-  # - LowFlexTransmission
-  # - LowFlexBattery_50
-  # - LowFlexBattery_70
-  # - LowFlexH2_50
-  # - LowFlexHeat_50
-  # - LowFlexDSM_50
+  # - LowFlex50
+  - LowFlex75
+  - LowBatt50
+  - MedFlex
+  # - HigFlex
+  # - LowTransmission110
+  # - LowTransmission125
+  # - LowBatt75
+  # - LowBatt25
+  # - LowPtX75
+  # - LowPtX50
+  # - LowPtX25
+  # - LowH2Store75
+  # - LowH2Store50
+  # - LowH2Store25
+  # - LowHeatStore75
+  # - LowHeatStore50
+  # - LowHeatStore25
 
 industry_dsm:
   enable: false

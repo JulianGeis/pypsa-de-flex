@@ -409,7 +409,7 @@ def plot_nodal_elec_balance(
     if resample == "D" and network.snapshots.size < 365:
         # code is not working at low resolution!
         logger.error(
-            "Temporal resolution does not allow for daily resampling! Please use hihger resolution results or change the 'resample' flag."
+            "Temporal resolution does not allow for daily resampling! Please use higher resolution results or change the 'resample' flag."
         )
         return
 
@@ -1219,10 +1219,7 @@ def plot_price_duration_hist(
     regions=["DE"],
     x_lim_values=[-50, 300],
 ):
-    # only plot 2030 onwards
-    years = years[2:]
-    networks = dict(islice(networks.items(), 2, None))
-    year_colors = year_colors[2:]
+
     fig, axes = plt.subplots(ncols=1, nrows=len(years), figsize=(8, 3 * len(years)))
     axes = axes.flatten()
 
@@ -1258,7 +1255,7 @@ def plot_price_duration_hist(
 
 
 def plot_backup_capacity(
-    networks, tech_colors, savepath, backup_techs, vre_gens, region="DE"
+    networks, years, tech_colors, savepath, backup_techs, vre_gens, region="DE"
 ):
     kwargs = {
         "groupby": ["name", "bus", "carrier"],
@@ -1267,7 +1264,7 @@ def plot_backup_capacity(
 
     df_all = pd.DataFrame()
 
-    for year in np.arange(2020, 2050, 5):
+    for year in years:
         n = networks[year]
 
         electricity_cap = (
@@ -1288,7 +1285,7 @@ def plot_backup_capacity(
 
         df_all = pd.concat([df_all, df], axis=1)
 
-    df_all.columns = np.arange(2020, 2050, 5)
+    df_all.columns = years
 
     tech_colors["coal"] = "black"
 
@@ -1376,7 +1373,7 @@ def plot_backup_capacity(
 
 
 def plot_backup_generation(
-    networks, tech_colors, savepath, backup_techs, vre_gens, region="DE"
+    networks, years, tech_colors, savepath, backup_techs, vre_gens, region="DE"
 ):
     tech_colors["coal"] = "black"
 
@@ -1387,7 +1384,7 @@ def plot_backup_generation(
 
     df_all = pd.DataFrame()
 
-    for year in np.arange(2020, 2050, 5):
+    for year in years:
         n = networks[year]
 
         electricity_supply_de = (
@@ -1407,7 +1404,7 @@ def plot_backup_generation(
         df = df[df > 0.01]
         df_all = pd.concat([df_all, df], axis=1)
 
-    df_all.columns = np.arange(2020, 2050, 5)
+    df_all.columns = years
 
     # Create figure
     plt.figure(figsize=(18, 5))
@@ -2775,11 +2772,11 @@ if __name__ == "__main__":
         snakemake = mock_snakemake(
             "plot_ariadne_report",
             simpl="",
-            clusters=49,
+            clusters=27,
             opts="",
             ll="vopt",
             sector_opts="None",
-            run="KN2045_Mix",
+            run="MedFlex",
         )
 
     configure_logging(snakemake)
@@ -3046,14 +3043,15 @@ if __name__ == "__main__":
 
     plot_price_duration_hist(
         networks=networks_dict,
+        years=planning_horizons,
         year_colors=year_colors,
         savepath=snakemake.output.elec_price_duration_hist,
         model_run=snakemake.wildcards.run,
-        years=planning_horizons,
     )
 
     plot_backup_capacity(
         networks=networks_dict,
+        years=planning_horizons,
         tech_colors=tech_colors,
         savepath=snakemake.output.backup_capacity,
         backup_techs=backup_techs,
@@ -3063,6 +3061,7 @@ if __name__ == "__main__":
 
     plot_backup_generation(
         networks=networks_dict,
+        years=planning_horizons,
         tech_colors=tech_colors,
         savepath=snakemake.output.backup_generation,
         backup_techs=backup_techs,
@@ -3146,7 +3145,7 @@ if __name__ == "__main__":
         for s in scenarios:
             plot_elec_map_de(
                 networks[planning_horizons.index(year)],
-                networks[planning_horizons.index(2020)],
+                networks[planning_horizons.index(planning_horizons[0])],
                 tech_colors,
                 regions_de,
                 savepath=f"{snakemake.output.elec_transmission}/elec-transmission-DE-{s}-{year}.pdf",
@@ -3155,7 +3154,7 @@ if __name__ == "__main__":
         s = "total-expansion"
         plot_elec_map_de(
             networks[planning_horizons.index(year)],
-            networks[planning_horizons.index(2020)],
+            networks[planning_horizons.index(planning_horizons[0])],
             tech_colors,
             regions_de,
             savepath=f"{snakemake.output.elec_transmission}/elec-transmission-DE-{s}-{year}_eng.png",
