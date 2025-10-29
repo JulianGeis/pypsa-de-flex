@@ -2266,6 +2266,48 @@ def add_storage_and_grids(
         lifetime=costs.at["battery inverter", "lifetime"],
     )
 
+    if options["iron_air_battery"]:
+
+        n.add(
+            "Bus", nodes + " iron-air battery", location=nodes, carrier="iron-air battery", unit="MWh_el"
+        )
+
+        n.add(
+            "Store",
+            nodes + " iron-air battery",
+            bus=nodes + " iron-air battery",
+            e_cyclic=True,
+            e_nom_extendable=True,
+            carrier="iron-air battery",
+            capital_cost=costs.at["iron-air battery", "fixed"],
+            lifetime=costs.at["iron-air battery", "lifetime"],
+        )
+
+        # using capex and lifetime from battery inverter for charge/discharge link since it's missing from iron-air data
+        n.add(
+            "Link",
+            nodes + " iron-air battery charger",
+            bus0=nodes,
+            bus1=nodes + " iron-air battery",
+            carrier="iron-air battery charger",
+            efficiency=costs.at["iron-air battery charge", "efficiency"],
+            capital_cost=costs.at["battery inverter", "fixed"],
+            p_nom_extendable=True,
+            lifetime=costs.at["battery inverter", "lifetime"],
+        )
+
+        n.add(
+            "Link",
+            nodes + " iron-air battery discharger",
+            bus0=nodes + " iron-air battery",
+            bus1=nodes,
+            carrier="iron-air battery discharger",
+            efficiency=costs.at["iron-air battery discharge", "efficiency"],
+            marginal_cost=options["marginal_cost_storage"],
+            p_nom_extendable=True,
+            lifetime=costs.at["battery inverter", "lifetime"],
+        )
+
     if options["methanation"]:
         n.add(
             "Link",

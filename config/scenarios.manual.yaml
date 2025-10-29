@@ -376,6 +376,7 @@ HigFlex:
     bev_dsm: 2030
     bev_dsm_availability: 0.8
     v2g: true
+    iron_air_battery: true
 
   industry_dsm:
     enable: true
@@ -465,23 +466,10 @@ LowBatt50:
     bev_dsm_availability: 0.2
     v2g: false
 
-  solving:
-    constraints:
-      limits_capacity_max:
-        Link: # in GW
-          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
-            DE:
-              2020: 0
-              2025: 0
-              2030: 0
-              2035: 0
-              2040: 0
-              2045: 0
-              2050: 0
-
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
     Link:
       battery discharger: 0.5
+      home battery discharger: 0.5
 
 
 LowBatt25:

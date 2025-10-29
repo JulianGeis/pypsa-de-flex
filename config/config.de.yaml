@@ -6,11 +6,11 @@
 run:
   prefix: 20251024-flex-restrict-component-buildout-test
   name:
-  # - LowFlex50 # Infeasible for 365H
-  - LowFlex75
+  - LowFlex
+  # - LowFlex75
   - LowBatt50
   - MedFlex
-  # - HigFlex
+  - HigFlex
   # - LowTransmission110
   # - LowTransmission125
   # - LowBatt75
@@ -765,11 +765,11 @@ scale_capacity:
 # Flexibility comparison settings
 flexibility_comparison:
   scenarios:
-  # - LowFlex50
-  - LowFlex75
+  - LowFlex
+  # - LowFlex75
   - LowBatt50
   - MedFlex
-  # - HigFlex
+  - HigFlex
   # - LowTransmission110
   # - LowTransmission125
   # - LowBatt75
