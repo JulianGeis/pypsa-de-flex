@@ -2279,7 +2279,7 @@ def add_storage_and_grids(
             e_cyclic=True,
             e_nom_extendable=True,
             carrier="iron-air battery",
-            capital_cost=costs.at["iron-air battery", "fixed"],
+            capital_cost=costs.at["iron-air battery", "capital_cost"],
             lifetime=costs.at["iron-air battery", "lifetime"],
         )
 
@@ -2291,7 +2291,7 @@ def add_storage_and_grids(
             bus1=nodes + " iron-air battery",
             carrier="iron-air battery charger",
             efficiency=costs.at["iron-air battery charge", "efficiency"],
-            capital_cost=costs.at["battery inverter", "fixed"],
+            capital_cost=costs.at["battery inverter", "capital_cost"],
             p_nom_extendable=True,
             lifetime=costs.at["battery inverter", "lifetime"],
         )
@@ -2303,7 +2303,6 @@ def add_storage_and_grids(
             bus1=nodes,
             carrier="iron-air battery discharger",
             efficiency=costs.at["iron-air battery discharge", "efficiency"],
-            marginal_cost=options["marginal_cost_storage"],
             p_nom_extendable=True,
             lifetime=costs.at["battery inverter", "lifetime"],
         )
@@ -6656,7 +6655,7 @@ if __name__ == "__main__":
             clusters="27",
             sector_opts="",
             planning_horizons="2025",
-            run="MediumFlex",
+            run="MedFlex",
         )
 
     configure_logging(snakemake)  # pylint: disable=E0606
