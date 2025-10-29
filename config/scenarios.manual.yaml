@@ -239,7 +239,7 @@ KN2045_NFhoch:
 
 ####### Definition of flexibility scenarios #######
 
-LowFlex50:
+LowFlex:
 
   electricity:
     transmission_limit: v1.5
@@ -250,36 +250,43 @@ LowFlex50:
     v2g: false
 
   solving:
-    constraints:
-      limits_capacity_max:
-        Link: # in GW
-          home battery discharger:   # Ariadne capa: 2020 (-0.01 GW); 2025 (-0.06 GW); 2030 (-0.04 GW); 2035 (-0.02 GW); 2040 (-0.01 GW); 2045 (-0.01 GW)
-            DE:
-              2020: 0
-              2025: 0
-              2030: 0
-              2035: 0
-              2040: 0
-              2045: 0
-              2050: 0
+    force_pth_profiles_decentral_rural: true
+
+  must_run:
+    2020:
+      DE:
+        H2 Electrolysis: 1
+    2025:
+      DE:
+        H2 Electrolysis: 1
+    2030:
+      DE:
+        H2 Electrolysis: 1     
+    2035:
+      DE:
+        H2 Electrolysis: 1
+    2040:
+      DE:
+        H2 Electrolysis: 1
+    2045:
+      DE:
+        H2 Electrolysis: 1
+    2050:
+      DE:
+        H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
     Link:
       battery discharger: 0.50
-      rural air heat pump: 0.50
-      rural ground heat pump: 0.50
-      rural resistive heater: 0.50
-      urban central air heat pump: 0.50
-      urban central resistive heater: 0.50
-      urban decentral air heat pump: 0.50
-      urban decentral resistive heater: 0.50
-      H2 Electrolysis: 0.50
-      urban central water pits discharger: 0.50
-      urban central water tanks discharger: 0.50
-      urban decentral water pits discharger: 0.50
-      urban decentral water tanks discharger: 0.50
     Store:
       H2 Store: 0.50
+      # battery: 0.50
+      home battery: 0
+      rural water tanks: 0.25
+      urban decentral water tanks: 0.25
+      urban decentral water pits: 0.25
+      urban central water tanks: 0.25
+      urban central water pits: 0.25
 
 
 LowFlex75:
@@ -293,6 +300,7 @@ LowFlex75:
     v2g: false
 
   solving:
+    force_pth_profiles_decentral_rural: true
     constraints:
       limits_capacity_max:
         Link: # in GW
@@ -306,6 +314,29 @@ LowFlex75:
               2045: 0
               2050: 0
 
+  must_run:
+    2020:
+      DE:
+        H2 Electrolysis: 0.75
+    2025:
+      DE:
+        H2 Electrolysis: 0.75
+    2030:
+      DE:
+        H2 Electrolysis: 0.75
+    2035:
+      DE:
+        H2 Electrolysis: 0.75
+    2040:
+      DE:
+        H2 Electrolysis: 0.75
+    2045:
+      DE:
+        H2 Electrolysis: 0.75
+    2050:
+      DE:
+        H2 Electrolysis: 0.75
+
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
     Link:
       battery discharger: 0.75
@@ -316,11 +347,11 @@ LowFlex75:
       urban central resistive heater: 0.75
       urban decentral air heat pump: 0.75
       urban decentral resistive heater: 0.75
-      H2 Electrolysis: 0.75
       urban central water pits discharger: 0.75
       urban central water tanks discharger: 0.75
       urban decentral water pits discharger: 0.75
       urban decentral water tanks discharger: 0.75
+      rural water tanks charger: 0.75
     Store:
       H2 Store: 0.75
 

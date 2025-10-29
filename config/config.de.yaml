@@ -658,6 +658,7 @@ solving:
         2040: 30
         2045: 35
         2050: 35
+  force_pth_profiles_decentral_rural: false
   # solver:
   #   options: gurobi-numeric-focus
   # solver_options:

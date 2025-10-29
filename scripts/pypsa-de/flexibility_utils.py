@@ -90,7 +90,7 @@ tech_colors = {
     "gas primary": "#e05b09",
     "solar rooftop": "#ffea80",
     "land transport EV": "#baf238",
-    "industry electricity": "#2d2a66",
+    "industry electricity": "violet",
     "low-temperature heat for industry": "#8f2727",
     "H2 for industry": "#f073da",
     "agriculture heat": "#d9a5a5",

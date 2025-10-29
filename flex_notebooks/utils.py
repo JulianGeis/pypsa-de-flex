@@ -215,3 +215,62 @@ carriers_in_german = {
     "H2 retrofit OCGT": "Wasserstoff (OCGT;Umrüstung)",
 }
 
+
+# definitions
+
+resistive_heater = ['urban central resistive heater', 'rural resistive heater','urban decentral resistive heater']
+gas_boiler = ['urban central gas boiler', 'rural gas boiler','urban decentral gas boiler']
+heat_pump = ['urban central air heat pump', 'rural air heat pump','rural ground heat pump', 'urban decentral air heat pump']
+water_tanks_charger = ['urban central water tanks charger', 'rural water tanks charger', 'urban decentral water tanks charger']
+water_tanks_discharger = ['urban central water tanks discharger','rural water tanks discharger', 'urban decentral water tanks discharger']
+solar_thermal = [ "urban decentral solar thermal", "urban central solar thermal", "rural solar thermal"]
+
+carrier_renaming = {
+    'urban central solid biomass CHP CC': 'biomass CHP CC',
+    'urban central solid biomass CHP': 'biomass CHP',
+    'urban central gas CHP': 'gas CHP',
+    'urban central gas CHP CC': 'gas CHP CC',
+    'urban central coal CHP': 'coal CHP',
+    'urban central lignite CHP': 'lignite CHP',
+    'urban central air heat pump': 'air heat pump',
+    'urban central resistive heater': 'resistive heater'
+}
+
+carrier_renaming_reverse = {
+    'biomass CHP CC': 'urban central solid biomass CHP CC',
+    'biomass CHP' :'urban central solid biomass CHP' ,
+    'gas CHP': 'urban central gas CHP' ,
+    'gas CHP CC' : 'urban central gas CHP CC',
+    'coal CHP':   'urban central coal CHP',
+    'lignite CHP':  'urban central lignite CHP',
+    'air heat pump' : 'urban central air heat pump',
+    'resistive heater': 'urban central resistive heater'
+}
+
+def get_condense_sum(df, groups, groups_name, return_original=False):
+    """
+    return condensed df, that has been groupeb by condense groups
+    Arguments:
+        df: df you want to condense (carriers have to be in the columns)
+        groups: group lables you want to condense on
+        groups_name: name of the new grouped column
+        return_original: boolean to specify if the original df should also be returned
+    Returns:
+        condensed df
+    """
+    result = df
+
+    for group, name in zip(groups, groups_name):
+        # check if carrier are in columns
+        bool = [c in df.columns for c in group]
+        # updated to carriers within group that are in columns
+        group = list(compress(group, bool))
+
+        result[name] = df[group].sum(axis=1)
+        group_to_drop = [g for g in group if g != name]
+        result.drop(group_to_drop, axis=1, inplace=True)
+
+    if return_original:
+        return result, df
+
+    return result

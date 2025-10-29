@@ -822,6 +822,62 @@ def add_industry_dsm_cycling_constraint(n, industry_dsm):
         f"Added {constraint_count} DSM cycling constraints across {len(dsm_stores)} stores"
     )
 
+def force_pth_profiles_decentral_rural(n):
+    """
+    This scales each PtH asset dispatch to be proportional to its load profile.
+    Applies to heat pumps and resistive heaters in rural and urban decentral areas.
+    Each asset scales independently (single-house systems).
+    """
+    logger.info(
+        "Forcing each rural/decentral PtH asset dispatch to be proportional to the load profile"
+    )
+    
+    # Filter for PtH assets in rural and decentral areas
+    pth_links = n.links.index[
+        (
+            (n.links.carrier.str.contains("rural") | n.links.carrier.str.contains("decentral"))
+            & (n.links.carrier.str.contains("heat pump") | n.links.carrier.str.contains("resistive heater"))
+        )
+        & ~n.links.carrier.str.contains("urban central")  # exclude central systems
+        # & n.links.bus0.str.contains("DE")  
+    ]
+    
+    if pth_links.empty:
+        return
+    
+    # Get the heat buses these PtH assets supply
+    pth_loads = n.links.loc[pth_links, "bus1"]
+    pth_loads = pth_loads[pth_loads.isin(n.loads_t.p_set.columns)]
+    pth_links = pth_loads.index
+    
+    # Create normalized load profiles (per-unit)
+    pth_profiles_pu = n.loads_t.p_set[pth_loads].div(
+        n.loads_t.p_set[pth_loads].max(), axis=1
+    )
+    pth_profiles_pu.columns = pth_links
+    
+    # Scale by nominal power
+    pth_profiles = DataArray(
+        pth_profiles_pu.multiply(n.links.loc[pth_links, "p_nom"], axis=1)
+    )
+    
+    # One scaling variable per PtH asset
+    n.model.add_variables(coords=[pth_links], name="Link-pth_profile_scaling")
+    
+    # Add constraint: Link-p = profiles × scaling_factor (per asset)
+    lhs = (
+        (1, n.model["Link-p"].loc[:, pth_links]),
+        (
+            -pth_profiles,
+            n.model["Link-pth_profile_scaling"],
+        ),
+    )
+    
+    n.model.add_constraints(lhs, "=", 0, "Link-pth_profile_scaling")
+    
+    # Hack so that PyPSA doesn't complain there is nowhere to store the variable
+    n.links["pth_profile_scaling_opt"] = 0.0
+
 
 def additional_functionality(n, snapshots, snakemake):
     logger.info("Adding Ariadne-specific functionality")
@@ -870,9 +926,14 @@ def additional_functionality(n, snapshots, snakemake):
     if investment_year == 2020:
         adapt_nuclear_output(n)
 
+    # Flexibility implementations
+
     if (snakemake.params.industry_dsm["enable"]) & (
         investment_year in snakemake.params.industry_dsm.keys()
     ):
         add_industry_dsm_cycling_constraint(
             n, snakemake.params.industry_dsm[investment_year]
         )
+
+    if snakemake.params.solving.get("force_pth_profiles_decentral_rural", False):
+        force_pth_profiles_decentral_rural(n)
