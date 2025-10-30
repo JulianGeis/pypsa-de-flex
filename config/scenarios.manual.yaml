@@ -248,9 +248,11 @@ LowFlex:
     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
+    force_pth_profiles_decentral_rural_p_min_pu: false
 
   solving:
     force_pth_profiles_decentral_rural: true
+    force_pth_profiles_decentral_rural_margin: 0
 
   must_run:
     2020:
@@ -890,3 +892,156 @@ LowFlexTransmission:
     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
+
+LowFlexHeatModel:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    force_pth_profiles_decentral_rural_p_min_pu: false
+
+  solving:
+    force_pth_profiles_decentral_rural: true
+    force_pth_profiles_decentral_rural_margin: 0
+
+  must_run:
+    2020:
+      DE:
+        H2 Electrolysis: 1
+    2025:
+      DE:
+        H2 Electrolysis: 1
+    2030:
+      DE:
+        H2 Electrolysis: 1     
+    2035:
+      DE:
+        H2 Electrolysis: 1
+    2040:
+      DE:
+        H2 Electrolysis: 1
+    2045:
+      DE:
+        H2 Electrolysis: 1
+    2050:
+      DE:
+        H2 Electrolysis: 1
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      battery discharger: 0.50
+    Store:
+      H2 Store: 0.50
+      # battery: 0.50
+      home battery: 0
+      rural water tanks: 0.25
+      urban decentral water tanks: 0.25
+      urban decentral water pits: 0.25
+      urban central water tanks: 0.25
+      urban central water pits: 0.25
+
+LowFlexHeatModelMargin0.1:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    force_pth_profiles_decentral_rural_p_min_pu: false
+
+  solving:
+    force_pth_profiles_decentral_rural: true
+    force_pth_profiles_decentral_rural_margin: 0.1
+
+  must_run:
+    2020:
+      DE:
+        H2 Electrolysis: 1
+    2025:
+      DE:
+        H2 Electrolysis: 1
+    2030:
+      DE:
+        H2 Electrolysis: 1     
+    2035:
+      DE:
+        H2 Electrolysis: 1
+    2040:
+      DE:
+        H2 Electrolysis: 1
+    2045:
+      DE:
+        H2 Electrolysis: 1
+    2050:
+      DE:
+        H2 Electrolysis: 1
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      battery discharger: 0.50
+    Store:
+      H2 Store: 0.50
+      # battery: 0.50
+      home battery: 0
+      rural water tanks: 0.25
+      urban decentral water tanks: 0.25
+      urban decentral water pits: 0.25
+      urban central water tanks: 0.25
+      urban central water pits: 0.25
+
+LowFlexHeatPMINPU:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    force_pth_profiles_decentral_rural_p_min_pu: true
+
+  solving:
+    force_pth_profiles_decentral_rural: false
+    force_pth_profiles_decentral_rural_margin: 0
+
+  must_run:
+    2020:
+      DE:
+        H2 Electrolysis: 1
+    2025:
+      DE:
+        H2 Electrolysis: 1
+    2030:
+      DE:
+        H2 Electrolysis: 1     
+    2035:
+      DE:
+        H2 Electrolysis: 1
+    2040:
+      DE:
+        H2 Electrolysis: 1
+    2045:
+      DE:
+        H2 Electrolysis: 1
+    2050:
+      DE:
+        H2 Electrolysis: 1
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    Link:
+      battery discharger: 0.50
+    Store:
+      H2 Store: 0.50
+      # battery: 0.50
+      home battery: 0
+      rural water tanks: 0.25
+      urban decentral water tanks: 0.25
+      urban decentral water pits: 0.25
+      urban central water tanks: 0.25
+      urban central water pits: 0.25

@@ -4,13 +4,16 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251024-flex-restrict-component-buildout-test
+  prefix: 20251030-flex-heat-inflexibility-options
   name:
-  - LowFlex
+  - LowFlexHeatModel
+  - LowFlexHeatModelMargin0.1
+  - LowFlexHeatPMINPU
+  # - LowFlex
   # - LowFlex75
-  - LowBatt50
-  - MedFlex
-  - HigFlex
+  # - LowBatt50
+  # - MedFlex
+  # - HigFlex
   # - LowTransmission110
   # - LowTransmission125
   # - LowBatt75
@@ -382,6 +385,7 @@ sector:
     2040: 0.25
     2045: 0.1
     2050: 0.0
+  force_pth_profiles_decentral_rural_p_min_pu: false
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#industry
 industry:
@@ -659,6 +663,7 @@ solving:
         2045: 35
         2050: 35
   force_pth_profiles_decentral_rural: false
+  force_pth_profiles_decentral_rural_margin: 0
   # solver:
   #   options: gurobi-numeric-focus
   # solver_options:
@@ -765,11 +770,14 @@ scale_capacity:
 # Flexibility comparison settings
 flexibility_comparison:
   scenarios:
-  - LowFlex
+  - LowFlexHeatModel
+  - LowFlexHeatModelMargin0.1
+  - LowFlexHeatPMINPU
+  # - LowFlex
   # - LowFlex75
-  - LowBatt50
-  - MedFlex
-  - HigFlex
+  # - LowBatt50
+  # - MedFlex
+  # - HigFlex
   # - LowTransmission110
   # - LowTransmission125
   # - LowBatt75

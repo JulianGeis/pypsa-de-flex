@@ -3,6 +3,7 @@ import sys
 
 import pandas as pd
 from xarray import DataArray
+import pypsa
 
 from scripts.prepare_sector_network import determine_emission_sectors
 
@@ -822,14 +823,24 @@ def add_industry_dsm_cycling_constraint(n, industry_dsm):
         f"Added {constraint_count} DSM cycling constraints across {len(dsm_stores)} stores"
     )
 
-def force_pth_profiles_decentral_rural(n):
+def force_pth_profiles_decentral_rural(n, flexibility_margin=0.0):
     """
-    This scales each PtH asset dispatch to be proportional to its load profile.
+    Constrains PtH asset dispatch to follow load profile with optional flexibility margin.
+    
+    Parameters
+    ----------
+    n : pypsa.Network
+        The network object
+    flexibility_margin : float, default 0.0
+        Allowed deviation from profile as a fraction (e.g., 0.1 for ±10%).
+        - 0.0: Strict equality constraint (no flexibility)
+        - >0.0: Assets can operate within [profile*(1-margin), profile*(1+margin)]
+    
     Applies to heat pumps and resistive heaters in rural and urban decentral areas.
-    Each asset scales independently (single-house systems).
     """
     logger.info(
-        "Forcing each rural/decentral PtH asset dispatch to be proportional to the load profile"
+        f"Constraining PtH dispatch to load profile "
+        f"(flexibility margin: {flexibility_margin*100:.1f}%)"
     )
     
     # Filter for PtH assets in rural and decentral areas
@@ -838,11 +849,11 @@ def force_pth_profiles_decentral_rural(n):
             (n.links.carrier.str.contains("rural") | n.links.carrier.str.contains("decentral"))
             & (n.links.carrier.str.contains("heat pump") | n.links.carrier.str.contains("resistive heater"))
         )
-        & ~n.links.carrier.str.contains("urban central")  # exclude central systems
-        # & n.links.bus0.str.contains("DE")  
+        & ~n.links.carrier.str.contains("urban central")
     ]
     
     if pth_links.empty:
+        logger.warning("No PtH links found matching criteria")
         return
     
     # Get the heat buses these PtH assets supply
@@ -850,33 +861,88 @@ def force_pth_profiles_decentral_rural(n):
     pth_loads = pth_loads[pth_loads.isin(n.loads_t.p_set.columns)]
     pth_links = pth_loads.index
     
-    # Create normalized load profiles (per-unit)
+    if pth_links.empty:
+        logger.warning("No valid heat loads found for PtH links")
+        return
+    
+    # Create normalized load profiles (per-unit, 0-1 range)
     pth_profiles_pu = n.loads_t.p_set[pth_loads].div(
         n.loads_t.p_set[pth_loads].max(), axis=1
     )
     pth_profiles_pu.columns = pth_links
     
-    # Scale by nominal power
-    pth_profiles = DataArray(
-        pth_profiles_pu.multiply(n.links.loc[pth_links, "p_nom"], axis=1)
-    )
+    # Separate extendable and non-extendable links
+    extendable = n.links.loc[pth_links, "p_nom_extendable"]
+    pth_links_ext = pth_links[extendable]
+    pth_links_fixed = pth_links[~extendable]
     
-    # One scaling variable per PtH asset
-    n.model.add_variables(coords=[pth_links], name="Link-pth_profile_scaling")
-    
-    # Add constraint: Link-p = profiles × scaling_factor (per asset)
-    lhs = (
-        (1, n.model["Link-p"].loc[:, pth_links]),
-        (
-            -pth_profiles,
-            n.model["Link-pth_profile_scaling"],
-        ),
-    )
-    
-    n.model.add_constraints(lhs, "=", 0, "Link-pth_profile_scaling")
-    
-    # Hack so that PyPSA doesn't complain there is nowhere to store the variable
-    n.links["pth_profile_scaling_opt"] = 0.0
+    if flexibility_margin == 0.0:
+        # Strict equality constraint
+        
+        # For extendable links: Link-p = profile_pu × Link-p_nom (variable)
+        if not pth_links_ext.empty:
+            pth_profiles_pu_da_ext = DataArray(pth_profiles_pu[pth_links_ext])
+            
+            # Align dimensions by selecting Link-p_nom with matching indices
+            p_nom_ext = n.model["Link-p_nom"].loc[pth_links_ext]
+            
+            # Rename the dimension to match Link-p dimension
+            p_nom_ext = p_nom_ext.rename({"Link-ext": "Link"})
+            
+            lhs_ext = (
+                (1, n.model["Link-p"].loc[:, pth_links_ext]),
+                (-pth_profiles_pu_da_ext, p_nom_ext),
+            )
+            
+            n.model.add_constraints(lhs_ext, "=", 0, "Link-pth_profile_extendable")
+            logger.info(f"Applied strict equality constraint to {len(pth_links_ext)} extendable PtH assets")
+        
+        # For non-extendable links: Link-p = profile_pu × p_nom (fixed)
+        if not pth_links_fixed.empty:
+            pth_profiles_fixed = DataArray(
+                pth_profiles_pu[pth_links_fixed].multiply(
+                    n.links.loc[pth_links_fixed, "p_nom"], axis=1
+                )
+            )
+            
+            lhs_fixed = ((1, n.model["Link-p"].loc[:, pth_links_fixed]),)  # Note: tuple of tuple
+            
+            n.model.add_constraints(lhs_fixed, "=", pth_profiles_fixed, "Link-pth_profile_fixed")
+            logger.info(f"Applied strict equality constraint to {len(pth_links_fixed)} non-extendable PtH assets")
+        
+    else:
+        # Flexible band: profile × (1±margin)
+        # Initialize if needed
+        if not hasattr(n, 'links_t'):
+            n.links_t = pypsa.descriptors.Dict()
+        
+        if not hasattr(n.links_t, 'p_min_pu') or n.links_t.p_min_pu.empty:
+            n.links_t.p_min_pu = pd.DataFrame(0.0, index=n.snapshots, columns=n.links.index)
+        else:
+            n.links_t.p_min_pu = n.links_t.p_min_pu.reindex(
+                columns=n.links.index, fill_value=0.0
+            )
+        
+        if not hasattr(n.links_t, 'p_max_pu') or n.links_t.p_max_pu.empty:
+            n.links_t.p_max_pu = pd.DataFrame(1.0, index=n.snapshots, columns=n.links.index)
+        else:
+            n.links_t.p_max_pu = n.links_t.p_max_pu.reindex(
+                columns=n.links.index, fill_value=1.0
+            )
+        
+        # Set min and max bounds (works for both extendable and non-extendable)
+        n.links_t.p_min_pu[pth_links] = pth_profiles_pu * (1 - flexibility_margin)
+        n.links_t.p_max_pu[pth_links] = pth_profiles_pu * (1 + flexibility_margin)
+        
+        # Ensure bounds don't go below 0 or above 1
+        n.links_t.p_min_pu[pth_links] = n.links_t.p_min_pu[pth_links].clip(lower=0.0)
+        n.links_t.p_max_pu[pth_links] = n.links_t.p_max_pu[pth_links].clip(upper=1.0)
+        
+        logger.info(
+            f"Applied ±{flexibility_margin*100:.1f}% flexibility band to "
+            f"{len(pth_links)} PtH assets ({len(pth_links_ext)} extendable, "
+            f"{len(pth_links_fixed)} fixed)"
+        )
 
 
 def additional_functionality(n, snapshots, snakemake):
@@ -936,4 +1002,4 @@ def additional_functionality(n, snapshots, snakemake):
         )
 
     if snakemake.params.solving.get("force_pth_profiles_decentral_rural", False):
-        force_pth_profiles_decentral_rural(n)
+        force_pth_profiles_decentral_rural(n, snakemake.params.solving.get("force_pth_profiles_decentral_rural_margin", 0.0))

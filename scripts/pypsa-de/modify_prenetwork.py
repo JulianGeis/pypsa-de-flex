@@ -1811,6 +1811,48 @@ def restrict_component_buildout(n, component_limits, capacities_csv):
                     )
 
 
+def force_pth_profiles_decentral_rural(n):
+    """
+    Sets minimum dispatch for PtH assets proportional to load profile.
+    Assets can produce more to charge thermal storage when economically beneficial.
+    Applies to heat pumps and resistive heaters in rural/decentral areas with storage.
+    """
+    logger.info(
+        "Setting minimum PtH dispatch proportional to load profile (allows storage charging)"
+    )
+    
+    # Filter for PtH assets
+    pth_links = n.links.index[
+        (
+            (n.links.carrier.str.contains("rural") | n.links.carrier.str.contains("decentral"))
+            & (n.links.carrier.str.contains("heat pump") | n.links.carrier.str.contains("resistive heater"))
+        )
+        & ~n.links.carrier.str.contains("urban central")
+    ]
+    
+    if pth_links.empty:
+        return
+    
+    # Get the heat buses and load profiles
+    pth_loads = n.links.loc[pth_links, "bus1"]
+    pth_loads = pth_loads[pth_loads.isin(n.loads_t.p_set.columns)]
+    pth_links = pth_loads.index
+    
+    # Create normalized load profiles (per-unit, 0-1 range)
+    pth_profiles_pu = n.loads_t.p_set[pth_loads].div(
+        n.loads_t.p_set[pth_loads].max(), axis=1
+    )
+    pth_profiles_pu.columns = pth_links
+    
+    # Initialize p_min_pu if it doesn't exist
+    if not hasattr(n, 'links_t') or n.links_t.p_min_pu.empty:
+        n.links_t.p_min_pu = pd.DataFrame(0, index=n.snapshots, columns=n.links.index)
+    else:
+        n.links_t.p_min_pu = n.links_t.p_min_pu.reindex(columns=n.links.index, fill_value=0)
+    
+    # Set as minimum operation level
+    n.links_t.p_min_pu[pth_links] = pth_profiles_pu
+
 
 if __name__ == "__main__":
     if "snakemake" not in globals():
@@ -1822,7 +1864,7 @@ if __name__ == "__main__":
             ll="vopt",
             sector_opts="none",
             planning_horizons="2045",
-            run="MediumFlex",
+            run="MedFlex",
         )
 
     configure_logging(snakemake)
@@ -1938,6 +1980,9 @@ if __name__ == "__main__":
 
     if restrict_components_config is not None:
         restrict_component_buildout(n, restrict_components_config, medium_flex_capacities_csv)
+    
+    if snakemake.params.force_pth_profiles_decentral_rural_p_min_pu:
+        force_pth_profiles_decentral_rural(n)
 
     # End Flexibility implementations
 
