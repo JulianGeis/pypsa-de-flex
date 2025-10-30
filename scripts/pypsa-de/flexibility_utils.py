@@ -164,6 +164,10 @@ tech_colors = {
     "Electrolysis": "#ff29d9",
     "Others": "grey",
     "V2G": "tomato",
+    "iron-air battery": '#f5e6b3',
+    "iron-air battery storage": '#daa520',
+    "iron-air battery charger": '#c9954d',
+    "iron-air battery discharger": '#8b6f47'
 }
 
 
