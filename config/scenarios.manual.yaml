@@ -903,6 +903,9 @@ LowFlexHeatModel:
     bev_dsm_availability: 0.2
     v2g: false
     force_pth_profiles_decentral_rural_p_min_pu: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
 
   solving:
     force_pth_profiles_decentral_rural: true
@@ -910,25 +913,25 @@ LowFlexHeatModel:
 
   must_run:
     2020:
-      DE:
+      all:
         H2 Electrolysis: 1
     2025:
-      DE:
+      all:
         H2 Electrolysis: 1
     2030:
-      DE:
-        H2 Electrolysis: 1     
+      all:
+        H2 Electrolysis: 1
     2035:
-      DE:
+      all:
         H2 Electrolysis: 1
     2040:
-      DE:
+      all:
         H2 Electrolysis: 1
     2045:
-      DE:
+      all:
         H2 Electrolysis: 1
     2050:
-      DE:
+      all:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
@@ -954,6 +957,9 @@ LowFlexHeatModelMargin0.1:
     bev_dsm_availability: 0.2
     v2g: false
     force_pth_profiles_decentral_rural_p_min_pu: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
 
   solving:
     force_pth_profiles_decentral_rural: true
@@ -961,25 +967,25 @@ LowFlexHeatModelMargin0.1:
 
   must_run:
     2020:
-      DE:
+      all:
         H2 Electrolysis: 1
     2025:
-      DE:
+      all:
         H2 Electrolysis: 1
     2030:
-      DE:
-        H2 Electrolysis: 1     
+      all:
+        H2 Electrolysis: 1
     2035:
-      DE:
+      all:
         H2 Electrolysis: 1
     2040:
-      DE:
+      all:
         H2 Electrolysis: 1
     2045:
-      DE:
+      all:
         H2 Electrolysis: 1
     2050:
-      DE:
+      all:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
@@ -1005,6 +1011,9 @@ LowFlexHeatPMINPU:
     bev_dsm_availability: 0.2
     v2g: false
     force_pth_profiles_decentral_rural_p_min_pu: true
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
 
   solving:
     force_pth_profiles_decentral_rural: false
@@ -1012,25 +1021,25 @@ LowFlexHeatPMINPU:
 
   must_run:
     2020:
-      DE:
+      all:
         H2 Electrolysis: 1
     2025:
-      DE:
+      all:
         H2 Electrolysis: 1
     2030:
-      DE:
-        H2 Electrolysis: 1     
+      all:
+        H2 Electrolysis: 1
     2035:
-      DE:
+      all:
         H2 Electrolysis: 1
     2040:
-      DE:
+      all:
         H2 Electrolysis: 1
     2045:
-      DE:
+      all:
         H2 Electrolysis: 1
     2050:
-      DE:
+      all:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario

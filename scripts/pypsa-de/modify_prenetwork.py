@@ -813,6 +813,8 @@ def must_run(n, params):
                     f"Must-run condition disabled: Resetting p_min_pu to 0 for {carrier} "
                     f"in region {region} (was specified in {previous_investment_year}, but not in {investment_year})."
                 )
+                if region == "all":
+                    region = ""
                 links_i = n.links[
                     (n.links.carrier == carrier) & n.links.index.str.contains(region)
                 ].index
@@ -826,6 +828,8 @@ def must_run(n, params):
                 f"Must-run condition enabled: Setting p_min_pu = {p_min_pu} for {carrier} "
                 f"in year {investment_year} and region {region}."
             )
+            if region == "all":
+                region = ""
             links_i = n.links[
                 (n.links.carrier == carrier) & n.links.index.str.contains(region)
             ].index
