@@ -595,7 +595,7 @@ def plot_flexibility_causes_map(
     output_path,
     scale_factor=1e4,
     extent=None,
-    figsize=(16, 14),
+    figsize=(16, 10),
     dpi=300,
     size_legend_values=None,
 ):
@@ -623,7 +623,7 @@ def plot_flexibility_causes_map(
     extent : list, optional
         Map extent [lon_min, lon_max, lat_min, lat_max] (default: Germany extent)
     figsize : tuple, optional
-        Figure size (default: (16, 14))
+        Figure size (default: (16, 10))
     dpi : int, optional
         Resolution for saved figure (default: 300)
     size_legend_values : list, optional
@@ -638,18 +638,17 @@ def plot_flexibility_causes_map(
     # Create output directory if needed
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-    # Create 4 subplots for different time scales
+    # Create 3 subplots for different time scales
     display_projection = ccrs.EqualEarth()
     fig, axes = plt.subplots(
-        2, 2, subplot_kw={"projection": display_projection}, figsize=figsize
+        1, 3, subplot_kw={"projection": display_projection}, figsize=figsize
     )
     axes = axes.flatten()
 
-    time_scales = ["daily", "weekly", "monthly", "annual"]
+    time_scales = ["daily", "weekly", "annual"]
     titles = [
         "Daily Flexibility Causes",
         "Weekly Flexibility Causes",
-        "Monthly Flexibility Causes",
         "Annual Flexibility Causes",
     ]
 
@@ -824,7 +823,7 @@ def plot_flexibility_provision_map(
     output_path,
     scale_factor=1e4,
     extent=None,
-    figsize=(16, 14),
+    figsize=(16, 10),
     dpi=300,
     size_legend_values=None,
     small_tech_threshold=0.1,
@@ -856,7 +855,7 @@ def plot_flexibility_provision_map(
     extent : list, optional
         Map extent [lon_min, lon_max, lat_min, lat_max] (default: Germany extent)
     figsize : tuple, optional
-        Figure size (default: (16, 14))
+        Figure size (default: (16, 10))
     dpi : int, optional
         Resolution for saved figure (default: 300)
     size_legend_values : list, optional
@@ -875,18 +874,17 @@ def plot_flexibility_provision_map(
     # Create output directory if needed
     os.makedirs(os.path.dirname(output_path), exist_ok=True)
 
-    # Create 4 subplots for different time scales
+    # Create 3 subplots for different time scales
     display_projection = ccrs.EqualEarth()
     fig, axes = plt.subplots(
-        2, 2, subplot_kw={"projection": display_projection}, figsize=figsize
+        1, 3, subplot_kw={"projection": display_projection}, figsize=figsize
     )
     axes = axes.flatten()
 
-    time_scales = ["daily", "weekly", "monthly", "annual"]
+    time_scales = ["daily", "weekly", "annual"]
     titles = [
         "Daily Flexibility Provision",
         "Weekly Flexibility Provision",
-        "Monthly Flexibility Provision",
         "Annual Flexibility Provision",
     ]
 

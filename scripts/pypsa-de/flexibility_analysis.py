@@ -196,6 +196,55 @@ def calc_flexibility_needs(
     residual_load: pd.Series, granularity: str = "all"
 ) -> pd.DataFrame:
     """
+    Calculate flexibility needs at different granularities (daily, weekly, annual)
+    based on Artelys methodology.
+    
+    Parameters
+    ----------
+    residual_load : pd.Series
+        Time series of residual load (indexed by datetime, in MWh per hour or step).
+    granularity : str, optional
+        Which granularity to compute: "daily", "weekly", "annual", or "all" (default).
+    
+    Returns
+    -------
+    pd.DataFrame
+        DataFrame with total annual flexibility needs (TWh/year) for selected granularities.
+    """
+    results = {}
+    
+    # --- Precompute averages ---
+    daily_avg = residual_load.resample("D").transform("mean")
+    weekly_avg = residual_load.resample("W").transform("mean")
+    annual_avg = residual_load.resample("YS").transform("mean")
+    
+    # --- Daily ---
+    if granularity in ["daily", "all"]:
+        dev = (residual_load - daily_avg).abs()
+        flex = 0.5 * dev.sum()
+        results["daily"] = flex / 1e6  # TWh/year
+    
+    # --- Weekly ---
+    if granularity in ["weekly", "all"]:
+        dev = (daily_avg - weekly_avg).abs()
+        flex = 0.5 * dev.sum()
+        results["weekly"] = flex / 1e6
+    
+    # --- Annual ---
+    if granularity in ["annual", "all"]:
+        dev = (weekly_avg - annual_avg).abs()
+        flex = 0.5 * dev.sum()
+        results["annual"] = flex / 1e6
+    
+    return pd.DataFrame.from_dict(
+        results, orient="index", columns=["Flexibility (TWh/year)"]
+    )
+
+
+def calc_flexibility_needs_with_monthly(
+    residual_load: pd.Series, granularity: str = "all"
+) -> pd.DataFrame:
+    """
     Calculate flexibility needs at different granularities (daily, weekly, monthly, annual)
     based on Artelys methodology.
 
@@ -250,6 +299,257 @@ def calc_flexibility_needs(
 
 
 def calc_flexibility_contributions(
+    electricity_supply: pd.DataFrame,
+    electricity_demand: pd.DataFrame,
+    non_dispatchable_supply_carriers=[
+        "onwind",
+        "offwind-ac",
+        "offwind-dc",
+        "solar",
+        "solar-hsat",
+        "solar rooftop",
+        "ror",
+    ],
+    non_dispatchable_demand_carriers=[
+        "electricity",
+        "agriculture electricity",
+        "industry electricity",
+    ],
+    granularity: str = "all",
+    analyze: str = "both",
+    print_info: bool = False,
+) -> tuple or pd.DataFrame:
+    """
+    Calculate technology contributions to flexibility needs using correlation-based method
+    following Artelys methodology. Returns both causes and solutions of flexibility needs.
+
+    Parameters
+    ----------
+    electricity_supply : pd.DataFrame
+        DataFrame with carriers as index and timestamps as columns (supply is positive).
+    electricity_demand : pd.DataFrame
+        DataFrame with carriers as index and timestamps as columns (demand is positive).
+    non_dispatchable_supply_carriers : list, default renewable carriers
+        List of non-dispatchable supply carrier names that cause flexibility needs.
+    non_dispatchable_demand_carriers : list, default electricity carriers
+        List of demand carrier names that cause flexibility needs.
+    granularity : str, optional
+        Which granularity to compute: "daily", "weekly", "annual", or "all" (default).
+    analyze : str, optional
+        What to analyze: "flexible", "inflexible", or "both" (default).
+        - "flexible": Only analyze dispatchable technologies (solutions)
+        - "inflexible": Only analyze non-dispatchable technologies (causes)
+        - "both": Analyze both types (returns tuple of DataFrames)
+
+    Returns
+    -------
+    pd.DataFrame or tuple of (pd.DataFrame, pd.DataFrame)
+        If analyze="flexible": flexible_contributions DataFrame
+        If analyze="inflexible": inflexible_contributions DataFrame
+        If analyze="both": (flexible_contributions, inflexible_contributions)
+        - flexible_contributions: Technologies that can respond to flexibility needs (positive = helps)
+        - inflexible_contributions: Technologies that cause flexibility needs (negative = causes needs)
+    """
+
+    # Validate analyze parameter
+    if analyze not in ["flexible", "inflexible", "both"]:
+        raise ValueError("analyze must be 'flexible', 'inflexible', or 'both'")
+
+    # Calculate residual load
+    residual_load = calc_residual_load(
+        electricity_supply,
+        electricity_demand,
+        non_dispatchable_supply_carriers,
+        non_dispatchable_demand_carriers,
+    )
+
+    results_flexible = {}
+    results_inflexible = {}
+
+    # Separate flexible and inflexible technologies
+    all_flexible = {}
+    all_inflexible = {}
+
+    # Process all technologies in one loop
+    for df, prefix, non_dispatch_list in [
+        (electricity_supply, "Supply_", non_dispatchable_supply_carriers),
+        (electricity_demand, "Demand_", non_dispatchable_demand_carriers),
+    ]:
+        for carrier in df.index:
+            # Create tech series (negative for demand to represent consumption)
+            multiplier = -1 if prefix == "Demand_" else 1
+            tech_series = multiplier * pd.Series(
+                df.loc[carrier].values,
+                index=residual_load.index,
+                name=f"{prefix}{carrier}",
+            )
+
+            # Classify as flexible or inflexible
+            if carrier in non_dispatch_list:
+                all_inflexible[f"{prefix}{carrier}"] = tech_series
+            else:
+                all_flexible[f"{prefix}{carrier}"] = tech_series
+
+    if print_info:
+        logger.info(f"Flexible technologies (can respond): {len(all_flexible)}")
+        logger.info(f"Inflexible technologies (cause needs): {len(all_inflexible)}")
+        logger.info("")
+
+    # Check what to analyze
+    analyze_flexible = analyze in ["flexible", "both"]
+    analyze_inflexible = analyze in ["inflexible", "both"]
+
+    if analyze_flexible and not all_flexible:
+        logger.info("Warning: No flexible technologies found!")
+    if analyze_inflexible and not all_inflexible:
+        logger.info("Warning: No inflexible technologies found!")
+
+    # Calculate contributions for each granularity
+    granularities_to_calc = (
+        ["daily", "weekly", "annual"]
+        if granularity == "all"
+        else [granularity]
+    )
+
+    for gran in granularities_to_calc:
+        if print_info:
+            logger.info(f"=== {gran.upper()} FLEXIBILITY ANALYSIS ===")
+
+        # Calculate flexibility curve and sign for this granularity
+        if gran == "daily":
+            avg_residual = residual_load.resample("D").transform("mean")
+            flexibility_curve_residual = residual_load - avg_residual
+
+        elif gran == "weekly":
+            daily_avg_residual = residual_load.resample("D").transform("mean")
+            weekly_avg_residual = residual_load.resample("W").transform("mean")
+            flexibility_curve_residual = daily_avg_residual - weekly_avg_residual
+
+        elif gran == "annual":
+            weekly_avg_residual = residual_load.resample("W").transform("mean")
+            annual_avg_residual = residual_load.mean()
+            flexibility_curve_residual = weekly_avg_residual - annual_avg_residual
+
+        flex_sign = np.sign(flexibility_curve_residual)
+        total_flex_needs = 0.5 * flexibility_curve_residual.abs().sum() / 1e6
+
+        if print_info:
+            logger.info(
+                f"Total {gran} flexibility needs: {total_flex_needs:.3f} TWh/year"
+            )
+
+        # Helper function to calculate contributions for a set of technologies
+        def calc_contributions(tech_dict, gran, flex_sign):
+            contributions = {}
+            for tech_name, tech_profile in tech_dict.items():
+                if gran == "daily":
+                    avg_tech = tech_profile.resample("D").transform("mean")
+                    flexibility_curve_tech = tech_profile - avg_tech
+
+                elif gran == "weekly":
+                    daily_avg_tech = tech_profile.resample("D").transform("mean")
+                    weekly_avg_tech = tech_profile.resample("W").transform("mean")
+                    flexibility_curve_tech = daily_avg_tech - weekly_avg_tech
+
+                elif gran == "annual":
+                    weekly_avg_tech = tech_profile.resample("W").transform("mean")
+                    annual_avg_tech = tech_profile.mean()
+                    flexibility_curve_tech = weekly_avg_tech - annual_avg_tech
+
+                contribution = 0.5 * (flexibility_curve_tech * flex_sign).sum() / 1e6
+                contributions[tech_name] = contribution
+            return contributions
+
+        # Calculate contributions based on analyze parameter
+        if analyze_flexible:
+            results_flexible[gran] = calc_contributions(all_flexible, gran, flex_sign)
+        if analyze_inflexible:
+            results_inflexible[gran] = calc_contributions(
+                all_inflexible, gran, flex_sign
+            )
+
+        # Verification
+        if analyze == "both":
+            sum_flexible = sum(results_flexible[gran].values())
+            sum_inflexible = sum(results_inflexible[gran].values())
+            total_sum = sum_flexible + sum_inflexible
+
+            if print_info:
+                logger.info(
+                    f"Flexible technology contributions sum: {sum_flexible:.3f} TWh/year"
+                )
+                logger.info(
+                    f"Inflexible technology contributions sum: {sum_inflexible:.3f} TWh/year"
+                )
+                logger.info(f"Combined sum: {total_sum:.3f} TWh/year")
+                logger.info(
+                    f"Difference from total needs: {abs(total_flex_needs - total_sum):.6f} TWh/year"
+                )
+
+            # Check if inflexible contributions are negative (causing flexibility needs)
+            if sum_inflexible < 0:
+                if print_info:
+                    logger.info(
+                        f"✓ Inflexible technologies cause flexibility needs (negative sum: {sum_inflexible:.3f})"
+                    )
+            else:
+                if print_info:
+                    logger.info(
+                        f"⚠ Warning: Inflexible technologies have positive sum: {sum_inflexible:.3f}"
+                    )
+
+        elif analyze == "flexible" and print_info:
+            sum_flexible = sum(results_flexible[gran].values())
+            logger.info(
+                f"Flexible technology contributions sum: {sum_flexible:.3f} TWh/year"
+            )
+
+        elif analyze == "inflexible" and print_info:
+            sum_inflexible = sum(results_inflexible[gran].values())
+            logger.info(
+                f"Inflexible technology contributions sum: {sum_inflexible:.3f} TWh/year"
+            )
+            if sum_inflexible < 0:
+                logger.info(
+                    f"✓ Inflexible technologies cause flexibility needs (negative sum: {sum_inflexible:.3f})"
+                )
+
+        if print_info:
+            logger.info("")
+
+    # Convert to DataFrames for output
+    def create_dataframe(results_dict, granularity):
+        if granularity == "all":
+            data = []
+            for gran, tech_dict in results_dict.items():
+                for tech, contrib in tech_dict.items():
+                    data.append(
+                        {
+                            "Granularity": gran,
+                            "Technology": tech,
+                            "Contribution (TWh/year)": contrib,
+                        }
+                    )
+            return pd.DataFrame(data).set_index(["Granularity", "Technology"])
+        else:
+            return pd.DataFrame.from_dict(
+                results_dict[granularity],
+                orient="index",
+                columns=["Contribution (TWh/year)"],
+            )
+
+    # Return appropriate DataFrames based on analyze parameter
+    if analyze == "flexible":
+        return create_dataframe(results_flexible, granularity)
+    elif analyze == "inflexible":
+        return create_dataframe(results_inflexible, granularity)
+    else:  # analyze == "both"
+        flexible_df = create_dataframe(results_flexible, granularity)
+        inflexible_df = create_dataframe(results_inflexible, granularity)
+        return flexible_df, inflexible_df
+    
+    
+def calc_flexibility_contributions_with_monthly(
     electricity_supply: pd.DataFrame,
     electricity_demand: pd.DataFrame,
     non_dispatchable_supply_carriers=[

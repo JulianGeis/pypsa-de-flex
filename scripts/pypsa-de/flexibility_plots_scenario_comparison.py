@@ -33,6 +33,35 @@ groups = {
 }
 
 
+# capacity comp
+# Carrier groupings
+capa_groups = {
+    'Wind + Solar': {
+        'Onshore wind': ['onwind'],
+        'Offshore wind': ['offwind-ac', 'offwind-dc'],
+        'Solar': ['solar', 'solar rooftop', 'solar-hsat']
+    },
+    'Dispatchable': {
+        'Gas': ['OCGT', 'CCGT'],
+        'Gas CHP': ['urban central gas CHP', 'urban central gas CHP CC'],
+        'H2': ['H2 turbine', 'H2 OCGT'],
+        'H2 CHP': ['H2 CCGT', 'urban central H2 CHP', 'H2 Fuel Cell'],
+        'Others': ['coal', 'lignite', 'urban central coal CHP', 'urban central lignite CHP',
+                   'solid biomass', 'urban central solid biomass CHP', 'urban central solid biomass CHP CC',
+                   'waste CHP', 'waste CHP CC', 'oil', 'urban central oil CHP']
+    },
+    'Storage': {
+        'Pumped storage': ['PHS'],
+        'Battery': ['battery discharger', 'home battery discharger']
+    },
+    'Demand-side flex': {
+        'Power-to-heat': ['rural air heat pump', 'rural ground heat pump', 'rural resistive heater',
+                          'urban central air heat pump', 'urban central resistive heater',
+                          'urban decentral air heat pump', 'urban decentral resistive heater'],
+        'Electrolysis': ['H2 Electrolysis']
+    }
+}
+
 def aggregate_by_keywords(opex_comp_agg, groups):
     """
     Aggregate rows in opex_comp_agg according to keyword groups.
@@ -806,35 +835,6 @@ def plot_opex_stacked(networks, scenarios, planning_horizons, groups, tech_color
     plt.savefig(output_dir / f"opex_comp_{region.lower()}.png", bbox_inches="tight")
     plt.close()
 
-
-    # capacity comp
-    # Carrier groupings
-capa_groups = {
-    'Wind + Solar': {
-        'Onshore wind': ['onwind'],
-        'Offshore wind': ['offwind-ac', 'offwind-dc'],
-        'Solar': ['solar', 'solar rooftop', 'solar-hsat']
-    },
-    'Dispatchable': {
-        'Gas': ['OCGT', 'CCGT'],
-        'Gas CHP': ['urban central gas CHP', 'urban central gas CHP CC'],
-        'H2': ['H2 turbine', 'H2 OCGT'],
-        'H2 CHP': ['H2 CCGT', 'urban central H2 CHP', 'H2 Fuel Cell'],
-        'Others': ['coal', 'lignite', 'urban central coal CHP', 'urban central lignite CHP',
-                   'solid biomass', 'urban central solid biomass CHP', 'urban central solid biomass CHP CC',
-                   'waste CHP', 'waste CHP CC', 'oil', 'urban central oil CHP']
-    },
-    'Storage': {
-        'Pumped storage': ['PHS'],
-        'Battery': ['battery discharger', 'home battery discharger']
-    },
-    'Demand-side flex': {
-        'Power-to-heat': ['rural air heat pump', 'rural ground heat pump', 'rural resistive heater',
-                          'urban central air heat pump', 'urban central resistive heater',
-                          'urban decentral air heat pump', 'urban decentral resistive heater'],
-        'Electrolysis': ['H2 Electrolysis']
-    }
-}
 
 def get_capacities(networks, scenarios, years):
     """Extract and group capacities for all scenarios and years"""
