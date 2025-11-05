@@ -2267,9 +2267,12 @@ def add_storage_and_grids(
     )
 
     if options["iron_air_battery"]:
-
         n.add(
-            "Bus", nodes + " iron-air battery", location=nodes, carrier="iron-air battery", unit="MWh_el"
+            "Bus",
+            nodes + " iron-air battery",
+            location=nodes,
+            carrier="iron-air battery",
+            unit="MWh_el",
         )
 
         n.add(

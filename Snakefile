@@ -559,7 +559,9 @@ rule modify_prenetwork:
         unit_commitment=config_provider("unit_commitment"),
         restrict_cross_border_flows=config_provider("restrict_cross_border_flows"),
         restrict_component_buildout=config_provider("restrict_component_buildout"),
-        force_pth_profiles_decentral_rural_p_min_pu=config_provider("sector","force_pth_profiles_decentral_rural_p_min_pu"),
+        force_pth_profiles_decentral_rural_p_min_pu=config_provider(
+            "sector", "force_pth_profiles_decentral_rural_p_min_pu"
+        ),
     input:
         costs_modifications="ariadne-data/costs_{planning_horizons}-modifications.csv",
         network=resources(
@@ -954,7 +956,7 @@ rule plot_ariadne_report:
         heat_balances=directory(RESULTS + "ariadne/report/heat_balance_timeseries"),
         nodal_balances=directory(RESULTS + "ariadne/report/balance_timeseries_2045"),
     resources:
-        mem_mb=32000,
+        mem_mb=60000,
     log:
         RESULTS + "logs/plot_ariadne_report.log",
     script:
@@ -1084,6 +1086,27 @@ rule flexibility_plots_scenario_comparison:
         ),
         flex_contributions_clean=lambda w: expand(
             "results/{run_prefix}/{scenario}/flexibility/data/flexibility_contributions_clean.csv",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("flexibility_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+        flex_needs_per_node=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_needs_per_node.pkl",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("flexibility_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+        flex_causes_per_node=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_causes_per_node.pkl",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("flexibility_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+        flex_contributions_per_node=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_contributions_per_node.pkl",
             run_prefix=config["run"]["prefix"],
             scenario=config.get("flexibility_comparison", {}).get(
                 "scenarios", config["run"]["name"]

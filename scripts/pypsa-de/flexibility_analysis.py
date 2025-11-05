@@ -198,44 +198,44 @@ def calc_flexibility_needs(
     """
     Calculate flexibility needs at different granularities (daily, weekly, annual)
     based on Artelys methodology.
-    
+
     Parameters
     ----------
     residual_load : pd.Series
         Time series of residual load (indexed by datetime, in MWh per hour or step).
     granularity : str, optional
         Which granularity to compute: "daily", "weekly", "annual", or "all" (default).
-    
+
     Returns
     -------
     pd.DataFrame
         DataFrame with total annual flexibility needs (TWh/year) for selected granularities.
     """
     results = {}
-    
+
     # --- Precompute averages ---
     daily_avg = residual_load.resample("D").transform("mean")
     weekly_avg = residual_load.resample("W").transform("mean")
     annual_avg = residual_load.resample("YS").transform("mean")
-    
+
     # --- Daily ---
     if granularity in ["daily", "all"]:
         dev = (residual_load - daily_avg).abs()
         flex = 0.5 * dev.sum()
         results["daily"] = flex / 1e6  # TWh/year
-    
+
     # --- Weekly ---
     if granularity in ["weekly", "all"]:
         dev = (daily_avg - weekly_avg).abs()
         flex = 0.5 * dev.sum()
         results["weekly"] = flex / 1e6
-    
+
     # --- Annual ---
     if granularity in ["annual", "all"]:
         dev = (weekly_avg - annual_avg).abs()
         flex = 0.5 * dev.sum()
         results["annual"] = flex / 1e6
-    
+
     return pd.DataFrame.from_dict(
         results, orient="index", columns=["Flexibility (TWh/year)"]
     )
@@ -406,9 +406,7 @@ def calc_flexibility_contributions(
 
     # Calculate contributions for each granularity
     granularities_to_calc = (
-        ["daily", "weekly", "annual"]
-        if granularity == "all"
-        else [granularity]
+        ["daily", "weekly", "annual"] if granularity == "all" else [granularity]
     )
 
     for gran in granularities_to_calc:
@@ -547,8 +545,8 @@ def calc_flexibility_contributions(
         flexible_df = create_dataframe(results_flexible, granularity)
         inflexible_df = create_dataframe(results_inflexible, granularity)
         return flexible_df, inflexible_df
-    
-    
+
+
 def calc_flexibility_contributions_with_monthly(
     electricity_supply: pd.DataFrame,
     electricity_demand: pd.DataFrame,
@@ -1168,7 +1166,7 @@ if __name__ == "__main__":
         bus_demand[year] = {}
 
         flex_needs_buses = pd.DataFrame(
-            index=["daily", "weekly", "monthly", "annual"], columns=buses_de
+            index=["daily", "weekly", "annual"], columns=buses_de
         )
 
         for bus in buses_de:

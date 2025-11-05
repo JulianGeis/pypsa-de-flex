@@ -17,6 +17,7 @@ import pypsa
 from _helpers import configure_logging, mock_snakemake
 from flexibility_analysis import aggregate_by_keywords
 from flexibility_utils import (
+    aggregate_small_contributors,
     find_project_root,
     tech_colors,
     tech_groups,
@@ -358,8 +359,17 @@ def plot_flexibility_provision_multiyear(
         "annual": "Annual",
     }
 
-    # Get colors for technologies
+    # Get colors and hatches for technologies
     colors = [tech_colors.get(tech, "gray") for tech in flexibility_df.columns]
+    hatches = []
+    for tech in flexibility_df.columns:
+        tech_lower = tech.lower()
+        if "urban decentral" in tech_lower:
+            hatches.append("\\\\\\")  # Left-leaning hatch
+        elif "rural" in tech_lower:
+            hatches.append("///")  # Right-leaning hatch
+        else:
+            hatches.append(None)  # No hatch
 
     # Plot each granularity
     for i, gran in enumerate(available_grans):
@@ -397,6 +407,14 @@ def plot_flexibility_provision_multiyear(
                 alpha=0.8,
             )
 
+        # Apply hatching to bars
+        for j, patch in enumerate(axes[i].patches):
+            # Determine which technology this patch belongs to
+            tech_idx = j % len(flexibility_df.columns)
+            if hatches[tech_idx]:
+                patch.set_hatch(hatches[tech_idx])
+                patch.set_edgecolor("black")  # Make hatch lines visible
+
         # Calculate total flexibility provision (sum of absolute values)
         total_flex_provision = gran_data.sum(axis=1)
 
@@ -429,17 +447,16 @@ def plot_flexibility_provision_multiyear(
     handles, labels = [], []
 
     # Add technology legend entries
-    for tech in flexibility_df.columns:
-        handles.append(
-            plt.Line2D(
-                [0],
-                [0],
-                marker="s",
-                color="w",
-                markerfacecolor=tech_colors.get(tech, "gray"),
-                markersize=10,
-            )
+    for idx, tech in enumerate(flexibility_df.columns):
+        handle = plt.Rectangle(
+            (0, 0),
+            1,
+            1,
+            facecolor=tech_colors.get(tech, "gray"),
+            edgecolor="black" if hatches[idx] else tech_colors.get(tech, "gray"),
+            hatch=hatches[idx],
         )
+        handles.append(handle)
         labels.append(tech)
 
     # Add total flexibility provision line entry
@@ -818,7 +835,7 @@ def plot_flexibility_provision_map(
     bus_coords,
     onshore_regions,
     tech_colors,
-    tech_groups,
+    oups,
     year,
     output_path,
     scale_factor=1e4,
@@ -1092,7 +1109,7 @@ if __name__ == "__main__":
             clusters=27,
             opts="",
             sector_opts="None",
-            run="HighFlex",
+            run="MedFlex",
         )
 
     configure_logging(snakemake)
@@ -1112,6 +1129,7 @@ if __name__ == "__main__":
     flex_contributions_clean = pd.read_csv(
         snakemake.input.flex_contributions_clean, index_col=[0, 1]
     )
+    flex_contributions_raw = pd.read_pickle(snakemake.input.flex_contributions_raw)
     flex_needs_per_node = pd.read_pickle(snakemake.input.flex_needs_per_node)
     flex_causes_per_node = pd.read_pickle(snakemake.input.flex_causes_per_node)
     flex_contributions_per_node = pd.read_pickle(
@@ -1131,6 +1149,18 @@ if __name__ == "__main__":
         snakemake.output.flex_needs_plot,
     )
 
+    # flexibility needs per node (aggregated)
+    flex_needs_per_node_agg = pd.DataFrame()
+
+    for year, df in flex_needs_per_node.items():
+        flex_needs_per_node_agg[year] = df.sum(axis=1)
+
+    plot_flex_needs(
+        flex_needs_per_node_agg.transpose(),
+        year_colors_gradient,
+        f"{snakemake.params.output_dir}/flex_needs_per_node_agg.png",
+    )
+
     # Plot flexibility causes
     logger.info("Plotting flexibility causes...")
 
@@ -1141,6 +1171,22 @@ if __name__ == "__main__":
         save_path=snakemake.output.flex_causes_plot,
     )
 
+    # per node aggregated
+    flex_causes_per_node_agg = {}
+
+    for year, nodes in flex_causes_per_node.items():
+        all_nodes = pd.concat(nodes.values())
+        flex_causes_per_node_agg[year] = all_nodes.groupby(
+            level=["Granularity", "Technology"]
+        ).sum()
+
+    plot_flexibility_causes_multiyear(
+        flex_causes_per_node_agg,
+        tech_colors,
+        figsize=(20, 10),
+        save_path=f"{snakemake.params.output_dir}/flex_causes_per_node_agg.png",
+    )
+
     # Plotting flexibility contributions
     logger.info("Plotting flexibility contributions...")
 
@@ -1149,6 +1195,65 @@ if __name__ == "__main__":
         tech_colors,
         figsize=(20, 10),
         save_path=snakemake.output.flex_contributions_plot,
+    )
+
+    # detailed
+    flex_contributions_raw_df = pd.concat(
+        flex_contributions_raw, names=["Year"]
+    ).unstack("Technology")
+    flex_contributions_raw_df.columns = flex_contributions_raw_df.columns.droplevel(0)
+    flex_contributions_raw_df.columns = flex_contributions_raw_df.columns.str.replace(
+        r"^(Supply_|Demand_)", "", regex=True
+    )
+    flex_contributions_raw_df = flex_contributions_raw_df.swaplevel(0, 1).sort_index()
+
+    plot_flexibility_provision_multiyear(
+        flex_contributions_raw_df,
+        tech_colors,
+        figsize=(20, 10),
+        save_path=f"{snakemake.params.output_dir}/flex_contributions_detailed.png",
+    )
+
+    # per node aggregated
+    df = pd.concat(
+        [
+            v.assign(Year=year, Node=node).reset_index()
+            for year, nodes in flex_contributions_per_node.items()
+            for node, v in nodes.items()
+        ]
+    )
+
+    df = (
+        df.groupby(["Year", "Granularity", "Technology"])["Contribution (TWh/year)"]
+        .sum()
+        .unstack("Technology")
+        .fillna(0)
+    )
+
+    # remove Supply_ and Demand_ prefixes
+    df.columns = df.columns.str.replace(r"^(Supply_|Demand_)", "", regex=True)
+    flex_contributions_per_node_agg_raw = df
+
+    plot_flexibility_provision_multiyear(
+        flex_contributions_per_node_agg_raw,
+        tech_colors,
+        figsize=(20, 10),
+        save_path=f"{snakemake.params.output_dir}/flex_contributions_per_node_agg_detailed.png",
+    )
+
+    # cleaned
+    flex_contributions_per_node_agg = aggregate_by_keywords(
+        flex_contributions_per_node_agg_raw.transpose(), tech_groups
+    )
+    flex_contributions_per_node_agg = aggregate_small_contributors(
+        flex_contributions_per_node_agg
+    ).transpose()
+
+    plot_flexibility_provision_multiyear(
+        flex_contributions_per_node_agg,
+        tech_colors,
+        figsize=(20, 10),
+        save_path=f"{snakemake.params.output_dir}/flex_contributions_per_node_agg.png",
     )
 
     # Plotting flexibility needs per node

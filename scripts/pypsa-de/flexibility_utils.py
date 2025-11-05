@@ -140,8 +140,8 @@ tech_colors = {
     "H2 (+CHP)": "pink",
     "biomass CHP": "#9d9042",
     "Fuel Cell": "#c251ae",
-    "import": "orchid",
-    "export": "grey",
+    "import": "orange",
+    "export": "purple",
     "interconnectors supply": "orange",
     "interconnectors demand": "purple",
     "PHS charging": "darkgreen",
@@ -164,10 +164,12 @@ tech_colors = {
     "Electrolysis": "#ff29d9",
     "Others": "grey",
     "V2G": "tomato",
-    "iron-air battery": '#f5e6b3',
-    "iron-air battery storage": '#daa520',
-    "iron-air battery charger": '#c9954d',
-    "iron-air battery discharger": '#8b6f47'
+    "iron-air battery": "#f5e6b3",
+    "iron-air battery storage": "#daa520",
+    "iron-air battery charger": "#c9954d",
+    "iron-air battery discharger": "#8b6f47",
+    "electricity distribution grid losses": "#97ad8c",
+    "agriculture machinery electricity": "#6b3161",
 }
 
 
@@ -213,22 +215,31 @@ def find_project_root():
 
 # Scenario abbreviations dictionary
 scenario_abbrev = {
-    'LowFlex50': 'LF50',
-    'LowFlex75': 'LF75',
-    'LowBatt50': 'LB50',
-    'LowBatt75': 'LB75',
-    'LowBatt25': 'LB25',
-    'MedFlex': 'MedF',
-    'HigFlex': 'HigF',
-    'LowTransmission110': 'LT10',
-    'LowTransmission125': 'LT25',
-    'LowPtX75': 'LX75',
-    'LowPtX50': 'LX50',
-    'LowPtX25': 'LX25',
-    'LowH2Store75': 'LH75',
-    'LowH2Store50': 'LH50',
-    'LowH2Store25': 'LH25',
-    'LowHeatStore75': 'HS75',
-    'LowHeatStore50': 'HS50',
-    'LowHeatStore25': 'HS25',
+    "LowFlex50": "LF50",
+    "LowFlex75": "LF75",
+    "LowBatt50": "LB50",
+    "LowBatt75": "LB75",
+    "LowBatt25": "LB25",
+    "MedFlex": "MedF",
+    "HigFlex": "HigF",
+    "LowTransmission110": "LT10",
+    "LowTransmission125": "LT25",
+    "LowPtX75": "LX75",
+    "LowPtX50": "LX50",
+    "LowPtX25": "LX25",
+    "LowH2Store75": "LH75",
+    "LowH2Store50": "LH50",
+    "LowH2Store25": "LH25",
+    "LowHeatStore75": "HS75",
+    "LowHeatStore50": "HS50",
+    "LowHeatStore25": "HS25",
 }
+
+
+def aggregate_small_contributors(df, threshold=0.01):
+    """Aggregate technologies contributing <1% across all columns into 'Other'"""
+    col_totals = df.abs().sum()
+    mask = (df.abs() < threshold * col_totals).all(axis=1)
+    result = df[~mask].copy()
+    result.loc["Other"] = df[mask].sum()
+    return result

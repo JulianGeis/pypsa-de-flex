@@ -1403,6 +1403,7 @@ def add_industry_dsm(n, dsm_config):
         f"Total storage: {total_shift_capacity * holding_hours / 1e3:.2f} GWh"
     )
 
+
 uc_params_custom = {
     "OCGT": {
         "p_min_pu": 0.2,
@@ -1660,66 +1661,66 @@ uc_params_conservative = {
 
 
 def add_unit_commitment(
-        n,
-        uc_params=uc_params_average,
-        carriers=["OCGT", "coal", "lignite", "urban central solid biomass CHP"],
-        regions=["DE"],
-    ):
-        """
-        Add unit commitment parameters to links in the network based on a UC parameter dictionary.
+    n,
+    uc_params=uc_params_average,
+    carriers=["OCGT", "coal", "lignite", "urban central solid biomass CHP"],
+    regions=["DE"],
+):
+    """
+    Add unit commitment parameters to links in the network based on a UC parameter dictionary.
 
-        Parameters
-        ----------
-        n : pypsa.Network
-            The PyPSA network.
+    Parameters
+    ----------
+    n : pypsa.Network
+        The PyPSA network.
 
-        uc_params : dict
-            Nested dict with carrier names as keys and dict of UC parameters as values.
-            Example:
-            {
-                "OCGT": {
-                    "p_min_pu": 0.2,
-                    "start_up_cost": 40,
-                    "min_up_time": 1,
-                    "min_down_time": 1,
-                    "ramp_limit_up": 1,
-                    "ramp_limit_start_up": 0.2,
-                    "ramp_limit_shut_down": 0.2,
-                },
-                ...
-            }
+    uc_params : dict
+        Nested dict with carrier names as keys and dict of UC parameters as values.
+        Example:
+        {
+            "OCGT": {
+                "p_min_pu": 0.2,
+                "start_up_cost": 40,
+                "min_up_time": 1,
+                "min_down_time": 1,
+                "ramp_limit_up": 1,
+                "ramp_limit_start_up": 0.2,
+                "ramp_limit_shut_down": 0.2,
+            },
+            ...
+        }
 
-        carriers : list, optional
-            List of carriers to process (default = all carriers in uc_params).
+    carriers : list, optional
+        List of carriers to process (default = all carriers in uc_params).
 
-        regions : list
-            List of region codes to filter buses (default = ["DE"]).
-        """
+    regions : list
+        List of region codes to filter buses (default = ["DE"]).
+    """
 
-        def get_filtered_links(carrier_list):
-            carrier_mask = n.links.carrier.isin(carrier_list)
-            region_mask = n.links.bus0.str.contains(
-                "|".join(regions), na=False
-            ) | n.links.bus1.str.contains("|".join(regions), na=False)
-            return n.links[carrier_mask & region_mask].index
+    def get_filtered_links(carrier_list):
+        carrier_mask = n.links.carrier.isin(carrier_list)
+        region_mask = n.links.bus0.str.contains(
+            "|".join(regions), na=False
+        ) | n.links.bus1.str.contains("|".join(regions), na=False)
+        return n.links[carrier_mask & region_mask].index
 
-        # If no carriers specified, use all available in uc_params
-        carriers_to_process = carriers if carriers is not None else list(uc_params.keys())
+    # If no carriers specified, use all available in uc_params
+    carriers_to_process = carriers if carriers is not None else list(uc_params.keys())
 
-        available_carriers = set(carriers_to_process) & set(n.links.carrier.unique())
+    available_carriers = set(carriers_to_process) & set(n.links.carrier.unique())
 
-        for carrier in available_carriers:
-            links_i = get_filtered_links([carrier])
-            if len(links_i) == 0:
-                continue
+    for carrier in available_carriers:
+        links_i = get_filtered_links([carrier])
+        if len(links_i) == 0:
+            continue
 
-            # apply UC parameters from dict
-            for param, value in uc_params[carrier].items():
-                if param in n.links.columns:
-                    n.links.loc[links_i, param] = value
+        # apply UC parameters from dict
+        for param, value in uc_params[carrier].items():
+            if param in n.links.columns:
+                n.links.loc[links_i, param] = value
 
-            # ensure committable flag
-            n.links.loc[links_i, "committable"] = True
+        # ensure committable flag
+        n.links.loc[links_i, "committable"] = True
 
 
 def restrict_cross_border_flows(n, s_max_pu):
@@ -1731,16 +1732,15 @@ def restrict_cross_border_flows(n, s_max_pu):
 
 
 def restrict_component_buildout(n, component_limits, capacities_csv):
-    
     investment_year = snakemake.wildcards.planning_horizons
     capacities = pd.read_csv(capacities_csv, index_col=[0, 1, 2])
-    
+
     for c in n.iterate_components(component_limits):
         logger.info(f"Restrict buildout of {c.list_name}")
         attr = "e" if c.name == "Store" else "p"
         bus = "bus0" if c.name == "Link" else "bus"
         units = "MWh or tCO2" if c.name == "Store" else "MW"
-        
+
         for carrier in component_limits[c.name]:
             # Check if carrier exists in capacities dataframe
             if carrier not in capacities[investment_year].index.get_level_values(2):
@@ -1750,34 +1750,38 @@ def restrict_component_buildout(n, component_limits, capacities_csv):
                 )
                 # Get all extendable components with this carrier and set limit to 0
                 components_to_restrict = c.df[
-                    (c.df.carrier == carrier) & 
-                    (c.df[f"{attr}_nom_extendable"])
+                    (c.df.carrier == carrier) & (c.df[f"{attr}_nom_extendable"])
                 ].index
-                
+
                 for component_idx in components_to_restrict:
                     c.df.at[component_idx, f"{attr}_nom_max"] = 0
                     logger.info(
                         f"Set {attr}_nom_max of {c.name} {carrier} at {c.df.at[component_idx, bus]} to 0 {units}"
                     )
                 continue
-            
-            limits = component_limits[c.name][carrier] * capacities[investment_year].xs(carrier, level=2)
-            limits = limits.droplevel(0)
-            
-            extendable_components = c.df[
-                (c.df[bus].isin(limits.index)) & 
-                (c.df.carrier == carrier) & 
-                (c.df[f"{attr}_nom_extendable"])
-            ].index
-            
-            for limits_bus in limits.index:
 
-                extendable_components_at_bus = c.df.loc[extendable_components][c.df.loc[extendable_components][bus] == limits_bus]
+            limits = component_limits[c.name][carrier] * capacities[investment_year].xs(
+                carrier, level=2
+            )
+            limits = limits.droplevel(0)
+
+            extendable_components = c.df[
+                (c.df[bus].isin(limits.index))
+                & (c.df.carrier == carrier)
+                & (c.df[f"{attr}_nom_extendable"])
+            ].index
+
+            for limits_bus in limits.index:
+                extendable_components_at_bus = c.df.loc[extendable_components][
+                    c.df.loc[extendable_components][bus] == limits_bus
+                ]
 
                 # Calculate total already installed capacity at bus
-                total_installed = c.df[(c.df[bus] == limits_bus) & (c.df.carrier == carrier)][f"{attr}_nom"].sum()
+                total_installed = c.df[
+                    (c.df[bus] == limits_bus) & (c.df.carrier == carrier)
+                ][f"{attr}_nom"].sum()
                 limit = limits.loc[limits_bus] - total_installed
-                
+
                 if limit < 0:
                     logger.warning(
                         f"Total installed capacity {total_installed:.2f} {units} for {c.name} {carrier} at bus {limits_bus} "
@@ -1788,7 +1792,9 @@ def restrict_component_buildout(n, component_limits, capacities_csv):
 
                 if len(extendable_components_at_bus) == 1:
                     component_idx = extendable_components_at_bus.index[0]
-                    c.df.at[component_idx, f"{attr}_nom_max"] = max(limit, c.df.at[component_idx, f"{attr}_nom"])
+                    c.df.at[component_idx, f"{attr}_nom_max"] = max(
+                        limit, c.df.at[component_idx, f"{attr}_nom"]
+                    )
                     logger.info(
                         f"Restricting {attr}_nom_max of {c.name} {carrier} at bus {limits_bus} "
                         f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Medium Flex capacities)"
@@ -1796,10 +1802,14 @@ def restrict_component_buildout(n, component_limits, capacities_csv):
 
                 elif len(extendable_components_at_bus) > 1:
                     # Limit latest component (sort by build year)
-                    component_idxs = extendable_components_at_bus.sort_values(by="build_year", ascending=True).index
+                    component_idxs = extendable_components_at_bus.sort_values(
+                        by="build_year", ascending=True
+                    ).index
                     latest_component_idx = component_idxs[-1]
-                    c.df.at[latest_component_idx, f"{attr}_nom_max"] = max(limit, c.df.at[latest_component_idx, f"{attr}_nom"])
-                   
+                    c.df.at[latest_component_idx, f"{attr}_nom_max"] = max(
+                        limit, c.df.at[latest_component_idx, f"{attr}_nom"]
+                    )
+
                     # Set older components to not extendable
                     for idx in component_idxs[:-1]:
                         c.df.at[idx, f"{attr}_nom_extendable"] = False
@@ -1808,7 +1818,7 @@ def restrict_component_buildout(n, component_limits, capacities_csv):
                         f"Restricting {attr}_nom_max of latest {c.name} {carrier} at bus {limits_bus} "
                         f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Medium Flex capacities)"
                     )
-                    
+
                 else:
                     logger.warning(
                         f"No extendable {c.name} with carrier {carrier} found at bus {limits_bus} to restrict."
@@ -1824,36 +1834,44 @@ def force_pth_profiles_decentral_rural(n):
     logger.info(
         "Setting minimum PtH dispatch proportional to load profile (allows storage charging)"
     )
-    
+
     # Filter for PtH assets
     pth_links = n.links.index[
         (
-            (n.links.carrier.str.contains("rural") | n.links.carrier.str.contains("decentral"))
-            & (n.links.carrier.str.contains("heat pump") | n.links.carrier.str.contains("resistive heater"))
+            (
+                n.links.carrier.str.contains("rural")
+                | n.links.carrier.str.contains("decentral")
+            )
+            & (
+                n.links.carrier.str.contains("heat pump")
+                | n.links.carrier.str.contains("resistive heater")
+            )
         )
         & ~n.links.carrier.str.contains("urban central")
     ]
-    
+
     if pth_links.empty:
         return
-    
+
     # Get the heat buses and load profiles
     pth_loads = n.links.loc[pth_links, "bus1"]
     pth_loads = pth_loads[pth_loads.isin(n.loads_t.p_set.columns)]
     pth_links = pth_loads.index
-    
+
     # Create normalized load profiles (per-unit, 0-1 range)
     pth_profiles_pu = n.loads_t.p_set[pth_loads].div(
         n.loads_t.p_set[pth_loads].max(), axis=1
     )
     pth_profiles_pu.columns = pth_links
-    
+
     # Initialize p_min_pu if it doesn't exist
-    if not hasattr(n, 'links_t') or n.links_t.p_min_pu.empty:
+    if not hasattr(n, "links_t") or n.links_t.p_min_pu.empty:
         n.links_t.p_min_pu = pd.DataFrame(0, index=n.snapshots, columns=n.links.index)
     else:
-        n.links_t.p_min_pu = n.links_t.p_min_pu.reindex(columns=n.links.index, fill_value=0)
-    
+        n.links_t.p_min_pu = n.links_t.p_min_pu.reindex(
+            columns=n.links.index, fill_value=0
+        )
+
     # Set as minimum operation level
     n.links_t.p_min_pu[pth_links] = pth_profiles_pu
 
@@ -1983,8 +2001,10 @@ if __name__ == "__main__":
         medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_3H
 
     if restrict_components_config is not None:
-        restrict_component_buildout(n, restrict_components_config, medium_flex_capacities_csv)
-    
+        restrict_component_buildout(
+            n, restrict_components_config, medium_flex_capacities_csv
+        )
+
     if snakemake.params.force_pth_profiles_decentral_rural_p_min_pu:
         force_pth_profiles_decentral_rural(n)
 

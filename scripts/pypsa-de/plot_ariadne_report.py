@@ -1219,7 +1219,6 @@ def plot_price_duration_hist(
     regions=["DE"],
     x_lim_values=[-50, 300],
 ):
-
     fig, axes = plt.subplots(ncols=1, nrows=len(years), figsize=(8, 3 * len(years)))
     axes = axes.flatten()
 

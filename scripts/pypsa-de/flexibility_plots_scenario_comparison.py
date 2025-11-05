@@ -12,12 +12,19 @@ import numpy as np
 import pandas as pd
 import pypsa
 from _helpers import configure_logging, mock_snakemake
-from flexibility_utils import find_project_root, tech_colors, scenario_abbrev
+from flexibility_analysis import aggregate_by_keywords
+from flexibility_utils import (
+    aggregate_small_contributors,
+    find_project_root,
+    scenario_abbrev,
+    tech_colors,
+    tech_groups,
+)
 
 logger = logging.getLogger(__name__)
 
 
-groups = {
+groups_opex_plot = {
     "gas": ["gas CHP", "OCGT", "CCGT", "gas"],
     "heat vent": ["heat vent"],
     "water tanks": ["water tank", "water pit"],
@@ -33,59 +40,49 @@ groups = {
 }
 
 
-# capacity comp
-# Carrier groupings
+# capacity grouping for scenario comparison plot
 capa_groups = {
-    'Wind + Solar': {
-        'Onshore wind': ['onwind'],
-        'Offshore wind': ['offwind-ac', 'offwind-dc'],
-        'Solar': ['solar', 'solar rooftop', 'solar-hsat']
+    "Wind + Solar": {
+        "Onshore wind": ["onwind"],
+        "Offshore wind": ["offwind-ac", "offwind-dc"],
+        "Solar": ["solar", "solar rooftop", "solar-hsat"],
     },
-    'Dispatchable': {
-        'Gas': ['OCGT', 'CCGT'],
-        'Gas CHP': ['urban central gas CHP', 'urban central gas CHP CC'],
-        'H2': ['H2 turbine', 'H2 OCGT'],
-        'H2 CHP': ['H2 CCGT', 'urban central H2 CHP', 'H2 Fuel Cell'],
-        'Others': ['coal', 'lignite', 'urban central coal CHP', 'urban central lignite CHP',
-                   'solid biomass', 'urban central solid biomass CHP', 'urban central solid biomass CHP CC',
-                   'waste CHP', 'waste CHP CC', 'oil', 'urban central oil CHP']
+    "Dispatchable": {
+        "Gas": ["OCGT", "CCGT"],
+        "Gas CHP": ["urban central gas CHP", "urban central gas CHP CC"],
+        "H2": ["H2 turbine", "H2 OCGT"],
+        "H2 CHP": ["H2 CCGT", "urban central H2 CHP", "H2 Fuel Cell"],
+        "Others": [
+            "coal",
+            "lignite",
+            "urban central coal CHP",
+            "urban central lignite CHP",
+            "solid biomass",
+            "urban central solid biomass CHP",
+            "urban central solid biomass CHP CC",
+            "waste CHP",
+            "waste CHP CC",
+            "oil",
+            "urban central oil CHP",
+        ],
     },
-    'Storage': {
-        'Pumped storage': ['PHS'],
-        'Battery': ['battery discharger', 'home battery discharger']
+    "Storage": {
+        "Pumped storage": ["PHS"],
+        "Battery": ["battery discharger", "home battery discharger"],
     },
-    'Demand-side flex': {
-        'Power-to-heat': ['rural air heat pump', 'rural ground heat pump', 'rural resistive heater',
-                          'urban central air heat pump', 'urban central resistive heater',
-                          'urban decentral air heat pump', 'urban decentral resistive heater'],
-        'Electrolysis': ['H2 Electrolysis']
-    }
+    "Demand-side flex": {
+        "Power-to-heat": [
+            "rural air heat pump",
+            "rural ground heat pump",
+            "rural resistive heater",
+            "urban central air heat pump",
+            "urban central resistive heater",
+            "urban decentral air heat pump",
+            "urban decentral resistive heater",
+        ],
+        "Electrolysis": ["H2 Electrolysis"],
+    },
 }
-
-def aggregate_by_keywords(opex_comp_agg, groups):
-    """
-    Aggregate rows in opex_comp_agg according to keyword groups.
-
-    Parameters
-    ----------
-    opex_comp_agg : pd.DataFrame
-        DataFrame with row index as technology names.
-    groups : dict
-        Keys = new aggregated name,
-        Values = list of substrings to match in the index.
-
-    Returns
-    -------
-    pd.DataFrame
-    """
-    df_out = opex_comp_agg.copy()
-    for new_name, keywords in groups.items():
-        mask = df_out.index.to_series().str.contains("|".join(keywords))
-        if mask.any():
-            summed = df_out.loc[mask].sum()
-            df_out = df_out.drop(df_out.index[mask])
-            df_out.loc[new_name] = summed
-    return df_out
 
 
 def plot_flex_needs_comparison(
@@ -756,81 +753,139 @@ def plot_flexibility_provision_scenario_comparison(
     logger.info(f"Saved flexibility provision comparison plot to {output_file}")
 
 
-def plot_price_duration_curves(networks, scenarios, planning_horizons, 
-                                carriers=["AC", "low voltage"], regions=["DE"], 
-                                output_dir=Path(".")):
+def plot_price_duration_curves(
+    networks,
+    scenarios,
+    planning_horizons,
+    carriers=["AC", "low voltage"],
+    regions=["DE"],
+    output_dir=Path("."),
+):
     """Plot electricity price duration curves comparison across scenarios and years."""
-    fig, ax = plt.subplots(len(planning_horizons), 1, figsize=(4*len(scenarios), 5*len(planning_horizons)))
+    fig, ax = plt.subplots(
+        len(planning_horizons),
+        1,
+        figsize=(4 * len(scenarios), 5 * len(planning_horizons)),
+    )
     ax = np.atleast_1d(ax)
-    
+
     for i, year in enumerate(planning_horizons):
         for scenario in scenarios:
-            buses = networks[scenario][year].buses[
-                networks[scenario][year].buses.carrier.isin(carriers) & 
-                networks[scenario][year].buses.index.str.startswith(tuple(regions))
-            ].index
-            
-            lmps = networks[scenario][year].buses_t.marginal_price[buses].values.flatten()
+            buses = (
+                networks[scenario][year]
+                .buses[
+                    networks[scenario][year].buses.carrier.isin(carriers)
+                    & networks[scenario][year].buses.index.str.startswith(
+                        tuple(regions)
+                    )
+                ]
+                .index
+            )
+
+            lmps = (
+                networks[scenario][year].buses_t.marginal_price[buses].values.flatten()
+            )
             lmps_sorted = np.sort(lmps)[::-1]
             pct = np.arange(len(lmps_sorted)) / len(lmps_sorted) * 100
-            
-            ax[i].plot(pct, lmps_sorted, label=f"{scenario} (avg: {lmps_sorted.mean():.2f})")
-        
-        ax[i].set(ylim=(-50, 400), xlabel="Percentage of time", 
-                  ylabel="€/MWh", title=f"Price duration curves {year}")
+
+            ax[i].plot(
+                pct, lmps_sorted, label=f"{scenario} (avg: {lmps_sorted.mean():.2f})"
+            )
+
+        ax[i].set(
+            ylim=(-50, 400),
+            xlabel="Percentage of time",
+            ylabel="€/MWh",
+            title=f"Price duration curves {year}",
+        )
         ax[i].legend()
-    
+
     plt.tight_layout()
     plt.savefig(output_dir / "elec_pdc_scenario_comparison.png", bbox_inches="tight")
     plt.close()
 
 
-def plot_opex_stacked(networks, scenarios, planning_horizons, groups, tech_colors, 
-                      output_dir, region="DE", threshold=0.1):
+def plot_opex_stacked(
+    networks,
+    scenarios,
+    planning_horizons,
+    groups,
+    tech_colors,
+    output_dir,
+    region="DE",
+    threshold=0.1,
+):
     """Plot stacked OPEX composition across scenarios and years."""
     kwargs = {"groupby": ["bus", "carrier"], "at_port": True, "nice_names": False}
-    
-    fig, axes = plt.subplots(len(planning_horizons), 1, 
-                            figsize=(6 * len(scenarios), 6 * len(planning_horizons)))
+
+    fig, axes = plt.subplots(
+        len(planning_horizons),
+        1,
+        figsize=(6 * len(scenarios), 6 * len(planning_horizons)),
+    )
     axes = np.atleast_1d(axes)
     all_handles = {}
-    
+
     for i, year in enumerate(planning_horizons):
         opex_agg = aggregate_by_keywords(
-            pd.DataFrame({
-                s: networks[s][year].statistics.opex(**kwargs)
-                   .filter(like=region).groupby("carrier").sum().multiply(1e-9)
-                for s in scenarios
-            }), groups
+            pd.DataFrame(
+                {
+                    s: networks[s][year]
+                    .statistics.opex(**kwargs)
+                    .filter(like=region)
+                    .groupby("carrier")
+                    .sum()
+                    .multiply(1e-9)
+                    for s in scenarios
+                }
+            ),
+            groups,
         )
-        
+
         small_mask = opex_agg.abs().max(axis=1) < threshold
         other_values = opex_agg[small_mask].sum()  # Calculate before filtering
-        opex_agg = opex_agg[~small_mask]           # Filter out small rows
-        opex_agg.loc["Other"] = other_values       # Add "Other" after filtering
-        
+        opex_agg = opex_agg[~small_mask]  # Filter out small rows
+        opex_agg.loc["Other"] = other_values  # Add "Other" after filtering
+
         ax, bottom = axes[i], np.zeros(len(scenarios))
         for tech in opex_agg.index:
             values = opex_agg.loc[tech].values
-            all_handles[tech] = ax.bar(scenarios, values, bottom=bottom, 
-                                       color=tech_colors.get(tech, "#333333"))
-            
+            all_handles[tech] = ax.bar(
+                scenarios, values, bottom=bottom, color=tech_colors.get(tech, "#333333")
+            )
+
             if tech != "Other":
                 for j, val in enumerate(values):
                     if val > 0:
-                        ax.text(j, bottom[j] + val/2, f"{val:.2f}", 
-                               ha="center", va="center", fontsize=8, color="white")
+                        ax.text(
+                            j,
+                            bottom[j] + val / 2,
+                            f"{val:.2f}",
+                            ha="center",
+                            va="center",
+                            fontsize=8,
+                            color="white",
+                        )
             bottom += values
-        
+
         totals = opex_agg.sum()
         for j, total in enumerate(totals):
-            ax.text(j, total * 1.02, f"{total:.2f}", ha="center", va="bottom", fontsize=10)
-        
-        ax.set(ylim=(0, totals.max() * 1.08), ylabel="OPEX [billion €]",
-               title=f"Stacked OPEX composition by technology, {year}")
-    
-    fig.legend(all_handles.values(), all_handles.keys(), 
-              loc="center left", bbox_to_anchor=(1, 0.5))
+            ax.text(
+                j, total * 1.02, f"{total:.2f}", ha="center", va="bottom", fontsize=10
+            )
+
+        ax.set(
+            ylim=(0, totals.max() * 1.08),
+            ylabel="OPEX [billion €]",
+            title=f"Stacked OPEX composition by technology, {year}",
+        )
+
+    fig.legend(
+        all_handles.values(),
+        all_handles.keys(),
+        loc="center left",
+        bbox_to_anchor=(1, 0.5),
+    )
     plt.tight_layout()
     plt.savefig(output_dir / f"opex_comp_{region.lower()}.png", bbox_inches="tight")
     plt.close()
@@ -839,16 +894,22 @@ def plot_opex_stacked(networks, scenarios, planning_horizons, groups, tech_color
 def get_capacities(networks, scenarios, years):
     """Extract and group capacities for all scenarios and years"""
     kwargs = {"groupby": ["bus", "carrier"], "at_port": True, "nice_names": False}
-    
+
     all_data = {}
-    
+
     for scenario in scenarios:
         for year in years:
             n = networks[scenario][year]
-            caps = (n.statistics.optimal_capacity(bus_carrier=["AC", "low voltage"], **kwargs)
-                    .filter(like="DE").groupby("carrier").sum()
-                    .drop(["AC", "DC", "electricity distribution grid"], errors="ignore"))
-            
+            caps = (
+                n.statistics.optimal_capacity(
+                    bus_carrier=["AC", "low voltage"], **kwargs
+                )
+                .filter(like="DE")
+                .groupby("carrier")
+                .sum()
+                .drop(["AC", "DC", "electricity distribution grid"], errors="ignore")
+            )
+
             # Group by technology
             grouped = {}
             for group_name, techs in capa_groups.items():
@@ -856,76 +917,120 @@ def get_capacities(networks, scenarios, years):
                 for tech_name, carriers in techs.items():
                     val = caps[caps.index.isin(carriers)].sum()
                     grouped[group_name][tech_name] = abs(val) / 1000  # Convert to GW
-            
+
             all_data[(scenario, year)] = grouped
-    
+
     return all_data
 
 
 def plot_capacity_comparison(data, scenarios, years, tech_colors):
     """Create stacked bar chart comparing scenarios across years"""
-    fig, axes = plt.subplots(len(years), 4, figsize=(16, 4*len(years)), 
-                             gridspec_kw={'wspace': 0.3, 'hspace': 0.4})
+    fig, axes = plt.subplots(
+        len(years),
+        4,
+        figsize=(16, 4 * len(years)),
+        gridspec_kw={"wspace": 0.3, "hspace": 0.4},
+    )
     if len(years) == 1:
         axes = axes.reshape(1, -1)
 
     group_names = list(capa_groups.keys())
     x = np.arange(len(scenarios))
     width = 0.6
-    
+
     for year_idx, year in enumerate(years):
         for group_idx, group_name in enumerate(group_names):
             ax = axes[year_idx, group_idx]
 
             tech_names = list(capa_groups[group_name].keys())
             bottoms = np.zeros(len(scenarios))
-            
+
             for tech_name in tech_names:
-                values = [data[(sc, year)][group_name].get(tech_name, 0) for sc in scenarios]
-                
-                color = tech_colors.get(tech_name, '#CCCCCC')
-                hatch = '///' if 'CHP' in tech_name else None
-                
-                bars = ax.bar(x, values, width, bottom=bottoms, color=color, label=tech_name, 
-                             hatch=hatch, edgecolor='white' if hatch else None, linewidth=0.5)
-                
+                values = [
+                    data[(sc, year)][group_name].get(tech_name, 0) for sc in scenarios
+                ]
+
+                color = tech_colors.get(tech_name, "#CCCCCC")
+                hatch = "///" if "CHP" in tech_name else None
+
+                bars = ax.bar(
+                    x,
+                    values,
+                    width,
+                    bottom=bottoms,
+                    color=color,
+                    label=tech_name,
+                    hatch=hatch,
+                    edgecolor="white" if hatch else None,
+                    linewidth=0.5,
+                )
+
                 # Add value labels
                 for i, (bar, val) in enumerate(zip(bars, values)):
                     if val > 1:
-                        ax.text(bar.get_x() + bar.get_width()/2, bottoms[i] + val/2,
-                               f'{int(val)}', ha='center', va='center', fontsize=9, 
-                               color='white', weight='bold')
-                
+                        ax.text(
+                            bar.get_x() + bar.get_width() / 2,
+                            bottoms[i] + val / 2,
+                            f"{int(val)}",
+                            ha="center",
+                            va="center",
+                            fontsize=9,
+                            color="white",
+                            weight="bold",
+                        )
+
                 bottoms += values
-            
+
             # Add total on top
             for i, total in enumerate(bottoms):
                 if total > 0:
-                    ax.text(i, total + max(bottoms)*0.02, f'{int(total)}', 
-                           ha='center', va='bottom', fontsize=10, weight='bold')
-            
+                    ax.text(
+                        i,
+                        total + max(bottoms) * 0.02,
+                        f"{int(total)}",
+                        ha="center",
+                        va="bottom",
+                        fontsize=10,
+                        weight="bold",
+                    )
+
             # Formatting
             ax.set_xticks(x)
             ax.set_xticklabels([scenario_abbrev.get(sc, sc[:4]) for sc in scenarios])
-            ax.set_ylabel('Installed capacity (GW)', fontsize=10)
+            ax.set_ylabel("Installed capacity (GW)", fontsize=10)
             ax.set_ylim(0, max(bottoms) * 1.15)
-            ax.grid(axis='y', alpha=0.3)
-            
+            ax.grid(axis="y", alpha=0.3)
+
             if year_idx == 0:
-                ax.set_title(group_name, fontsize=12, weight='bold')
-            
+                ax.set_title(group_name, fontsize=12, weight="bold")
+
             if group_idx == len(group_names) - 1:
-                ax.text(1.05, 0.5, str(year), transform=ax.transAxes, 
-                       rotation=270, va='center', fontsize=14, weight='bold')
-            
-            ax.set_xlabel('Scenario', fontsize=10)
-            
+                ax.text(
+                    1.05,
+                    0.5,
+                    str(year),
+                    transform=ax.transAxes,
+                    rotation=270,
+                    va="center",
+                    fontsize=14,
+                    weight="bold",
+                )
+
+            ax.set_xlabel("Scenario", fontsize=10)
+
             # Add legend below (only for bottom row)
             if year_idx == len(years) - 1:
                 handles, labels = ax.get_legend_handles_labels()
-                ax.legend(handles, labels, loc='upper center', 
-                         bbox_to_anchor=(0.5, -0.15), ncol=1, fontsize=9, frameon=False)
-    
+                ax.legend(
+                    handles,
+                    labels,
+                    loc="upper center",
+                    bbox_to_anchor=(0.5, -0.15),
+                    ncol=1,
+                    fontsize=9,
+                    frameon=False,
+                )
+
     plt.tight_layout()
     return fig
 
@@ -981,6 +1086,19 @@ if __name__ == "__main__":
             flex_needs[scenario] = pd.read_csv(flex_needs_path, index_col=0)
             logger.info(f"  Loaded {scenario}")
 
+    # Load flex needs per node and aggregate
+    flex_needs_per_node = {}
+    for i, scenario in enumerate(scenarios):
+        flex_needs_per_node_path = snakemake.input.flex_needs_per_node[i]
+        if Path(flex_needs_per_node_path).exists():
+            flex_needs_per_node[scenario] = pd.read_pickle(flex_needs_per_node_path)
+            flex_needs_per_node_agg = {
+                scenario: pd.DataFrame(
+                    {year: df.sum(axis=1) for year, df in years_dict.items()}
+                )
+                for scenario, years_dict in flex_needs_per_node.items()
+            }
+
     # Load flex_causes_raw
     logger.info("Loading flexibility causes (raw)...")
     for i, scenario in enumerate(scenarios):
@@ -988,6 +1106,20 @@ if __name__ == "__main__":
         if Path(flex_causes_path).exists():
             flex_causes_raw[scenario] = pd.read_pickle(flex_causes_path)
             logger.info(f"  Loaded {scenario}")
+
+    # Load flex causes per node and aggregate
+    flex_causes_per_node_agg = {}
+    flex_causes_i_agg = {}
+    for i, scenario in enumerate(scenarios):
+        flex_causes_per_node_path = snakemake.input.flex_causes_per_node[i]
+        if Path(flex_causes_per_node_path).exists():
+            flex_causes_i = pd.read_pickle(flex_causes_per_node_path)
+            for year, nodes in flex_causes_i.items():
+                all_nodes = pd.concat(nodes.values())
+                flex_causes_i_agg[year] = all_nodes.groupby(
+                    level=["Granularity", "Technology"]
+                ).sum()
+            flex_causes_per_node_agg[scenario] = flex_causes_i_agg
 
     # Load flex_contributions_clean
     logger.info("Loading flexibility contributions (clean)...")
@@ -999,6 +1131,38 @@ if __name__ == "__main__":
             )
             logger.info(f"  Loaded {scenario}")
 
+    # Load flex contributions per node aggregate and clean
+    flex_contributions_per_node_agg = {}
+    for i, scenario in enumerate(scenarios):
+        flex_contrib_per_node_path = snakemake.input.flex_contributions_per_node[i]
+        if Path(flex_contrib_per_node_path).exists():
+            flex_contribs_i = pd.read_pickle(flex_contrib_per_node_path)
+            # aggregate
+            df = pd.concat(
+                [
+                    v.assign(Year=year, Node=node).reset_index()
+                    for year, nodes in flex_contribs_i.items()
+                    for node, v in nodes.items()
+                ]
+            )
+            df["Technology"] = df["Technology"].str.replace(
+                r"^(Supply_|Demand_)", "", regex=True
+            )
+            result = (
+                df.groupby(["Year", "Granularity", "Technology"])[
+                    "Contribution (TWh/year)"
+                ]
+                .sum()
+                .unstack("Technology")
+                .fillna(0)
+            )
+            # clean
+            flex_contribs_i_agg = aggregate_by_keywords(result.transpose(), tech_groups)
+            flex_contribs_i_agg = aggregate_small_contributors(
+                flex_contribs_i_agg
+            ).transpose()
+            flex_contributions_per_node_agg[scenario] = flex_contribs_i_agg
+
     # Create output directory
     output_dir = Path(snakemake.params.output_dir)
     output_dir.mkdir(parents=True, exist_ok=True)
@@ -1009,7 +1173,7 @@ if __name__ == "__main__":
 
     ####### PLOTTING #########
 
-    # Flex needs
+    ## Flex needs
     logger.info("Plotting flexibility needs comparison...")
     plot_flex_needs_comparison(
         flex_needs,
@@ -1017,18 +1181,39 @@ if __name__ == "__main__":
         colormaps=["Blues", "Oranges", "Greens"],
     )
 
-    # Flex causes
+    # aggregated per node
+    plot_flex_needs_comparison(
+        flex_needs_per_node_agg,
+        output_dir / "flex_needs_per_node_agg_scenario_comparison.png",
+        colormaps=["Blues", "Oranges", "Greens"],
+    )
+
+    ## Flex causes
     plot_flexibility_causes_scenario_comparison(
         flex_causes_raw,
         tech_colors,
         output_dir / "flex_causes_scenario_comparison.png",
     )
 
-    # Flex provision
+    # aggregated per node
+    plot_flexibility_causes_scenario_comparison(
+        flex_causes_per_node_agg,
+        tech_colors,
+        output_dir / "flex_causes_per_node_agg_scenario_comparison.png",
+    )
+
+    ## Flex provision
     plot_flexibility_provision_scenario_comparison(
-        flex_contributions_clean,  # Your dict of {scenario: flexibility_df}
+        flex_contributions_clean,
         tech_colors,
         output_dir / "flex_provision_scenario_comparison.png",
+    )
+
+    # aggregated per node
+    plot_flexibility_provision_scenario_comparison(
+        flex_contributions_per_node_agg,
+        tech_colors,
+        output_dir / "flex_provision_per_node_agg_scenario_comparison.png",
     )
 
     # Price duration curves comparison
@@ -1042,43 +1227,31 @@ if __name__ == "__main__":
         output_dir=output_dir,
     )
 
-    # System cost comparison
-
-    # OPEX-DE
-    logger.info("Plotting OPEX composition comparison for DE...")
-    plot_opex_stacked(networks, scenarios, planning_horizons, groups, tech_colors, output_dir)
-
-    # CAPEX-DE
-    logger.info("Plotting CAPEX composition comparison for DE...")
-
-    # OPEX+CAPEX-DE
-    logger.info("Plotting total cost composition comparison for DE...")
-
-    # OPEX+CAPEX-EU
-    logger.info("Plotting total cost composition comparison for EU...")
-
-    def calculate_costs(n: pypsa.Network) -> pd.Series:
-        """
-        Calculate optimized total costs for each technology split by marginal and capital costs.
-
-        Returns
-        -------
-        pd.Series
-            MultiIndex Series with levels ["cost", "component", "carrier"]
-        """
-        costs = pd.concat(
-            {
-                "capital": n.statistics.capex(),
-                "marginal": n.statistics.opex(),
-            }
-        )
-        costs.index.names = ["cost", "component", "carrier"]
-
-        return costs
-    
     # Capacity comparison
     logger.info("Plotting capacity comparison for DE")
     data = get_capacities(networks, scenarios, planning_horizons)
     fig = plot_capacity_comparison(data, scenarios, planning_horizons, tech_colors)
     # fig.savefig("capacity_comparison.pdf", dpi=300, bbox_inches='tight')
-    fig.savefig(output_dir / "capacity_comparison.png", dpi=300, bbox_inches='tight')
+    fig.savefig(output_dir / "capacity_comparison.png", dpi=300, bbox_inches="tight")
+
+    # System cost comparison
+
+    # OPEX-DE
+    logger.info("Plotting OPEX composition comparison for DE...")
+    plot_opex_stacked(
+        networks,
+        scenarios,
+        planning_horizons,
+        groups_opex_plot,
+        tech_colors,
+        output_dir,
+    )
+
+    # # CAPEX-DE
+    # logger.info("Plotting CAPEX composition comparison for DE...")
+
+    # # OPEX+CAPEX-DE
+    # logger.info("Plotting total cost composition comparison for DE...")
+
+    # # OPEX+CAPEX-EU
+    # logger.info("Plotting total cost composition comparison for EU...")
