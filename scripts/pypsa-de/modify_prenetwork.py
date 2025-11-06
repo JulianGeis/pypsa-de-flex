@@ -1797,7 +1797,7 @@ def restrict_component_buildout(n, component_limits, capacities_csv):
                     )
                     logger.info(
                         f"Restricting {attr}_nom_max of {c.name} {carrier} at bus {limits_bus} "
-                        f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Medium Flex capacities)"
+                        f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Base capacities)"
                     )
 
                 elif len(extendable_components_at_bus) > 1:
@@ -1816,7 +1816,7 @@ def restrict_component_buildout(n, component_limits, capacities_csv):
 
                     logger.info(
                         f"Restricting {attr}_nom_max of latest {c.name} {carrier} at bus {limits_bus} "
-                        f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Medium Flex capacities)"
+                        f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Base capacities)"
                     )
 
                 else:
@@ -1994,15 +1994,15 @@ if __name__ == "__main__":
 
     restrict_components_config = snakemake.params.restrict_component_buildout
     if n.snapshot_weightings.generators.iloc[0] == 1.0:
-        medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_1H
+        base_capacities_csv = snakemake.input.base_capacities_1H
     # elif n.snapshot_weightings.generators.iloc[0] == 365.0:
-    #     medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_365H
+    #     base_capacities_csv = snakemake.input.base_capacities_365H
     else:
-        medium_flex_capacities_csv = snakemake.input.medium_flex_capacities_3H
+        base_capacities_csv = snakemake.input.base_capacities_3H
 
     if restrict_components_config is not None:
         restrict_component_buildout(
-            n, restrict_components_config, medium_flex_capacities_csv
+            n, restrict_components_config, base_capacities_csv
         )
 
     if snakemake.params.force_pth_profiles_decentral_rural_p_min_pu:

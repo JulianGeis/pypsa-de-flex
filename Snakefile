@@ -589,9 +589,9 @@ rule modify_prenetwork:
         regions_onshore=resources("regions_onshore_base_s_{clusters}.geojson"),
         regions_offshore=resources("regions_offshore_base_s_{clusters}.geojson"),
         offshore_connection_points="ariadne-data/offshore_connection_points.csv",
-        medium_flex_capacities_3H="flex-data/MediumFlex_capacities_{clusters}cl_3H.csv",
-        medium_flex_capacities_1H="flex-data/MediumFlex_capacities_{clusters}cl_1H.csv",
-        medium_flex_capacities_365H="flex-data/MediumFlex_capacities_{clusters}cl_365H.csv",
+        base_capacities_3H="flex-data/Base_capacities_{clusters}cl_3H.csv",
+        base_capacities_1H="flex-data/Base_capacities_{clusters}cl_1H.csv",
+        base_capacities_365H="flex-data/Base_capacities_{clusters}cl_365H.csv",
     output:
         network=resources(
             "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}_final.nc"
