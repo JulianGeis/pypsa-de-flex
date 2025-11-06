@@ -788,7 +788,6 @@ LowFlexHeatMinStore:
 
 
 # Battery
-
 LowBattery75:
 
   electricity:
@@ -831,7 +830,6 @@ LowBattery0:
 
 
 # PtG / Electrolysis
-
 LowPtG75:
 
   electricity:
@@ -862,7 +860,6 @@ LowPtG25:
       H2 Electrolysis: 0.25
 
 # PtX
-
 LowPtX75:
 
   electricity:
@@ -914,7 +911,6 @@ LowPtX25:
       H2 Electrolysis: 0.25
 
 # PtH
-
 LowPtH75:
 
   electricity:
@@ -961,8 +957,7 @@ LowPtH25:
       urban decentral air heat pump: 0.25
       urban decentral resistive heater: 0.25
 
-# h2 storage
-
+# H2 storage
 LowH2Store75:
 
   electricity:
@@ -991,7 +986,7 @@ LowH2Store25:
     Store:
       H2 Store: 0.25
 
-  LowH2Store0:
+LowH2Store0:
 
   electricity:
     transmission_limit: v1.5
@@ -1000,8 +995,7 @@ LowH2Store25:
     Store:
       H2 Store: 0
 
-# heat storage
-
+# Heat storage
 LowHeatStore75:
 
   electricity:
@@ -1053,8 +1047,7 @@ LowHeatStore0:
       urban decentral water tanks discharger: 0
 
 
-# transmission
-
+# Transmission
 LowTransmission25:
 
   electricity:
@@ -1066,8 +1059,7 @@ LowTransmission10:
   electricity:
     transmission_limit: v1.1
 
-# High flex variations
-
+# HighFlex variations
 HighFlexIndustry:
 
   electricity:

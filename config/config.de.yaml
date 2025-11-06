@@ -4,58 +4,59 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251105-flex-per-node-plots
+  prefix: 20251106-flex-scnenario-expansion
   name:
-    # # main scenarios
-    # - LowFlex
-    # - LowBattery
-    # - Base
-    # - HighFlex
-    # # sensitivity scenarios
-    # # LowFlex variations
-    # - LowFlex75
-    # - LowFlex50
-    # - LowFlexHeatModelMargin0.1
-    # - LowFlexHeatModelMargin0.2
-    # - LowFlexHeatModelMargin0.3
-    # - LowFlexHeatPMINPU50
-    # - LowFlexHeatPMINPU25
-    # - LowFlexHeatMinStore
-    # # battery:
-    # - LowBattery75
-    # - LowBattery50
-    # - LowBattery25
-    # - LowBattery0
-    # # PtG / Electrolysis
-    # - LowPtG75
-    # - LowPtG50
-    # - LowPtG25
-    # # PtX:
-    # - LowPtX75
-    # - LowPtX50
-    # - LowPtX25
-    # # PtH:
-    # - LowPtH75
-    # - LowPtH50
-    # - LowPtH25
-    # # H2 storage
-    # - LowH2Store75
-    # - LowH2Store50
-    # - LowH2Store25
-    # - LowH2Store0
-    # # Heat storage:
-    # - LowHeatStore75
-    # - LowHeatStore50
-    # - LowHeatStore25
-    # - LowHeatStore0
-    # # Transmission:
-    # - LowTransmission25
-    # - LowTransmission10
-    # # High flex variations:
-    # - HighFlexIndustry
-    # - HighFlexIronAir
-    # - HighFlexDLR
-    # - HighFlexBEV
+  # # main scenarios
+  - LowFlex
+  - LowBattery
+  - Base
+  - HighFlex
+  # # sensitivity scenarios
+  # # LowFlex variations
+  # - LowFlex75
+  # - LowFlex50
+  # - LowFlexHeatModelMargin0.1
+  # - LowFlexHeatModelMargin0.2
+  # - LowFlexHeatModelMargin0.3
+  # - LowFlexHeatPMINPU50
+  # - LowFlexHeatPMINPU25
+  # - LowFlexHeatMinStore
+  # # battery:
+  # - LowBattery75
+  # - LowBattery50
+  # - LowBattery25
+  # - LowBattery0
+  # # PtG / Electrolysis
+  # - LowPtG75
+  # - LowPtG50
+  # - LowPtG25
+  # # PtX:
+  # - LowPtX75
+  # - LowPtX50
+  # - LowPtX25
+  # # PtH:
+  # - LowPtH75
+  # - LowPtH50
+  # - LowPtH25
+  # # H2 storage
+  # - LowH2Store75
+  # - LowH2Store50
+  # - LowH2Store25
+  # - LowH2Store0
+  # # Heat storage:
+  # - LowHeatStore75
+  # - LowHeatStore50
+  # - LowHeatStore25
+  # - LowHeatStore0
+  # # Transmission:
+  # - LowTransmission25
+  # - LowTransmission10
+  # # High flex variations:
+  # - HighFlexIndustry
+  # - HighFlexIronAir
+  # - HighFlexDLR
+  # - HighFlexBEV
+  # # Ariadne scenarios
   # - KN2045_Mix
   # - KN2045_Elek
   # - KN2045_H2
@@ -798,45 +799,45 @@ scale_capacity:
 # Flexibility comparison settings
 flexibility_comparison:
   scenarios:
-    # - LowFlex
-    # - LowBattery
-    - Base
-    # - HighFlex
-    # - LowFlex75
-    # - LowFlex50
-    # - LowFlexHeatModelMargin0.1
-    # - LowFlexHeatModelMargin0.2
-    # - LowFlexHeatModelMargin0.3
-    # - LowFlexHeatPMINPU50
-    # - LowFlexHeatPMINPU25
-    # - LowFlexHeatMinStore
-    # - LowBattery75
-    # - LowBattery50
-    # - LowBattery25
-    # - LowBattery0
-    # - LowPtG75
-    # - LowPtG50
-    # - LowPtG25
-    # - LowPtX75
-    # - LowPtX50
-    # - LowPtX25
-    # - LowPtH75
-    # - LowPtH50
-    # - LowPtH25
-    # - LowH2Store75
-    # - LowH2Store50
-    # - LowH2Store25
-    # - LowH2Store0
-    # - LowHeatStore75
-    # - LowHeatStore50
-    # - LowHeatStore25
-    # - LowHeatStore0
-    # - LowTransmission25
-    # - LowTransmission10
-    # - HighFlexIndustry
-    # - HighFlexIronAir
-    # - HighFlexDLR
-    # - HighFlexBEV
+  # - LowFlex
+  # - LowBattery
+  - Base
+  # - HighFlex
+  # - LowFlex75
+  # - LowFlex50
+  # - LowFlexHeatModelMargin0.1
+  # - LowFlexHeatModelMargin0.2
+  # - LowFlexHeatModelMargin0.3
+  # - LowFlexHeatPMINPU50
+  # - LowFlexHeatPMINPU25
+  # - LowFlexHeatMinStore
+  # - LowBattery75
+  # - LowBattery50
+  # - LowBattery25
+  # - LowBattery0
+  # - LowPtG75
+  # - LowPtG50
+  # - LowPtG25
+  # - LowPtX75
+  # - LowPtX50
+  # - LowPtX25
+  # - LowPtH75
+  # - LowPtH50
+  # - LowPtH25
+  # - LowH2Store75
+  # - LowH2Store50
+  # - LowH2Store25
+  # - LowH2Store0
+  # - LowHeatStore75
+  # - LowHeatStore50
+  # - LowHeatStore25
+  # - LowHeatStore0
+  # - LowTransmission25
+  # - LowTransmission10
+  # - HighFlexIndustry
+  # - HighFlexIronAir
+  # - HighFlexDLR
+  # - HighFlexBEV
 
 
 industry_dsm:
