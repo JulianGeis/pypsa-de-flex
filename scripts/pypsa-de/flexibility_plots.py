@@ -494,13 +494,14 @@ def plot_flexibility_needs_map(
     output_path,
     region="DE",
     extent=None,
-    figsize=(16, 12),
+    figsize=None,
     dpi=300,
     cmap="viridis_r",
+    time_scales=None,
 ):
     """
     Plot flexibility needs maps for different time periods.
-
+    
     Parameters
     ----------
     flex_needs_per_node_year : pd.DataFrame
@@ -518,87 +519,120 @@ def plot_flexibility_needs_map(
     extent : list, optional
         Map extent [lon_min, lon_max, lat_min, lat_max] (default: Germany extent)
     figsize : tuple, optional
-        Figure size (default: (16, 12))
+        Figure size. If None, auto-calculated based on number of subplots
     dpi : int, optional
         Resolution for saved figure (default: 300)
     cmap : str, optional
         Colormap name (default: "viridis_r")
+    time_scales : list, optional
+        List of time scales to plot (e.g., ['daily', 'weekly', 'annual'])
+        If None, defaults to ['daily', 'weekly', 'annual']
     """
     if extent is None:
         extent = [5.5, 15.5, 47, 56]  # Default Germany extent
-
+    
     aspect_ratio = (extent[1] - extent[0]) / (extent[3] - extent[2])
     display_projection = ccrs.EqualEarth()
-
+    
+    # Set default time scales
+    if time_scales is None:
+        time_scales = ['daily', 'weekly', 'annual']
+    
+    # Filter to only available time scales
+    available_scales = [
+        scale for scale in time_scales 
+        if scale in flex_needs_per_node_year.index
+    ]
+    
+    if not available_scales:
+        raise ValueError(f"None of the requested time scales {time_scales} are available in the data")
+    
     # Prepare data
     df = onshore_regions.copy()
-    for period in ["daily", "weekly", "monthly", "annual"]:
+    for period in available_scales:
         df[f"flex_{period}"] = pd.to_numeric(
             (flex_needs_per_node_year / load_buses.values.T).loc[period],
             errors="coerce",
         )
-
     df_region = df[df.index.str.contains(region)].copy()
-
+    
+    # Calculate subplot layout
+    n_plots = len(available_scales)
+    n_cols = min(2, n_plots)
+    n_rows = (n_plots + n_cols - 1) // n_cols
+    
+    # Auto-calculate figure size if not provided
+    if figsize is None:
+        figsize = (8 * n_cols, 6 * n_rows)
+    
     # Create subplots
     fig, axes = plt.subplots(
-        2, 2, subplot_kw={"projection": display_projection}, figsize=figsize
+        n_rows, n_cols, 
+        subplot_kw={"projection": display_projection}, 
+        figsize=figsize
     )
-    axes = axes.flatten()
-
-    periods = ["daily", "weekly", "monthly", "annual"]
-    titles = [
-        "Daily Flexibility Needs",
-        "Weekly Flexibility Needs",
-        "Monthly Flexibility Needs",
-        "Annual Flexibility Needs",
-    ]
-
-    for i, (period, title) in enumerate(zip(periods, titles)):
+    
+    # Ensure axes is always a flat array
+    if n_plots == 1:
+        axes = [axes]
+    else:
+        axes = axes.flatten() if n_plots > 1 else axes
+    
+    # Title mapping
+    title_map = {
+        "daily": "Daily Flexibility Needs",
+        "weekly": "Weekly Flexibility Needs",
+        "monthly": "Monthly Flexibility Needs",
+        "annual": "Annual Flexibility Needs",
+    }
+    
+    for i, period in enumerate(available_scales):
         ax = axes[i]
-
+        
         # Calculate vmin/vmax for this period
         vmin, vmax = (
             df_region[f"flex_{period}"].min(),
             df_region[f"flex_{period}"].max(),
         )
-
+        
         # Add map features
         ax.add_feature(cartopy.feature.BORDERS, edgecolor="black", linewidth=0.5)
         ax.coastlines(edgecolor="black", linewidth=0.5)
         ax.set_facecolor("white")
         ax.add_feature(cartopy.feature.OCEAN, color="azure")
-        ax.set_title(title, pad=15)
-
+        ax.set_title(title_map.get(period, f"{period.capitalize()} Flexibility Needs"), pad=15)
+        
         # Plot data
         df_region.to_crs(display_projection.proj4_init).plot(
             column=f"flex_{period}",
             ax=ax,
-            linewidth=0.05,
-            edgecolor="grey",
-            legend=False,
+            edgecolor="black",
+            linewidth=0.1,
+            cmap=cmap,
             vmin=vmin,
             vmax=vmax,
-            cmap=cmap,
+            legend=True,
+            legend_kwds={
+                "label": "Flexibility needs / Load",
+                "orientation": "horizontal",
+                "shrink": 0.6,
+                "pad": 0.05,
+            },
         )
-
-        # Set extent and aspect
-        ax.set_extent(extent, ccrs.PlateCarree())
-        ax.set_aspect(aspect_ratio)
-
-        # Add colorbar
-        sm = plt.cm.ScalarMappable(cmap=cmap, norm=plt.Normalize(vmin=vmin, vmax=vmax))
-        sm.set_array([])
-        cbar = plt.colorbar(sm, ax=ax, shrink=0.8, pad=0.02)
-        cbar.set_label(f"{title} (normalised by load)", rotation=270, labelpad=15)
-
-    # Add overall title with year
+        
+        ax.set_extent(extent, crs=ccrs.PlateCarree())
+    
+    # Hide any unused subplots
+    for idx in range(n_plots, len(axes)):
+        axes[idx].set_visible(False)
+    
+    # Add overall title
     fig.suptitle(f"Flexibility Needs - {year}", fontsize=16, y=0.98)
-
+    
     plt.tight_layout()
     fig.savefig(output_path, dpi=dpi, bbox_inches="tight")
     plt.close()
-
+    
     return fig, axes
 
 
@@ -835,7 +869,7 @@ def plot_flexibility_provision_map(
     bus_coords,
     onshore_regions,
     tech_colors,
-    oups,
+    tech_groups,
     year,
     output_path,
     scale_factor=1e4,

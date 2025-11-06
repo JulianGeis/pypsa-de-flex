@@ -999,7 +999,7 @@ rule flexibility_analysis:
         flex_contributions_per_node=RESULTS
         + "flexibility/data/flexibility_contributions_per_node.pkl",
     resources:
-        mem_mb=10000,
+        mem_mb=40000,
     log:
         RESULTS + "logs/flexibility_analysis.log",
     script:
@@ -1035,15 +1035,13 @@ rule flexibility_plots:
             clusters=config["scenario"]["clusters"],
             allow_missing=True,
         ),
-    resources:
-        mem_mb=10000,
     output:
         flex_needs_plot=RESULTS + "flexibility/plots/flexibility_needs.png",
         flex_causes_plot=RESULTS + "flexibility/plots/flexibility_causes.png",
         flex_contributions_plot=RESULTS
         + "flexibility/plots/flexibility_contributions.png",
     resources:
-        mem_mb=10000,
+        mem_mb=40000,
     log:
         RESULTS + "logs/flexibility_plots.log",
     script:
@@ -1117,7 +1115,7 @@ rule flexibility_plots_scenario_comparison:
         + config["run"]["prefix"]
         + "/flexibility/scenario_comparison/flex_needs_scenario_comparison.png",
     resources:
-        mem_mb=16000,
+        mem_mb=40000,
     log:
         "results/"
         + config["run"]["prefix"]
