@@ -1,0 +1,2318 @@
+component,bus,carrier,2025,2035,2045
+Generator,DE gas primary,gas primary,232788.82209,137726.7652,26883.78624
+Generator,DE oil primary,oil primary,203762.50086,78978.69815,28222.29944
+Generator,DE0 0,onwind,2979.6402,8565.17873,11127.10102
+Generator,DE0 0,ror,30.4444,30.4444,30.4444
+Generator,DE0 0,solar,3824.89063,3825.1547,3733.94922
+Generator,DE0 0,solar-hsat,0.50817,0.94912,0.11808
+Generator,DE0 0 biogas,unsustainable biogas,4372810.87822,1439918.79077,
+Generator,DE0 0 low voltage,solar rooftop,0.28834,5548.82827,5548.82914
+Generator,DE0 0 rural heat,rural heat vent,13.44744,16.04035,0.86246
+Generator,DE0 0 solid biomass,solid biomass,10000.0,5334994.89268,7949099.06158
+Generator,DE0 0 solid biomass,unsustainable solid biomass,7360024.97302,2430282.82631,
+Generator,DE0 0 unsustainable bioliquids,unsustainable bioliquids,2061158.58466,678716.97621,
+Generator,DE0 0 urban central heat,urban central heat vent,23.70829,6.90066,0.21997
+Generator,DE0 0 urban decentral heat,urban decentral heat vent,0.50237,16.32205,0.77165
+Generator,DE0 1,onwind,1968.63543,1380.47754,637.13001
+Generator,DE0 1,ror,255.4777,255.4777,255.4777
+Generator,DE0 1,solar,2353.02422,2353.34467,2297.17342
+Generator,DE0 1,solar-hsat,6.18372,16949.74414,16950.55418
+Generator,DE0 1 biogas,unsustainable biogas,3404808.32128,1087206.28854,
+Generator,DE0 1 low voltage,solar rooftop,0.39233,5836.5699,5836.57242
+Generator,DE0 1 rural heat,rural heat vent,4.56025,15.44623,0.7108
+Generator,DE0 1 solid biomass,solid biomass,10000.0,4513481.04756,6604445.76211
+Generator,DE0 1 solid biomass,unsustainable solid biomass,5732961.01677,1837427.16165,
+Generator,DE0 1 unsustainable bioliquids,unsustainable bioliquids,1604883.01369,512463.18154,
+Generator,DE0 1 urban central heat,urban central heat vent,12.4702,8.77236,0.26082
+Generator,DE0 1 urban decentral heat,urban decentral heat vent,39.55906,15.11582,0.87204
+Generator,DE0 10,offwind-ac,172.32776,172.52685,106.09265
+Generator,DE0 10,offwind-dc,156.72295,821.87494,821.87497
+Generator,DE0 10,onwind,6507.97368,6508.09797,6508.09789
+Generator,DE0 10,solar,2602.44021,2602.65775,2540.54799
+Generator,DE0 10,solar-hsat,0.29147,0.41223,0.02773
+Generator,DE0 10 biogas,unsustainable biogas,1726858.26019,606673.27805,
+Generator,DE0 10 low voltage,solar rooftop,0.29261,1738.90205,1738.90279
+Generator,DE0 10 rural heat,rural heat vent,10.52112,13.72307,0.65285
+Generator,DE0 10 solid biomass,solid biomass,10000.0,1973947.35464,2795068.83433
+Generator,DE0 10 solid biomass,unsustainable solid biomass,2912584.10224,1029724.8105,
+Generator,DE0 10 unsustainable bioliquids,unsustainable bioliquids,813968.1378,285960.19127,
+Generator,DE0 10 urban central heat,urban central heat vent,0.66331,5.78685,0.22551
+Generator,DE0 10 urban decentral heat,urban decentral heat vent,0.48679,0.34531,0.02086
+Generator,DE0 11,onwind,2346.97971,1645.75634,759.46409
+Generator,DE0 11,ror,33.655,33.655,33.655
+Generator,DE0 11,solar,2383.4848,2383.73605,2326.84458
+Generator,DE0 11,solar-hsat,1.96448,1.91653,0.19007
+Generator,DE0 11 biogas,unsustainable biogas,2755978.08431,892723.13192,
+Generator,DE0 11 low voltage,solar rooftop,0.32379,4651.18601,4651.18682
+Generator,DE0 11 rural heat,rural heat vent,11.01526,22.72944,1.11037
+Generator,DE0 11 solid biomass,solid biomass,10000.0,3709723.38061,5398339.33362
+Generator,DE0 11 solid biomass,unsustainable solid biomass,4642376.81869,1510530.77902,
+Generator,DE0 11 unsustainable bioliquids,unsustainable bioliquids,1299051.81034,420792.02562,
+Generator,DE0 11 urban central heat,urban central heat vent,50.16703,458.90145,0.275
+Generator,DE0 11 urban decentral heat,urban decentral heat vent,0.49319,31.47565,1.22965
+Generator,DE0 12,onwind,644.30728,2406.07916,2406.0791
+Generator,DE0 12,ror,16.765,16.765,16.765
+Generator,DE0 12,solar,737.56596,737.83057,720.07712
+Generator,DE0 12,solar-hsat,1.63337,1772.59152,2536.98245
+Generator,DE0 12 biogas,unsustainable biogas,1121763.01999,375330.83721,
+Generator,DE0 12 low voltage,solar rooftop,0.29471,1894.81207,1894.81248
+Generator,DE0 12 rural heat,rural heat vent,36.17918,24.40298,0.79169
+Generator,DE0 12 solid biomass,solid biomass,10000.0,1283360.99371,1906988.45454
+Generator,DE0 12 solid biomass,unsustainable solid biomass,1895511.73155,640873.61961,
+Generator,DE0 12 unsustainable bioliquids,unsustainable bioliquids,528751.767,176915.12365,
+Generator,DE0 12 urban central heat,urban central heat vent,25.14291,6.79602,0.233
+Generator,DE0 12 urban decentral heat,urban decentral heat vent,0.48689,3.24875,0.99609
+Generator,DE0 13,onwind,1834.46028,6850.55809,6850.55988
+Generator,DE0 13,ror,39.205,39.205,39.205
+Generator,DE0 13,solar,2317.89878,2318.19284,2262.81683
+Generator,DE0 13,solar-hsat,0.86451,2.64274,0.20255
+Generator,DE0 13 biogas,unsustainable biogas,2816247.07106,927283.88179,
+Generator,DE0 13 low voltage,solar rooftop,0.39518,3915.49214,3915.49249
+Generator,DE0 13 rural heat,rural heat vent,81.19663,29.4877,1.44908
+Generator,DE0 13 solid biomass,solid biomass,10000.0,3363469.75965,4861285.26227
+Generator,DE0 13 solid biomass,unsustainable solid biomass,4743679.74946,1568622.10328,
+Generator,DE0 13 unsustainable bioliquids,unsustainable bioliquids,1327460.06829,437082.50519,
+Generator,DE0 13 urban central heat,urban central heat vent,0.06599,9.30584,0.39858
+Generator,DE0 13 urban decentral heat,urban decentral heat vent,0.69247,0.28103,0.01344
+Generator,DE0 14,onwind,2333.51337,8714.20928,8714.21138
+Generator,DE0 14,ror,0.914,0.914,0.914
+Generator,DE0 14,solar,3618.15125,3618.41209,3532.12526
+Generator,DE0 14,solar-hsat,0.4283,0.92073,0.10997
+Generator,DE0 14 biogas,unsustainable biogas,4561659.75423,1492128.28385,
+Generator,DE0 14 low voltage,solar rooftop,0.52712,6827.70149,6827.70533
+Generator,DE0 14 rural heat,rural heat vent,4.72441,19.43563,0.72088
+Generator,DE0 14 solid biomass,solid biomass,10000.0,5453371.00194,8043292.16347
+Generator,DE0 14 solid biomass,unsustainable solid biomass,7677450.99336,2518038.98331,
+Generator,DE0 14 unsustainable bioliquids,unsustainable bioliquids,2150173.97838,703326.32883,
+Generator,DE0 14 urban central heat,urban central heat vent,255.66707,7.94577,0.23536
+Generator,DE0 14 urban decentral heat,urban decentral heat vent,14.22573,14.99918,0.77616
+Generator,DE0 15,onwind,1851.99869,5059.8472,6916.06137
+Generator,DE0 15,ror,61.2854,61.2854,61.2854
+Generator,DE0 15,solar,3567.77331,3568.08521,3482.99135
+Generator,DE0 15,solar-hsat,1.03163,15194.95418,21677.92502
+Generator,DE0 15 biogas,unsustainable biogas,3060895.5393,1033251.7886,
+Generator,DE0 15 low voltage,solar rooftop,12.49308,5401.04487,5401.04627
+Generator,DE0 15 rural heat,rural heat vent,86.48615,51.00136,1.01205
+Generator,DE0 15 solid biomass,solid biomass,10000.0,3369101.07033,4865906.90244
+Generator,DE0 15 solid biomass,unsustainable solid biomass,5154896.33331,1746737.91553,
+Generator,DE0 15 unsustainable bioliquids,unsustainable bioliquids,1442777.03593,487031.30629,
+Generator,DE0 15 urban central heat,urban central heat vent,0.06406,6.82239,0.34141
+Generator,DE0 15 urban decentral heat,urban decentral heat vent,0.56246,53.02986,1.03965
+Generator,DE0 16,onwind,1421.50415,996.7238,459.97369
+Generator,DE0 16,ror,316.7048,316.7048,316.7048
+Generator,DE0 16,solar,1534.59014,1534.88394,1498.13245
+Generator,DE0 16,solar-hsat,2661.84006,2690.94959,2691.03894
+Generator,DE0 16 biogas,unsustainable biogas,2291523.79553,722999.02761,
+Generator,DE0 16 low voltage,solar rooftop,0.43032,4925.16619,4925.16754
+Generator,DE0 16 rural heat,rural heat vent,18.86882,27.81896,0.98101
+Generator,DE0 16 solid biomass,solid biomass,10000.0,2750339.27541,4016363.78734
+Generator,DE0 16 solid biomass,unsustainable solid biomass,3861700.33474,1225250.56913,
+Generator,DE0 16 unsustainable bioliquids,unsustainable bioliquids,1080127.65122,340791.24251,
+Generator,DE0 16 urban central heat,urban central heat vent,60.05628,6.77942,0.70031
+Generator,DE0 16 urban decentral heat,urban decentral heat vent,0.53821,33.142,1.36484
+Generator,DE0 17,onwind,1259.94989,883.6045,409.18208
+Generator,DE0 17,ror,1.938,1.938,1.938
+Generator,DE0 17,solar,2202.85578,2203.13619,2150.51651
+Generator,DE0 17,solar-hsat,1.15262,9.3732,6530.99804
+Generator,DE0 17 biogas,unsustainable biogas,2839696.56698,926003.9421,
+Generator,DE0 17 low voltage,solar rooftop,0.23936,9515.27886,9515.27894
+Generator,DE0 17 rural heat,rural heat vent,5.56402,11.65429,0.76541
+Generator,DE0 17 solid biomass,solid biomass,10000.0,3209038.76027,4634278.53642
+Generator,DE0 17 solid biomass,unsustainable solid biomass,4783094.75857,1566470.72081,
+Generator,DE0 17 unsustainable bioliquids,unsustainable bioliquids,1338513.17147,436479.19561,
+Generator,DE0 17 urban central heat,urban central heat vent,0.06796,7.91458,0.27656
+Generator,DE0 17 urban decentral heat,urban decentral heat vent,34.50133,21.69083,1.0046
+Generator,DE0 18,offwind-ac,2224.09269,2224.25023,1355.58491
+Generator,DE0 18,onwind,5155.16901,8488.07005,8488.06996
+Generator,DE0 18,ror,0.11,0.11,0.11
+Generator,DE0 18,solar,3686.25338,3686.45144,3598.57319
+Generator,DE0 18,solar-hsat,0.31218,0.36076,0.02619
+Generator,DE0 18 biogas,unsustainable biogas,2973310.21379,1035784.58293,
+Generator,DE0 18 low voltage,solar rooftop,0.22542,6009.00993,8256.39929
+Generator,DE0 18 rural heat,rural heat vent,10.87795,14.00681,0.73276
+Generator,DE0 18 solid biomass,solid biomass,10000.0,3378087.32264,4903783.43599
+Generator,DE0 18 solid biomass,unsustainable solid biomass,5007678.82318,1750995.15465,
+Generator,DE0 18 unsustainable bioliquids,unsustainable bioliquids,1401493.0082,488225.15869,
+Generator,DE0 18 urban central heat,urban central heat vent,0.09778,6.73968,0.23999
+Generator,DE0 18 urban decentral heat,urban decentral heat vent,66.67017,11.88641,0.86603
+Generator,DE0 19,onwind,2421.49081,1698.29188,8022.12757
+Generator,DE0 19,ror,11.548,11.548,11.548
+Generator,DE0 19,solar,3783.11345,3783.4204,3693.19858
+Generator,DE0 19,solar-hsat,0.99423,2905.5005,10676.46981
+Generator,DE0 19 biogas,unsustainable biogas,1752596.35968,570385.49907,
+Generator,DE0 19 low voltage,solar rooftop,1.39504,3437.18717,3437.18733
+Generator,DE0 19 rural heat,rural heat vent,11.7286,13.11604,0.68437
+Generator,DE0 19 solid biomass,solid biomass,10000.0,1582757.33784,2311256.90837
+Generator,DE0 19 solid biomass,unsustainable solid biomass,2955845.90325,968730.61496,
+Generator,DE0 19 unsustainable bioliquids,unsustainable bioliquids,826099.99216,268855.66303,
+Generator,DE0 19 urban central heat,urban central heat vent,0.05257,6.02939,0.25152
+Generator,DE0 19 urban decentral heat,urban decentral heat vent,0.49486,26.20978,0.87966
+Generator,DE0 2,onwind,1294.05927,4832.50357,4832.50354
+Generator,DE0 2,ror,17.587,17.587,17.587
+Generator,DE0 2,solar,3530.72357,3531.00284,3446.79696
+Generator,DE0 2,solar-hsat,0.58903,29957.33671,37796.48907
+Generator,DE0 2 biogas,unsustainable biogas,3011040.4749,1044411.1856,
+Generator,DE0 2 low voltage,solar rooftop,81.96828,19491.06911,19491.09569
+Generator,DE0 2 rural heat,rural heat vent,4.31263,12.95774,0.71922
+Generator,DE0 2 solid biomass,solid biomass,10000.0,2491928.51764,3752757.10955
+Generator,DE0 2 solid biomass,unsustainable solid biomass,5071097.61012,1765495.15175,
+Generator,DE0 2 unsustainable bioliquids,unsustainable bioliquids,1419277.46167,492291.37529,
+Generator,DE0 2 urban central heat,urban central heat vent,0.08755,7.06745,0.25585
+Generator,DE0 2 urban decentral heat,urban decentral heat vent,34.55484,12.20155,0.85798
+Generator,DE0 20,offwind-ac,5020.83798,6467.19435,6467.21134
+Generator,DE0 20,offwind-dc,0.1759,765.88118,765.88912
+Generator,DE0 20,onwind,4081.43245,15241.59958,15241.59936
+Generator,DE0 20,ror,0.475,0.475,0.475
+Generator,DE0 20,solar,5301.7074,5301.95133,5175.60079
+Generator,DE0 20,solar-hsat,0.43912,0.70628,0.04505
+Generator,DE0 20 biogas,unsustainable biogas,5639530.07078,1911550.61627,
+Generator,DE0 20 low voltage,solar rooftop,0.18953,2900.43627,2900.43662
+Generator,DE0 20 rural heat,rural heat vent,3.04666,14.00777,0.72683
+Generator,DE0 20 solid biomass,solid biomass,10000.0,6859955.23396,10002098.90908
+Generator,DE0 20 solid biomass,unsustainable solid biomass,9489185.81679,3223023.64957,
+Generator,DE0 20 unsustainable bioliquids,unsustainable bioliquids,2658236.57655,901024.32336,
+Generator,DE0 20 urban central heat,urban central heat vent,430.94939,7.09995,0.27928
+Generator,DE0 20 urban decentral heat,urban decentral heat vent,0.79733,0.27914,0.0105
+Generator,DE0 21,onwind,2674.55147,9987.77131,9987.78248
+Generator,DE0 21,ror,11.274,11.274,11.274
+Generator,DE0 21,solar,3707.86487,3708.09843,3619.70658
+Generator,DE0 21,solar-hsat,0.44432,0.75383,0.12567
+Generator,DE0 21 biogas,unsustainable biogas,3461645.50671,1178542.24027,
+Generator,DE0 21 low voltage,solar rooftop,0.27523,10103.06254,10103.0717
+Generator,DE0 21 rural heat,rural heat vent,4.72829,16.89221,1.05125
+Generator,DE0 21 solid biomass,solid biomass,10000.0,3632402.62327,5513410.23874
+Generator,DE0 21 solid biomass,unsustainable solid biomass,5828495.61544,1990948.89968,
+Generator,DE0 21 unsustainable bioliquids,unsustainable bioliquids,1631673.66527,555515.09625,
+Generator,DE0 21 urban central heat,urban central heat vent,927.97004,7.01429,0.24274
+Generator,DE0 21 urban decentral heat,urban decentral heat vent,25.22021,20.68101,1.46433
+Generator,DE0 22,onwind,1910.88573,1340.59093,5208.6293
+Generator,DE0 22,ror,8.37022,8.37022,8.37022
+Generator,DE0 22,solar,2013.59609,2013.84959,1965.73318
+Generator,DE0 22,solar-hsat,0.63703,0.70768,0.05107
+Generator,DE0 22 biogas,unsustainable biogas,2223351.02827,729446.71584,
+Generator,DE0 22 low voltage,solar rooftop,0.27276,2450.40937,2450.40958
+Generator,DE0 22 rural heat,rural heat vent,6.885,13.74239,0.92606
+Generator,DE0 22 solid biomass,solid biomass,10000.0,2826816.51584,4116010.06734
+Generator,DE0 22 solid biomass,unsustainable solid biomass,3747112.36014,1236088.14495,
+Generator,DE0 22 unsustainable bioliquids,unsustainable bioliquids,1047993.88454,343830.41075,
+Generator,DE0 22 urban central heat,urban central heat vent,110.52535,6.73544,0.22335
+Generator,DE0 22 urban decentral heat,urban decentral heat vent,0.48072,0.27056,0.01061
+Generator,DE0 23,onwind,2509.08878,1759.27307,811.8879
+Generator,DE0 23,ror,701.352,701.352,701.352
+Generator,DE0 23,solar,2336.6467,2336.9555,2281.1554
+Generator,DE0 23,solar-hsat,1.6211,4359.30246,4360.056
+Generator,DE0 23 biogas,unsustainable biogas,2818302.49714,911546.00077,
+Generator,DE0 23 low voltage,solar rooftop,0.27129,2418.46048,2418.46069
+Generator,DE0 23 rural heat,rural heat vent,2.0939,243.614,1.28892
+Generator,DE0 23 solid biomass,solid biomass,10000.0,3758737.60828,5536714.80446
+Generator,DE0 23 solid biomass,unsustainable solid biomass,4747134.60572,1542169.13704,
+Generator,DE0 23 unsustainable bioliquids,unsustainable bioliquids,1328428.90944,429664.33197,
+Generator,DE0 23 urban central heat,urban central heat vent,108.41216,276.00141,0.20468
+Generator,DE0 23 urban decentral heat,urban decentral heat vent,0.60022,0.26969,0.01063
+Generator,DE0 24,onwind,2518.49719,1766.13197,9404.95771
+Generator,DE0 24,ror,67.783,67.783,67.783
+Generator,DE0 24,solar,2818.76955,2819.0091,2751.78352
+Generator,DE0 24,solar-hsat,177.94261,4543.82793,8583.06789
+Generator,DE0 24 biogas,unsustainable biogas,3696128.06102,1185871.11846,
+Generator,DE0 24 low voltage,solar rooftop,0.28359,3722.87002,3722.87033
+Generator,DE0 24 rural heat,rural heat vent,10.06771,19.95339,0.81578
+Generator,DE0 24 solid biomass,solid biomass,10000.0,4686156.09583,6868759.14279
+Generator,DE0 24 solid biomass,unsustainable solid biomass,6222624.85586,2003267.62081,
+Generator,DE0 24 unsustainable bioliquids,unsustainable bioliquids,1742198.84993,558969.62027,
+Generator,DE0 24 urban central heat,urban central heat vent,205.49513,159.89829,0.27003
+Generator,DE0 24 urban decentral heat,urban decentral heat vent,0.5044,0.277,0.0121
+Generator,DE0 25,onwind,1411.07673,5269.47904,5269.48358
+Generator,DE0 25,ror,128.613,128.613,128.613
+Generator,DE0 25,solar,1794.67625,1794.91555,1752.03315
+Generator,DE0 25,solar-hsat,0.55438,0.87417,0.13118
+Generator,DE0 25 biogas,unsustainable biogas,2222092.94711,736806.93646,
+Generator,DE0 25 low voltage,solar rooftop,0.25243,5515.45894,5515.45945
+Generator,DE0 25 rural heat,rural heat vent,5.23735,16.95623,0.80727
+Generator,DE0 25 solid biomass,solid biomass,10000.0,2460972.78295,3620582.27042
+Generator,DE0 25 solid biomass,unsustainable solid biomass,3744997.71852,1248459.5479,
+Generator,DE0 25 unsustainable bioliquids,unsustainable bioliquids,1047400.87816,347299.70827,
+Generator,DE0 25 urban central heat,urban central heat vent,0.93874,7.16637,0.24193
+Generator,DE0 25 urban decentral heat,urban decentral heat vent,0.47266,16.44751,0.99259
+Generator,DE0 26,onwind,1393.97302,5205.61595,5205.61579
+Generator,DE0 26,ror,109.05,109.05,109.05
+Generator,DE0 26,solar,1566.43553,1566.68912,1529.23055
+Generator,DE0 26,solar-hsat,0.86957,4685.44142,5613.59971
+Generator,DE0 26 biogas,unsustainable biogas,1741505.13784,580130.06315,
+Generator,DE0 26 low voltage,solar rooftop,0.30337,2643.87546,2643.87574
+Generator,DE0 26 rural heat,rural heat vent,4.21017,20.5727,0.71025
+Generator,DE0 26 solid biomass,solid biomass,10000.0,2079347.58866,3136644.13838
+Generator,DE0 26 solid biomass,unsustainable solid biomass,2937203.25901,985109.73388,
+Generator,DE0 26 unsustainable bioliquids,unsustainable bioliquids,820872.05806,273448.83947,
+Generator,DE0 26 urban central heat,urban central heat vent,69.47418,6.54064,0.22792
+Generator,DE0 26 urban decentral heat,urban decentral heat vent,0.46868,24.02907,0.82639
+Generator,DE0 27,offwind-ac,39.71637,65.1053,65.48823
+Generator,DE0 27,onwind,1853.5517,6921.85589,6921.85603
+Generator,DE0 27,ror,19.9,19.9,19.9
+Generator,DE0 27,solar,2834.30926,2834.52329,2766.90644
+Generator,DE0 27,solar-hsat,0.35117,0.53052,0.03912
+Generator,DE0 27 biogas,unsustainable biogas,2779833.98529,931428.43911,
+Generator,DE0 27 low voltage,solar rooftop,0.39386,3605.71034,3605.79367
+Generator,DE0 27 rural heat,rural heat vent,12.81201,14.2518,0.6797
+Generator,DE0 27 solid biomass,solid biomass,10000.0,3449917.87692,5212018.50567
+Generator,DE0 27 solid biomass,unsustainable solid biomass,4682474.93243,1575588.46899,
+Generator,DE0 27 unsustainable bioliquids,unsustainable bioliquids,1310296.47572,439036.07467,
+Generator,DE0 27 urban central heat,urban central heat vent,114.42286,6.89485,0.2163
+Generator,DE0 27 urban decentral heat,urban decentral heat vent,0.50751,19.93065,0.72566
+Generator,DE0 28,onwind,2539.30682,1780.58971,821.78296
+Generator,DE0 28,ror,126.325,126.325,126.325
+Generator,DE0 28,solar,3055.83101,3056.0975,2983.20471
+Generator,DE0 28,solar-hsat,14856.59319,14858.57672,14856.77703
+Generator,DE0 28 biogas,unsustainable biogas,2578239.41593,850822.00083,
+Generator,DE0 28 low voltage,solar rooftop,0.44937,4916.47518,4916.47598
+Generator,DE0 28 rural heat,rural heat vent,4.10122,102.37618,1.92994
+Generator,DE0 28 solid biomass,solid biomass,10000.0,3099253.92678,4532057.78087
+Generator,DE0 28 solid biomass,unsustainable solid biomass,4343625.35478,1440101.39881,
+Generator,DE0 28 unsustainable bioliquids,unsustainable bioliquids,1215273.29982,401041.59998,
+Generator,DE0 28 urban central heat,urban central heat vent,288.48773,7.39372,0.23841
+Generator,DE0 28 urban decentral heat,urban decentral heat vent,0.50329,301.88009,4.77676
+Generator,DE0 29,onwind,1712.16999,1200.60586,554.03536
+Generator,DE0 29,ror,30.1985,30.1985,30.1985
+Generator,DE0 29,solar,1411.68248,1411.94522,1378.15858
+Generator,DE0 29,solar-hsat,1.82963,241.60043,241.88993
+Generator,DE0 29 biogas,unsustainable biogas,2161098.62056,684961.49913,
+Generator,DE0 29 low voltage,solar rooftop,0.27872,1648.10344,1648.9618
+Generator,DE0 29 rural heat,rural heat vent,2.98939,247.38923,190.43961
+Generator,DE0 29 solid biomass,solid biomass,10000.0,3053136.53835,4465130.80435
+Generator,DE0 29 solid biomass,unsustainable solid biomass,3642475.60269,1161315.31283,
+Generator,DE0 29 unsustainable bioliquids,unsustainable bioliquids,1018650.72561,322861.95617,
+Generator,DE0 29 urban central heat,urban central heat vent,179.96261,82.36763,0.27891
+Generator,DE0 29 urban decentral heat,urban decentral heat vent,0.49458,0.273,0.01066
+Generator,DE0 3,onwind,1016.72722,713.14286,2912.43157
+Generator,DE0 3,ror,236.738,236.738,236.738
+Generator,DE0 3,solar,1882.17508,1882.44437,1837.46443
+Generator,DE0 3,solar-hsat,2528.01814,10226.28014,13410.46968
+Generator,DE0 3 biogas,unsustainable biogas,2469320.8331,803080.77043,
+Generator,DE0 3 low voltage,solar rooftop,0.57763,7671.85089,7671.85217
+Generator,DE0 3 rural heat,rural heat vent,7.1486,14.63893,0.68284
+Generator,DE0 3 solid biomass,solid biomass,10000.0,2906469.88019,4273586.52545
+Generator,DE0 3 solid biomass,unsustainable solid biomass,4160549.90832,1359855.70663,
+Generator,DE0 3 unsustainable bioliquids,unsustainable bioliquids,1163933.67451,378538.3979,
+Generator,DE0 3 urban central heat,urban central heat vent,113.3671,7.53429,0.30104
+Generator,DE0 3 urban decentral heat,urban decentral heat vent,31.17983,31.40536,0.94599
+Generator,DE0 4,onwind,2185.88542,1533.21294,3853.36579
+Generator,DE0 4,ror,2.561,2.561,2.561
+Generator,DE0 4,solar,2732.25461,2732.52114,2667.31972
+Generator,DE0 4,solar-hsat,0.76228,1.10219,0.12573
+Generator,DE0 4 biogas,unsustainable biogas,3330568.0562,1093657.67169,
+Generator,DE0 4 low voltage,solar rooftop,0.27763,3628.93651,3628.93683
+Generator,DE0 4 rural heat,rural heat vent,12.10878,13.0171,0.68597
+Generator,DE0 4 solid biomass,solid biomass,10000.0,4000443.504,5806898.55108
+Generator,DE0 4 solid biomass,unsustainable solid biomass,5608174.50815,1848270.94808,
+Generator,DE0 4 unsustainable bioliquids,unsustainable bioliquids,1569889.28449,515504.09141,
+Generator,DE0 4 urban central heat,urban central heat vent,0.64042,6.06658,0.21033
+Generator,DE0 4 urban decentral heat,urban decentral heat vent,0.48983,0.29418,0.01372
+Generator,DE0 5,offwind-ac,96.88738,159.91771,159.92787
+Generator,DE0 5,onwind,3128.47608,11682.90332,11682.91005
+Generator,DE0 5,ror,0.375,0.375,0.375
+Generator,DE0 5,solar,3765.97195,3766.23492,3676.42119
+Generator,DE0 5,solar-hsat,0.6693,1.65253,0.12972
+Generator,DE0 5 biogas,unsustainable biogas,4407991.39308,1433334.88952,
+Generator,DE0 5 low voltage,solar rooftop,0.49715,11025.14659,11025.14661
+Generator,DE0 5 rural heat,rural heat vent,4.77368,18.84003,0.83886
+Generator,DE0 5 solid biomass,solid biomass,10000.0,4991097.66177,7280573.62418
+Generator,DE0 5 solid biomass,unsustainable solid biomass,7419158.02724,2419216.29726,
+Generator,DE0 5 unsustainable bioliquids,unsustainable bioliquids,2077741.19531,675613.6029,
+Generator,DE0 5 urban central heat,urban central heat vent,0.11364,10.78143,0.9742
+Generator,DE0 5 urban decentral heat,urban decentral heat vent,40.55867,24.15309,0.99557
+Generator,DE0 6,offwind-ac,1589.22643,2406.51746,2406.51853
+Generator,DE0 6,offwind-dc,2700.01239,36916.4654,40729.42021
+Generator,DE0 6,onwind,2043.45223,6508.89951,6508.89944
+Generator,DE0 6,solar,2736.44709,2736.64336,2671.36792
+Generator,DE0 6,solar-hsat,0.33536,0.41675,0.03449
+Generator,DE0 6 biogas,unsustainable biogas,2493831.8985,867373.39641,
+Generator,DE0 6 low voltage,solar rooftop,0.2155,1437.76638,2557.1996
+Generator,DE0 6 rural heat,rural heat vent,14.8442,15.92129,0.82255
+Generator,DE0 6 solid biomass,solid biomass,10000.0,2663727.46557,4137128.45963
+Generator,DE0 6 solid biomass,unsustainable solid biomass,4201749.25305,1467921.75836,
+Generator,DE0 6 unsustainable bioliquids,unsustainable bioliquids,1175487.15676,408843.22965,
+Generator,DE0 6 urban central heat,urban central heat vent,0.06656,612.42781,269.70915
+Generator,DE0 6 urban decentral heat,urban decentral heat vent,0.60501,22.5332,0.83535
+Generator,DE0 7,onwind,2677.32652,1877.3259,866.42543
+Generator,DE0 7,ror,495.9628,495.9628,495.9628
+Generator,DE0 7,solar,2945.92551,2946.21138,2875.94089
+Generator,DE0 7,solar-hsat,22.8043,1817.85821,4611.1464
+Generator,DE0 7 biogas,unsustainable biogas,3956234.7321,1255113.49523,
+Generator,DE0 7 low voltage,solar rooftop,0.41847,5744.46666,5744.46992
+Generator,DE0 7 rural heat,rural heat vent,10.14277,15.64744,0.69381
+Generator,DE0 7 solid biomass,solid biomass,10000.0,5312393.61376,7777397.78772
+Generator,DE0 7 solid biomass,unsustainable solid biomass,6659824.30978,2119653.44508,
+Generator,DE0 7 unsustainable bioliquids,unsustainable bioliquids,1864802.16229,591607.55575,
+Generator,DE0 7 urban central heat,urban central heat vent,0.1458,6.79235,0.30466
+Generator,DE0 7 urban decentral heat,urban decentral heat vent,0.50234,14.46474,0.8882
+Generator,DE0 8,onwind,2295.97055,1610.1527,7326.6386
+Generator,DE0 8,ror,23.612,23.612,23.612
+Generator,DE0 8,solar,2617.12443,2617.34876,2554.89992
+Generator,DE0 8,solar-hsat,0.49153,0.58026,0.05251
+Generator,DE0 8 biogas,unsustainable biogas,3445347.14702,1117493.61915,
+Generator,DE0 8 low voltage,solar rooftop,0.20739,4079.98978,4079.9903
+Generator,DE0 8 rural heat,rural heat vent,6.58838,20.0402,0.70158
+Generator,DE0 8 solid biomass,solid biomass,10000.0,4142607.7721,5988501.80643
+Generator,DE0 8 solid biomass,unsustainable solid biomass,5801100.57044,1888335.52301,
+Generator,DE0 8 unsustainable bioliquids,unsustainable bioliquids,1623991.30605,526739.35154,
+Generator,DE0 8 urban central heat,urban central heat vent,101.11302,9.6934,0.2236
+Generator,DE0 8 urban decentral heat,urban decentral heat vent,0.49103,18.07231,0.86934
+Generator,DE0 9,onwind,1027.89559,720.92953,1291.13993
+Generator,DE0 9,ror,23.25203,23.25203,23.25203
+Generator,DE0 9,solar,1958.86111,1959.13409,1912.3456
+Generator,DE0 9,solar-hsat,7999.99235,16757.74181,20969.63887
+Generator,DE0 9 biogas,unsustainable biogas,2201067.9399,718781.62052,
+Generator,DE0 9 low voltage,solar rooftop,0.37677,8602.50086,8602.5062
+Generator,DE0 9 rural heat,rural heat vent,7.04487,11.09517,0.75633
+Generator,DE0 9 solid biomass,solid biomass,10000.0,2513138.29029,3675237.44497
+Generator,DE0 9 solid biomass,unsustainable solid biomass,3709657.90337,1218161.7541,
+Generator,DE0 9 unsustainable bioliquids,unsustainable bioliquids,1037490.57668,338803.33472,
+Generator,DE0 9 urban central heat,urban central heat vent,97.3671,7.55928,0.4
+Generator,DE0 9 urban decentral heat,urban decentral heat vent,32.23709,22.35498,1.00855
+Line,DE0 0,AC,14076.48567,18920.38972,19375.87186
+Line,DE0 1,AC,9473.71037,9473.7115,9473.71429
+Line,DE0 10,AC,24570.30728,40040.27859,40040.29518
+Line,DE0 11,AC,25687.65255,25885.6907,28510.55253
+Line,DE0 12,AC,15551.16536,19219.3315,19416.0415
+Line,DE0 13,AC,35832.63294,42021.90986,42021.91992
+Line,DE0 14,AC,31112.14975,41614.76191,42120.38289
+Line,DE0 15,AC,15551.20265,17826.42044,17826.44057
+Line,DE0 16,AC,17509.70974,22515.27831,25212.58288
+Line,DE0 17,AC,26890.71433,32974.82065,34799.24383
+Line,DE0 18,AC,13584.92361,15337.22519,15337.23075
+Line,DE0 19,AC,25761.64485,27897.98263,28225.09185
+Line,DE0 2,AC,33559.96946,52456.40675,53473.7939
+Line,DE0 20,AC,4379.33845,6094.81062,6094.83025
+Line,DE0 21,AC,7874.50885,19658.4954,20147.47975
+Line,DE0 22,AC,17152.4716,17152.47277,17152.47853
+Line,DE0 23,AC,11834.55743,12612.33769,13300.75676
+Line,DE0 24,AC,18280.01613,21169.28186,23313.57284
+Line,DE0 25,AC,491.58065,657.9276,681.20484
+Line,DE0 26,AC,9607.8551,12877.88598,13206.87421
+Line,DE0 27,AC,3172.78374,14153.46024,14951.47034
+Line,DE0 28,AC,5585.94254,5585.9431,5585.94542
+Line,DE0 3,AC,9473.7115,9473.71203,9473.7311
+Line,DE0 4,AC,3396.25417,4676.46269,4687.90667
+Line,DE0 5,AC,3574.97178,7512.32875,7512.32947
+Line,DE0 6,AC,5226.1976,11983.38266,11983.39254
+Link,DE gas,CCGT,11357.6061,10659.49177,7987.56194
+Link,DE gas,OCGT,77.13238,57.55556,57.55556
+Link,DE gas,SMR,811.98994,705.44293,703.21181
+Link,DE gas,SMR CC,1274.51624,1192.3118,1190.37927
+Link,DE gas,gas for industry,34545.95823,21569.68042,0.15572
+Link,DE gas,gas for industry CC,9.06765,4.11717,11229.04741
+Link,DE gas,rural gas boiler,33147.88036,15697.30315,
+Link,DE gas,urban central gas CHP,59065.73757,54600.12446,40008.66572
+Link,DE gas,urban central gas CHP CC,4.96772,2.63851,0.27768
+Link,DE gas,urban central gas boiler,114.5162,65.34689,48.94449
+Link,DE gas,urban decentral gas boiler,117316.97229,55571.16831,
+Link,DE gas primary,gas compressing,1000000.0,1000000.0,1000000.0
+Link,DE methanol,industry methanol,589.0411,731.73516,780.82192
+Link,DE methanol,methanol,1000000.0,1000000.0,1000000.0
+Link,DE oil,agriculture machinery oil,740.07532,740.07532,740.07532
+Link,DE oil,kerosene for aviation,15276.87574,16793.41231,15601.64874
+Link,DE oil,land transport oil,129604.84126,42976.36323,3276.85357
+Link,DE oil,naphtha for industry,21263.69863,16428.08219,11242.00913
+Link,DE oil,oil,2231.42857,1787.42857,1197.14286
+Link,DE oil,rural oil boiler,18823.54833,8911.9443,
+Link,DE oil,shipping oil,2174.92093,1413.69861,434.98419
+Link,DE oil,urban central oil CHP,853.65817,793.55273,
+Link,DE oil,urban decentral oil boiler,66907.9676,31683.05944,
+Link,DE oil primary,oil refining,1000000.0,1000000.0,1000000.0
+Link,DE renewable gas,renewable gas,2000000.0,2000000.0,2000000.0
+Link,DE renewable oil,renewable oil,2000000.0,2000000.0,2000000.0
+Link,DE0 0,DAC,0.01396,0.011,0.00207
+Link,DE0 0,H2 Electrolysis,0.05375,0.51315,0.58532
+Link,DE0 0,battery charger,1.01671,38.2405,430.10408
+Link,DE0 0,electricity distribution grid,2687.01258,4476.88373,5012.04773
+Link,DE0 0 H2,Fischer-Tropsch,0.15265,6.58431,0.01108
+Link,DE0 0 H2,H2 Fuel Cell,0.10908,0.11551,0.00546
+Link,DE0 0 H2,H2 turbine,0.61757,35.30275,35.88211
+Link,DE0 0 H2,Sabatier,0.08888,0.07162,0.0034
+Link,DE0 0 H2,methanolisation,3.22887,0.306,0.03207
+Link,DE0 0 battery,battery discharger,1.04039,39.02904,438.97314
+Link,DE0 0 biogas,biogas to gas,497.33904,497.37683,0.00537
+Link,DE0 0 biogas,biogas to gas CC,1.89189,0.03781,139.01869
+Link,DE0 0 co2 stored,CO2 pipeline,5.26039,449.1434,453.036
+Link,DE0 0 home battery,home battery discharger,10.45601,82.95854,21.63869
+Link,DE0 0 low voltage,BEV charger,1583.5831,9636.30126,14913.31667
+Link,DE0 0 low voltage,electricity distribution grid,2687.01258,4476.88373,5012.04773
+Link,DE0 0 low voltage,home battery charger,10.21804,81.28244,21.2015
+Link,DE0 0 low voltage,rural air heat pump,0.07384,0.02416,0.00131
+Link,DE0 0 low voltage,rural ground heat pump,42.08015,273.56756,274.41846
+Link,DE0 0 low voltage,rural resistive heater,78.74608,851.93578,814.92689
+Link,DE0 0 low voltage,urban central air heat pump,0.05116,0.1485,45.80655
+Link,DE0 0 low voltage,urban central resistive heater,15.75834,1443.24221,1427.59382
+Link,DE0 0 low voltage,urban decentral air heat pump,0.05976,154.36211,154.37197
+Link,DE0 0 low voltage,urban decentral resistive heater,1.41186,606.61214,606.62807
+Link,DE0 0 non-sequestered HVC,waste CHP,227.5161,316.67214,316.67493
+Link,DE0 0 non-sequestered HVC,waste CHP CC,0.63015,0.34525,0.00481
+Link,DE0 0 process emissions,process emissions,437.87206,0.02108,0.00028
+Link,DE0 0 process emissions,process emissions CC,0.57628,325.18687,325.18898
+Link,DE0 0 rural heat,rural water tanks charger,417.31141,539.81868,540.03612
+Link,DE0 0 rural water tanks,rural water tanks discharger,417.31141,539.81868,540.03612
+Link,DE0 0 solid biomass,biomass to liquid,0.08603,0.04503,0.0026
+Link,DE0 0 solid biomass,biomass to liquid CC,0.0615,0.03495,0.00419
+Link,DE0 0 solid biomass,rural biomass boiler,569.75921,364.47823,8e-05
+Link,DE0 0 solid biomass,solid biomass,234.2242,,
+Link,DE0 0 solid biomass,solid biomass for industry,156.2617,162.9826,0.00125
+Link,DE0 0 solid biomass,solid biomass for industry CC,0.22924,0.37424,180.11235
+Link,DE0 0 solid biomass,urban central solid biomass CHP,809.89141,421.5989,0.00311
+Link,DE0 0 solid biomass,urban central solid biomass CHP CC,0.06178,0.02907,0.00245
+Link,DE0 0 solid biomass,urban decentral biomass boiler,1050.67986,2059.57257,2595.94765
+Link,DE0 0 unsustainable bioliquids,unsustainable bioliquids,2061158.58466,678716.97621,
+Link,DE0 0 urban central heat,urban central water pits charger,303.90932,1353.14382,1833.58455
+Link,DE0 0 urban central heat,urban central water tanks charger,3.96056,1.48083,1.07901
+Link,DE0 0 urban central water pits,urban central water pits discharger,303.90932,1353.14382,1833.58455
+Link,DE0 0 urban central water tanks,urban central water tanks discharger,3.96056,1.48083,1.07901
+Link,DE0 0 urban decentral heat,urban decentral water tanks charger,16.67092,568.1906,568.36879
+Link,DE0 0 urban decentral water tanks,urban decentral water tanks discharger,16.67092,568.1906,568.36879
+Link,DE0 1,DAC,0.01479,0.01096,0.00155
+Link,DE0 1,H2 Electrolysis,0.0568,0.20852,0.01536
+Link,DE0 1,battery charger,1.05372,3196.09123,3432.65182
+Link,DE0 1,electricity distribution grid,2493.7075,4127.27261,5120.07541
+Link,DE0 1 H2,Fischer-Tropsch,0.15309,2.0653,0.01263
+Link,DE0 1 H2,H2 Fuel Cell,0.11386,0.10438,0.00549
+Link,DE0 1 H2,H2 pipeline,8.22032,20.05778,0.57486
+Link,DE0 1 H2,H2 turbine,0.66191,4.11033,0.08391
+Link,DE0 1 H2,Sabatier,0.08163,0.0712,0.00347
+Link,DE0 1 H2,methanolisation,3.3793,0.26252,0.04604
+Link,DE0 1 battery,battery discharger,1.07826,3261.99695,3503.43559
+Link,DE0 1 biogas,biogas to gas,386.74334,386.78046,0.00584
+Link,DE0 1 biogas,biogas to gas CC,1.98503,0.03662,69.60396
+Link,DE0 1 co2 stored,CO2 pipeline,4.46335,1.71092,0.07946
+Link,DE0 1 home battery,home battery discharger,19.9305,13.27826,8.42435
+Link,DE0 1 low voltage,BEV charger,1665.70231,10136.00694,15686.67035
+Link,DE0 1 low voltage,electricity distribution grid,2493.7075,4127.27261,5120.07541
+Link,DE0 1 low voltage,home battery charger,19.4769,13.00998,8.25414
+Link,DE0 1 low voltage,rural air heat pump,4.0169,0.02591,0.00135
+Link,DE0 1 low voltage,rural ground heat pump,24.86326,239.18038,223.99519
+Link,DE0 1 low voltage,rural resistive heater,15.44238,473.69156,458.26361
+Link,DE0 1 low voltage,urban central air heat pump,0.04861,0.07537,64.62912
+Link,DE0 1 low voltage,urban central resistive heater,9.5683,1508.20164,1508.28726
+Link,DE0 1 low voltage,urban decentral air heat pump,30.16398,290.50548,459.11623
+Link,DE0 1 low voltage,urban decentral resistive heater,31.09634,907.04834,1407.03875
+Link,DE0 1 non-sequestered HVC,waste CHP,238.17496,347.11453,347.11712
+Link,DE0 1 non-sequestered HVC,waste CHP CC,0.7227,0.16102,0.00311
+Link,DE0 1 process emissions,process emissions,95.9712,0.04947,0.00044
+Link,DE0 1 process emissions,process emissions CC,0.61387,111.51353,118.18588
+Link,DE0 1 rural heat,rural water tanks charger,56.37502,985.15314,985.32709
+Link,DE0 1 rural water tanks,rural water tanks discharger,56.37502,985.15314,985.32709
+Link,DE0 1 solid biomass,biomass to liquid,0.08554,0.04516,0.00237
+Link,DE0 1 solid biomass,biomass to liquid CC,0.06171,0.03457,0.00252
+Link,DE0 1 solid biomass,rural biomass boiler,303.13825,143.59214,4e-05
+Link,DE0 1 solid biomass,solid biomass for industry,228.16924,292.18459,0.00179
+Link,DE0 1 solid biomass,solid biomass for industry CC,0.24041,0.17941,383.05478
+Link,DE0 1 solid biomass,urban central solid biomass CHP,541.81742,316.22877,0.00326
+Link,DE0 1 solid biomass,urban central solid biomass CHP CC,0.05563,0.02844,0.00216
+Link,DE0 1 solid biomass,urban decentral biomass boiler,1212.28709,1305.58667,1099.18107
+Link,DE0 1 unsustainable bioliquids,unsustainable bioliquids,1604883.01369,512463.18154,
+Link,DE0 1 urban central heat,urban central water pits charger,203.29682,1269.14452,1656.21546
+Link,DE0 1 urban central heat,urban central water tanks charger,3.93953,1.42776,0.74138
+Link,DE0 1 urban central water pits,urban central water pits discharger,203.29682,1269.14452,1656.21546
+Link,DE0 1 urban central water tanks,urban central water tanks discharger,3.93953,1.42776,0.74138
+Link,DE0 1 urban decentral heat,urban decentral water tanks charger,92.82322,522.72221,522.97214
+Link,DE0 1 urban decentral water tanks,urban decentral water tanks discharger,92.82322,522.72221,522.97214
+Link,DE0 10,DAC,0.01369,0.01105,0.00235
+Link,DE0 10,DC,1400.00144,5400.74414,5400.74579
+Link,DE0 10,H2 Electrolysis,0.05851,805.1892,805.29055
+Link,DE0 10,battery charger,1.05242,400.32377,658.14452
+Link,DE0 10,electricity distribution grid,1453.03457,2265.35299,2548.88005
+Link,DE0 10 H2,Fischer-Tropsch,0.15314,1241.51986,1241.53088
+Link,DE0 10 H2,H2 Fuel Cell,0.122,0.10497,0.00514
+Link,DE0 10 H2,H2 pipeline,462.44251,478.86296,461.14923
+Link,DE0 10 H2,H2 turbine,0.66283,38.55863,39.14643
+Link,DE0 10 H2,Sabatier,0.08186,0.07108,0.00338
+Link,DE0 10 H2,methanolisation,390.74848,391.09649,0.03301
+Link,DE0 10 battery,battery discharger,1.07693,408.57874,671.71594
+Link,DE0 10 biogas,biogas to gas,194.74566,194.78226,0.00515
+Link,DE0 10 biogas,biogas to gas CC,2.43589,0.03669,163.94737
+Link,DE0 10 co2 stored,CO2 pipeline,7.75077,478.76008,2296.36476
+Link,DE0 10 home battery,home battery discharger,9.90993,244.43899,197.78768
+Link,DE0 10 low voltage,BEV charger,496.26634,3019.84279,4673.56412
+Link,DE0 10 low voltage,electricity distribution grid,1453.03457,2265.35299,2548.88005
+Link,DE0 10 low voltage,home battery charger,9.68439,239.50032,193.79156
+Link,DE0 10 low voltage,rural air heat pump,0.07747,0.02798,0.00144
+Link,DE0 10 low voltage,rural ground heat pump,15.00185,193.3453,190.51071
+Link,DE0 10 low voltage,rural resistive heater,34.28734,708.80824,674.54077
+Link,DE0 10 low voltage,urban central air heat pump,0.07129,0.97611,7.30504
+Link,DE0 10 low voltage,urban central resistive heater,535.19545,911.446,866.25931
+Link,DE0 10 low voltage,urban decentral air heat pump,0.03497,0.08243,0.00541
+Link,DE0 10 low voltage,urban decentral resistive heater,1.40223,0.46249,0.01841
+Link,DE0 10 non-sequestered HVC,waste CHP,70.45008,93.82982,93.83268
+Link,DE0 10 non-sequestered HVC,waste CHP CC,0.77331,1.17197,0.00527
+Link,DE0 10 process emissions,process emissions,92.63708,0.01146,0.00028
+Link,DE0 10 process emissions,process emissions CC,11.92007,113.47226,115.20037
+Link,DE0 10 rural heat,rural water tanks charger,341.27622,552.78543,553.05003
+Link,DE0 10 rural water tanks,rural water tanks discharger,341.27622,552.78543,553.05003
+Link,DE0 10 solid biomass,biomass to liquid,0.08347,0.06037,0.00301
+Link,DE0 10 solid biomass,biomass to liquid CC,0.05934,0.06954,194.54477
+Link,DE0 10 solid biomass,rural biomass boiler,431.45117,264.87538,0.00015
+Link,DE0 10 solid biomass,solid biomass for industry,88.91018,0.11284,0.00078
+Link,DE0 10 solid biomass,solid biomass for industry CC,0.23423,98.85375,98.85949
+Link,DE0 10 solid biomass,urban central solid biomass CHP,721.15045,547.49613,0.00417
+Link,DE0 10 solid biomass,urban central solid biomass CHP CC,0.07138,0.0406,0.00386
+Link,DE0 10 solid biomass,urban decentral biomass boiler,104.40019,109.06769,88.62795
+Link,DE0 10 unsustainable bioliquids,unsustainable bioliquids,813968.1378,285960.19127,
+Link,DE0 10 urban central heat,urban central water pits charger,247.40113,786.80418,822.66626
+Link,DE0 10 urban central heat,urban central water tanks charger,3.92697,1.39959,0.46182
+Link,DE0 10 urban central water pits,urban central water pits discharger,247.40113,786.80418,822.66626
+Link,DE0 10 urban central water tanks,urban central water tanks discharger,3.92697,1.39959,0.46182
+Link,DE0 10 urban decentral heat,urban decentral water tanks charger,16.50924,22.52744,16.67754
+Link,DE0 10 urban decentral water tanks,urban decentral water tanks discharger,16.50924,22.52744,16.67754
+Link,DE0 11,DAC,0.01419,0.01088,0.00166
+Link,DE0 11,H2 Electrolysis,0.05687,0.17036,0.02326
+Link,DE0 11,battery charger,1.01818,9.99077,170.85025
+Link,DE0 11,electricity distribution grid,2165.49335,3222.57534,3718.56952
+Link,DE0 11 H2,Fischer-Tropsch,0.15262,3.46757,0.0119
+Link,DE0 11 H2,H2 Fuel Cell,0.10735,0.09763,0.00528
+Link,DE0 11 H2,H2 turbine,0.61718,7.37827,0.1331
+Link,DE0 11 H2,Sabatier,0.08913,0.07148,0.00345
+Link,DE0 11 H2,methanolisation,2.48891,0.27806,0.03868
+Link,DE0 11 battery,battery discharger,1.04189,10.19679,174.3733
+Link,DE0 11 biogas,biogas to gas,312.94298,312.97975,0.00568
+Link,DE0 11 biogas,biogas to gas CC,1.718,0.03622,55.09671
+Link,DE0 11 co2 stored,CO2 pipeline,6.65048,10.10243,50.87729
+Link,DE0 11 home battery,home battery discharger,14.1853,5.19676,3.71171
+Link,DE0 11 low voltage,BEV charger,1327.40451,8077.42252,12500.76733
+Link,DE0 11 low voltage,electricity distribution grid,2165.49335,3222.57534,3718.56952
+Link,DE0 11 low voltage,home battery charger,13.86246,5.09176,3.63672
+Link,DE0 11 low voltage,rural air heat pump,0.08887,0.02663,0.0014
+Link,DE0 11 low voltage,rural ground heat pump,30.3063,292.73672,264.63517
+Link,DE0 11 low voltage,rural resistive heater,27.23895,715.05861,687.83443
+Link,DE0 11 low voltage,urban central air heat pump,0.05012,0.05618,26.97827
+Link,DE0 11 low voltage,urban central resistive heater,6.43786,1043.84001,1172.35556
+Link,DE0 11 low voltage,urban decentral air heat pump,0.04703,62.91127,146.00525
+Link,DE0 11 low voltage,urban decentral resistive heater,1.40742,206.23464,478.33089
+Link,DE0 11 non-sequestered HVC,waste CHP,190.30063,270.93042,270.93305
+Link,DE0 11 non-sequestered HVC,waste CHP CC,0.60163,0.19071,0.00355
+Link,DE0 11 process emissions,process emissions,8.57442,0.04655,0.00045
+Link,DE0 11 process emissions,process emissions CC,0.31188,8.11861,7.25252
+Link,DE0 11 rural heat,rural water tanks charger,412.4206,442.90195,443.14112
+Link,DE0 11 rural water tanks,rural water tanks discharger,412.4206,442.90195,443.14112
+Link,DE0 11 solid biomass,biomass to liquid,0.08492,0.04439,0.00238
+Link,DE0 11 solid biomass,biomass to liquid CC,0.06067,0.03355,0.00263
+Link,DE0 11 solid biomass,rural biomass boiler,380.91296,180.43256,5e-05
+Link,DE0 11 solid biomass,solid biomass for industry,70.66051,73.00371,0.00162
+Link,DE0 11 solid biomass,solid biomass for industry CC,0.21089,0.17764,81.17764
+Link,DE0 11 solid biomass,urban central solid biomass CHP,807.71028,621.84399,0.00285
+Link,DE0 11 solid biomass,urban central solid biomass CHP CC,0.05947,0.02663,0.00201
+Link,DE0 11 solid biomass,urban decentral biomass boiler,826.73551,1681.12975,1723.5417
+Link,DE0 11 unsustainable bioliquids,unsustainable bioliquids,1299051.81034,420792.02562,
+Link,DE0 11 urban central heat,urban central water pits charger,215.24081,1174.86537,1304.7169
+Link,DE0 11 urban central heat,urban central water tanks charger,3.88233,1.39314,0.97537
+Link,DE0 11 urban central water pits,urban central water pits discharger,215.24081,1174.86537,1304.7169
+Link,DE0 11 urban central water tanks,urban central water tanks discharger,3.88233,1.39314,0.97537
+Link,DE0 11 urban decentral heat,urban decentral water tanks charger,16.5211,37.20898,37.47925
+Link,DE0 11 urban decentral water tanks,urban decentral water tanks discharger,16.5211,37.20898,37.47925
+Link,DE0 12,DAC,0.01425,0.01089,0.00178
+Link,DE0 12,H2 Electrolysis,0.05651,0.18871,0.01274
+Link,DE0 12,battery charger,1.01802,424.8593,425.53645
+Link,DE0 12,electricity distribution grid,967.03924,1342.52292,1584.47507
+Link,DE0 12 H2,Fischer-Tropsch,0.1525,3.03643,0.01148
+Link,DE0 12 H2,H2 Fuel Cell,0.10564,0.13429,0.00577
+Link,DE0 12 H2,H2 turbine,0.61724,20.01408,20.17013
+Link,DE0 12 H2,Sabatier,0.08891,0.07158,0.00341
+Link,DE0 12 H2,methanolisation,1.72636,0.22518,0.02998
+Link,DE0 12 battery,battery discharger,1.04173,433.62021,434.31132
+Link,DE0 12 biogas,biogas to gas,126.48933,126.52498,0.00554
+Link,DE0 12 biogas,biogas to gas CC,1.61742,0.03516,14.79536
+Link,DE0 12 co2 stored,CO2 pipeline,6.46802,8.32693,46.42922
+Link,DE0 12 home battery,home battery discharger,2.55806,1.97391,1.003
+Link,DE0 12 low voltage,BEV charger,540.76148,3290.60123,5092.59485
+Link,DE0 12 low voltage,electricity distribution grid,967.03924,1342.52292,1584.47507
+Link,DE0 12 low voltage,home battery charger,2.49984,1.93403,0.98273
+Link,DE0 12 low voltage,rural air heat pump,0.07886,0.02806,0.00141
+Link,DE0 12 low voltage,rural ground heat pump,17.44611,136.19787,123.07081
+Link,DE0 12 low voltage,rural resistive heater,31.94236,331.35101,299.42285
+Link,DE0 12 low voltage,urban central air heat pump,0.04597,0.13528,17.25576
+Link,DE0 12 low voltage,urban central resistive heater,3.38819,368.68318,368.83013
+Link,DE0 12 low voltage,urban decentral air heat pump,0.04511,0.95079,51.36153
+Link,DE0 12 low voltage,urban decentral resistive heater,1.40678,2.82704,165.50245
+Link,DE0 12 non-sequestered HVC,waste CHP,77.21354,119.78852,119.79102
+Link,DE0 12 non-sequestered HVC,waste CHP CC,0.59288,0.20112,0.00315
+Link,DE0 12 process emissions,process emissions,3.9123,0.03663,0.0004
+Link,DE0 12 process emissions,process emissions CC,0.3581,5.08041,4.72774
+Link,DE0 12 rural heat,rural water tanks charger,259.58347,514.27785,514.50084
+Link,DE0 12 rural water tanks,rural water tanks discharger,259.58347,514.27785,514.50084
+Link,DE0 12 solid biomass,biomass to liquid,0.08989,0.04351,0.00228
+Link,DE0 12 solid biomass,biomass to liquid CC,0.0648,0.03268,0.00227
+Link,DE0 12 solid biomass,rural biomass boiler,175.00979,74.35549,4e-05
+Link,DE0 12 solid biomass,solid biomass for industry,50.10096,69.55128,0.00146
+Link,DE0 12 solid biomass,solid biomass for industry CC,0.22505,0.21925,97.66675
+Link,DE0 12 solid biomass,urban central solid biomass CHP,48.59848,12.44855,0.00293
+Link,DE0 12 solid biomass,urban central solid biomass CHP CC,0.06149,0.02922,0.00204
+Link,DE0 12 solid biomass,urban decentral biomass boiler,317.42019,908.5251,758.16829
+Link,DE0 12 unsustainable bioliquids,unsustainable bioliquids,528751.767,176915.12365,
+Link,DE0 12 urban central heat,urban central water pits charger,43.70839,357.91343,460.29544
+Link,DE0 12 urban central heat,urban central water tanks charger,3.67364,1.37617,0.39521
+Link,DE0 12 urban central water pits,urban central water pits discharger,43.70839,357.91343,460.29544
+Link,DE0 12 urban central water tanks,urban central water tanks discharger,3.67364,1.37617,0.39521
+Link,DE0 12 urban decentral heat,urban decentral water tanks charger,16.50663,26.36196,16.77924
+Link,DE0 12 urban decentral water tanks,urban decentral water tanks discharger,16.50663,26.36196,16.77924
+Link,DE0 13,DAC,0.01386,0.01099,0.00183
+Link,DE0 13,H2 Electrolysis,0.0573,1.44406,0.59052
+Link,DE0 13,battery charger,1.04956,1956.16765,2485.98088
+Link,DE0 13,electricity distribution grid,1646.57228,2824.04422,3059.79915
+Link,DE0 13 H2,Fischer-Tropsch,0.15379,1.72009,0.01141
+Link,DE0 13 H2,H2 Fuel Cell,0.12404,0.11968,0.00537
+Link,DE0 13 H2,H2 pipeline,3.7897,9.5586,0.36656
+Link,DE0 13 H2,H2 pipeline retrofitted,20.66621,25.21754,122.81381
+Link,DE0 13 H2,H2 turbine,0.66192,10.20054,10.74451
+Link,DE0 13 H2,Sabatier,0.08696,0.06257,0.00346
+Link,DE0 13 H2,methanolisation,24.37308,24.65732,0.04323
+Link,DE0 13 battery,battery discharger,1.07401,1996.50525,2537.24361
+Link,DE0 13 biogas,biogas to gas,319.01415,319.05129,0.0056
+Link,DE0 13 biogas,biogas to gas CC,2.52686,0.03686,133.12468
+Link,DE0 13 co2 stored,CO2 pipeline,3.81177,141.95567,142.60542
+Link,DE0 13 home battery,home battery discharger,2.63648,17.49657,4.56806
+Link,DE0 13 low voltage,BEV charger,1117.44434,6799.78861,10523.47764
+Link,DE0 13 low voltage,electricity distribution grid,1646.57228,2824.04422,3059.79915
+Link,DE0 13 low voltage,home battery charger,2.57648,17.14307,4.47576
+Link,DE0 13 low voltage,rural air heat pump,0.08341,0.02389,0.00132
+Link,DE0 13 low voltage,rural ground heat pump,29.18521,343.44279,370.13396
+Link,DE0 13 low voltage,rural resistive heater,48.73718,1123.57316,1102.64386
+Link,DE0 13 low voltage,urban central air heat pump,0.07,103.24322,103.24894
+Link,DE0 13 low voltage,urban central resistive heater,349.78136,993.99733,964.24747
+Link,DE0 13 low voltage,urban decentral air heat pump,0.0327,0.04174,0.0021
+Link,DE0 13 low voltage,urban decentral resistive heater,1.40378,0.42069,0.01451
+Link,DE0 13 non-sequestered HVC,waste CHP,159.6864,248.73524,248.73773
+Link,DE0 13 non-sequestered HVC,waste CHP CC,0.8537,0.17604,0.00308
+Link,DE0 13 process emissions,process emissions,223.9566,0.0401,0.00025
+Link,DE0 13 process emissions,process emissions CC,4.12742,135.90278,135.90487
+Link,DE0 13 rural heat,rural water tanks charger,458.0286,609.94906,610.16099
+Link,DE0 13 rural water tanks,rural water tanks discharger,458.0286,609.94906,610.16099
+Link,DE0 13 solid biomass,biomass to liquid,0.08466,0.05711,0.00317
+Link,DE0 13 solid biomass,biomass to liquid CC,0.06055,0.05575,241.63944
+Link,DE0 13 solid biomass,rural biomass boiler,915.63298,635.16355,0.0002
+Link,DE0 13 solid biomass,solid biomass,118.78248,,
+Link,DE0 13 solid biomass,solid biomass for industry,83.20274,46.36658,0.00148
+Link,DE0 13 solid biomass,solid biomass for industry CC,0.23064,47.95134,100.20735
+Link,DE0 13 solid biomass,urban central solid biomass CHP,278.15994,334.77839,201.70866
+Link,DE0 13 solid biomass,urban central solid biomass CHP CC,0.07719,0.0393,0.00336
+Link,DE0 13 solid biomass,urban decentral biomass boiler,483.72081,764.71951,622.61088
+Link,DE0 13 unsustainable bioliquids,unsustainable bioliquids,1327460.06829,437082.50519,
+Link,DE0 13 urban central heat,urban central water pits charger,697.63925,1113.71255,1177.62012
+Link,DE0 13 urban central heat,urban central water tanks charger,4.05123,1.50936,0.29686
+Link,DE0 13 urban central water pits,urban central water pits discharger,697.63925,1113.71255,1177.62012
+Link,DE0 13 urban central water tanks,urban central water tanks discharger,4.05123,1.50936,0.29686
+Link,DE0 13 urban decentral heat,urban decentral water tanks charger,16.52016,21.28328,16.63906
+Link,DE0 13 urban decentral water tanks,urban decentral water tanks discharger,16.52016,21.28328,16.63906
+Link,DE0 14,DAC,0.0145,0.01108,0.00209
+Link,DE0 14,H2 Electrolysis,0.05668,0.41147,0.04147
+Link,DE0 14,battery charger,1.04881,14.60448,15.10878
+Link,DE0 14,electricity distribution grid,2447.83622,4863.11584,5317.33563
+Link,DE0 14 H2,Fischer-Tropsch,0.15277,19.87876,19.88975
+Link,DE0 14 H2,H2 Fuel Cell,0.11404,0.11818,0.00569
+Link,DE0 14 H2,H2 turbine,0.64779,42.18302,42.62645
+Link,DE0 14 H2,Sabatier,0.08762,0.07117,0.00338
+Link,DE0 14 H2,methanolisation,1.96322,0.29914,0.02969
+Link,DE0 14 battery,battery discharger,1.07323,14.90564,15.42033
+Link,DE0 14 biogas,biogas to gas,518.84137,518.87941,0.00533
+Link,DE0 14 biogas,biogas to gas CC,1.94765,0.03815,216.60136
+Link,DE0 14 co2 stored,CO2 pipeline,5.00754,853.55027,2321.19537
+Link,DE0 14 home battery,home battery discharger,2.86499,211.4675,105.78193
+Link,DE0 14 low voltage,BEV charger,1948.56223,11857.24493,18350.48985
+Link,DE0 14 low voltage,electricity distribution grid,2447.83622,4863.11584,5317.33563
+Link,DE0 14 low voltage,home battery charger,2.79978,207.19499,103.6447
+Link,DE0 14 low voltage,rural air heat pump,0.09508,0.02548,0.00133
+Link,DE0 14 low voltage,rural ground heat pump,38.00028,142.35632,149.88347
+Link,DE0 14 low voltage,rural resistive heater,7.9513,371.69168,374.50598
+Link,DE0 14 low voltage,urban central air heat pump,0.04961,0.08316,68.09564
+Link,DE0 14 low voltage,urban central resistive heater,5.27423,1815.3341,1816.01314
+Link,DE0 14 low voltage,urban decentral air heat pump,35.30949,476.83868,488.31454
+Link,DE0 14 low voltage,urban decentral resistive heater,85.38817,1933.0137,1923.87225
+Link,DE0 14 non-sequestered HVC,waste CHP,280.28326,388.10797,388.11093
+Link,DE0 14 non-sequestered HVC,waste CHP CC,0.65063,0.40848,0.00532
+Link,DE0 14 process emissions,process emissions,221.84675,0.01739,0.00034
+Link,DE0 14 process emissions,process emissions CC,0.55309,256.17267,270.14622
+Link,DE0 14 rural heat,rural water tanks charger,130.67874,177.73279,177.95389
+Link,DE0 14 rural water tanks,rural water tanks discharger,130.67874,177.73279,177.95389
+Link,DE0 14 solid biomass,biomass to liquid,0.08306,0.04547,0.00241
+Link,DE0 14 solid biomass,biomass to liquid CC,0.05935,0.03554,0.00292
+Link,DE0 14 solid biomass,rural biomass boiler,306.60065,212.33749,6e-05
+Link,DE0 14 solid biomass,solid biomass,81.66295,,
+Link,DE0 14 solid biomass,solid biomass for industry,213.33451,216.58743,0.00122
+Link,DE0 14 solid biomass,solid biomass for industry CC,0.23501,0.40416,230.848
+Link,DE0 14 solid biomass,urban central solid biomass CHP,4426.1716,775.24345,0.00291
+Link,DE0 14 solid biomass,urban central solid biomass CHP CC,0.0567,0.02975,0.00215
+Link,DE0 14 solid biomass,urban decentral biomass boiler,1682.66605,2016.19418,2436.37222
+Link,DE0 14 unsustainable bioliquids,unsustainable bioliquids,2150173.97838,703326.32883,
+Link,DE0 14 urban central heat,urban central water pits charger,196.02803,1634.05058,2711.47605
+Link,DE0 14 urban central heat,urban central water tanks charger,3.95014,1.41286,0.67146
+Link,DE0 14 urban central water pits,urban central water pits discharger,196.02803,1634.05058,2711.47605
+Link,DE0 14 urban central water tanks,urban central water tanks discharger,3.95014,1.41286,0.67146
+Link,DE0 14 urban decentral heat,urban decentral water tanks charger,611.22123,981.55975,981.81372
+Link,DE0 14 urban decentral water tanks,urban decentral water tanks discharger,611.22123,981.55975,981.81372
+Link,DE0 15,DAC,0.01424,0.01103,0.00222
+Link,DE0 15,H2 Electrolysis,0.05716,0.97538,0.14458
+Link,DE0 15,battery charger,1.05127,433.37817,1022.8635
+Link,DE0 15,electricity distribution grid,3045.00292,5231.41723,6726.03736
+Link,DE0 15 H2,Fischer-Tropsch,0.15339,3.22458,0.01096
+Link,DE0 15 H2,H2 Fuel Cell,0.11991,0.11659,0.00469
+Link,DE0 15 H2,H2 pipeline,22.13715,40.27436,22.81567
+Link,DE0 15 H2,H2 turbine,0.66151,13.06781,13.55218
+Link,DE0 15 H2,Sabatier,0.08705,0.06326,0.00343
+Link,DE0 15 H2,methanolisation,31.60056,31.90682,0.03698
+Link,DE0 15 battery,battery discharger,1.07575,442.31474,1043.95569
+Link,DE0 15 biogas,biogas to gas,346.88669,346.92402,0.00554
+Link,DE0 15 biogas,biogas to gas CC,2.58223,0.03702,149.90579
+Link,DE0 15 co2 stored,CO2 pipeline,6.30836,170.94798,833.11521
+Link,DE0 15 home battery,home battery discharger,8.45872,280.04947,387.98204
+Link,DE0 15 low voltage,BEV charger,1541.40727,9379.6561,14516.12792
+Link,DE0 15 low voltage,electricity distribution grid,3045.00292,5231.41723,6726.03736
+Link,DE0 15 low voltage,home battery charger,8.2662,274.39132,380.14321
+Link,DE0 15 low voltage,rural air heat pump,0.06906,0.02476,0.00125
+Link,DE0 15 low voltage,rural ground heat pump,40.0886,220.01658,224.36083
+Link,DE0 15 low voltage,rural resistive heater,75.30794,666.5374,617.60612
+Link,DE0 15 low voltage,urban central air heat pump,0.06051,98.43826,98.44084
+Link,DE0 15 low voltage,urban central resistive heater,351.11805,2092.89751,2203.24909
+Link,DE0 15 low voltage,urban decentral air heat pump,0.04693,300.41564,482.06341
+Link,DE0 15 low voltage,urban decentral resistive heater,1.41076,1254.17919,2018.35576
+Link,DE0 15 non-sequestered HVC,waste CHP,220.09315,323.58398,323.58667
+Link,DE0 15 non-sequestered HVC,waste CHP CC,0.96127,0.18774,0.00412
+Link,DE0 15 process emissions,process emissions,73.3457,0.04036,0.00029
+Link,DE0 15 process emissions,process emissions CC,3.50884,76.16591,76.16802
+Link,DE0 15 rural heat,rural water tanks charger,502.24387,616.78374,617.10593
+Link,DE0 15 rural water tanks,rural water tanks discharger,502.24387,616.78374,617.10593
+Link,DE0 15 solid biomass,biomass to liquid,0.08441,0.04517,0.00237
+Link,DE0 15 solid biomass,biomass to liquid CC,0.06105,0.03473,0.00262
+Link,DE0 15 solid biomass,rural biomass boiler,436.85918,277.44949,6e-05
+Link,DE0 15 solid biomass,solid biomass,67.18634,,
+Link,DE0 15 solid biomass,solid biomass for industry,282.95113,357.23157,0.00155
+Link,DE0 15 solid biomass,solid biomass for industry CC,0.25683,0.22132,469.30554
+Link,DE0 15 solid biomass,urban central solid biomass CHP,441.92787,261.2469,0.00248
+Link,DE0 15 solid biomass,urban central solid biomass CHP CC,0.06901,0.02916,0.00174
+Link,DE0 15 solid biomass,urban decentral biomass boiler,1099.46449,520.80076,305.55874
+Link,DE0 15 unsustainable bioliquids,unsustainable bioliquids,1442777.03593,487031.30629,
+Link,DE0 15 urban central heat,urban central water pits charger,930.69549,2169.77588,2267.03428
+Link,DE0 15 urban central heat,urban central water tanks charger,3.90174,1.42785,0.85454
+Link,DE0 15 urban central water pits,urban central water pits discharger,930.69549,2169.77588,2267.03428
+Link,DE0 15 urban central water tanks,urban central water tanks discharger,3.90174,1.42785,0.85454
+Link,DE0 15 urban decentral heat,urban decentral water tanks charger,16.53114,618.10188,618.52023
+Link,DE0 15 urban decentral water tanks,urban decentral water tanks discharger,16.53114,618.10188,618.52023
+Link,DE0 16,DAC,0.01438,0.01143,0.00193
+Link,DE0 16,H2 Electrolysis,0.06017,0.17751,0.01579
+Link,DE0 16,battery charger,1.09879,4196.80514,4196.84394
+Link,DE0 16,electricity distribution grid,1858.25841,2765.91554,3779.70344
+Link,DE0 16 H2,Fischer-Tropsch,0.15275,1.37768,0.01148
+Link,DE0 16 H2,H2 Fuel Cell,0.11881,0.11552,0.00553
+Link,DE0 16 H2,H2 pipeline,19.4231,1684.5465,2038.4813
+Link,DE0 16 H2,H2 pipeline retrofitted,118.55943,1822.99533,1822.77363
+Link,DE0 16 H2,H2 turbine,0.68688,5.26337,0.07275
+Link,DE0 16 H2,Sabatier,0.09946,0.07757,0.00344
+Link,DE0 16 H2,methanolisation,27.28469,27.49806,0.03871
+Link,DE0 16 battery,battery discharger,1.12438,4283.34631,4283.38591
+Link,DE0 16 biogas,biogas to gas,259.0609,259.09734,0.00566
+Link,DE0 16 biogas,biogas to gas CC,2.58019,0.03605,40.75073
+Link,DE0 16 co2 stored,CO2 pipeline,5.69198,189.90028,187.96204
+Link,DE0 16 home battery,home battery discharger,16.37481,6.46709,4.30143
+Link,DE0 16 low voltage,BEV charger,1405.59601,8553.22758,13237.13197
+Link,DE0 16 low voltage,electricity distribution grid,1858.25841,2765.91554,3779.70344
+Link,DE0 16 low voltage,home battery charger,16.00213,6.33643,4.21453
+Link,DE0 16 low voltage,rural air heat pump,0.10825,0.02758,0.00135
+Link,DE0 16 low voltage,rural ground heat pump,29.67916,115.53382,107.00564
+Link,DE0 16 low voltage,rural resistive heater,12.57388,220.51115,207.95144
+Link,DE0 16 low voltage,urban central air heat pump,0.05168,7.36856,109.52121
+Link,DE0 16 low voltage,urban central resistive heater,3.14144,1037.81922,1037.85821
+Link,DE0 16 low voltage,urban decentral air heat pump,0.03063,145.83263,336.23847
+Link,DE0 16 low voltage,urban decentral resistive heater,1.40108,472.10105,1104.7905
+Link,DE0 16 non-sequestered HVC,waste CHP,200.99346,324.20285,324.20532
+Link,DE0 16 non-sequestered HVC,waste CHP CC,0.99219,0.17379,0.00253
+Link,DE0 16 process emissions,process emissions,18.99124,0.04262,0.00035
+Link,DE0 16 process emissions,process emissions CC,8.14875,31.91724,36.55811
+Link,DE0 16 rural heat,rural water tanks charger,189.35458,257.58265,257.80878
+Link,DE0 16 rural water tanks,rural water tanks discharger,189.35458,257.58265,257.80878
+Link,DE0 16 solid biomass,biomass to liquid,0.08306,0.04507,0.00228
+Link,DE0 16 solid biomass,biomass to liquid CC,0.05907,0.03465,0.00225
+Link,DE0 16 solid biomass,rural biomass boiler,97.29552,46.08758,4e-05
+Link,DE0 16 solid biomass,solid biomass for industry,92.33236,107.23305,0.00167
+Link,DE0 16 solid biomass,solid biomass for industry CC,0.23461,0.23875,133.18166
+Link,DE0 16 solid biomass,urban central solid biomass CHP,289.59983,196.98927,0.00387
+Link,DE0 16 solid biomass,urban central solid biomass CHP CC,0.0468,0.03078,0.00226
+Link,DE0 16 solid biomass,urban decentral biomass boiler,1152.97952,2276.83222,1730.68521
+Link,DE0 16 unsustainable bioliquids,unsustainable bioliquids,1080127.65122,340791.24251,
+Link,DE0 16 urban central heat,urban central water pits charger,118.08661,940.54145,1116.72109
+Link,DE0 16 urban central heat,urban central water tanks charger,3.86443,1.37406,0.19582
+Link,DE0 16 urban central water pits,urban central water pits discharger,118.08661,940.54145,1116.72109
+Link,DE0 16 urban central water tanks,urban central water tanks discharger,3.86443,1.37406,0.19582
+Link,DE0 16 urban decentral heat,urban decentral water tanks charger,16.4058,38.95135,39.2181
+Link,DE0 16 urban decentral water tanks,urban decentral water tanks discharger,16.4058,38.95135,39.2181
+Link,DE0 17,DAC,0.01418,0.0108,0.00176
+Link,DE0 17,H2 Electrolysis,0.05667,0.14213,0.01192
+Link,DE0 17,battery charger,1.04988,4.23629,4.23593
+Link,DE0 17,electricity distribution grid,3988.26364,5222.58112,7074.46695
+Link,DE0 17 H2,Fischer-Tropsch,0.15308,46.44559,46.45706
+Link,DE0 17 H2,H2 Fuel Cell,0.11942,0.13412,0.00616
+Link,DE0 17 H2,H2 turbine,0.66244,22.51647,22.65081
+Link,DE0 17 H2,Sabatier,0.084,0.07186,0.00341
+Link,DE0 17 H2,methanolisation,1.82456,0.23752,0.0285
+Link,DE0 17 battery,battery discharger,1.07433,4.32365,4.32327
+Link,DE0 17 biogas,biogas to gas,322.54789,322.58466,0.00549
+Link,DE0 17 biogas,biogas to gas CC,1.66999,0.03647,48.38887
+Link,DE0 17 co2 stored,CO2 pipeline,6.77545,470.40611,2334.71332
+Link,DE0 17 home battery,home battery discharger,33.99752,11.32474,8.8692
+Link,DE0 17 low voltage,BEV charger,2715.57016,16524.58414,25573.74967
+Link,DE0 17 low voltage,electricity distribution grid,3988.26364,5222.58112,7074.46695
+Link,DE0 17 low voltage,home battery charger,33.22377,11.09593,8.69001
+Link,DE0 17 low voltage,rural air heat pump,0.08512,0.0273,0.00135
+Link,DE0 17 low voltage,rural ground heat pump,59.43794,67.86349,65.65989
+Link,DE0 17 low voltage,rural resistive heater,45.8217,51.42681,38.86305
+Link,DE0 17 low voltage,urban central air heat pump,0.05754,115.27352,202.65533
+Link,DE0 17 low voltage,urban central resistive heater,60.04946,1344.08949,1718.8524
+Link,DE0 17 low voltage,urban decentral air heat pump,62.27133,218.2341,562.01745
+Link,DE0 17 low voltage,urban decentral resistive heater,62.617,796.74653,2003.91464
+Link,DE0 17 non-sequestered HVC,waste CHP,387.60338,615.244,615.2464
+Link,DE0 17 non-sequestered HVC,waste CHP CC,0.70535,0.17903,0.00282
+Link,DE0 17 process emissions,process emissions,43.67675,0.02914,0.00032
+Link,DE0 17 process emissions,process emissions CC,0.38974,47.9932,49.30295
+Link,DE0 17 rural heat,rural water tanks charger,556.36965,561.88104,556.49951
+Link,DE0 17 rural water tanks,rural water tanks discharger,556.36965,561.88104,556.49951
+Link,DE0 17 solid biomass,biomass to liquid,0.08595,0.04556,0.00229
+Link,DE0 17 solid biomass,biomass to liquid CC,0.06235,0.03512,0.00229
+Link,DE0 17 solid biomass,rural biomass boiler,0.00018,0.00192,6e-05
+Link,DE0 17 solid biomass,solid biomass for industry,309.22138,434.81587,0.00141
+Link,DE0 17 solid biomass,solid biomass for industry CC,0.23833,0.22974,610.09701
+Link,DE0 17 solid biomass,urban central solid biomass CHP,333.54314,213.27357,0.00297
+Link,DE0 17 solid biomass,urban central solid biomass CHP CC,0.06888,0.03103,0.00211
+Link,DE0 17 solid biomass,urban decentral biomass boiler,2449.00284,6315.77878,5155.72498
+Link,DE0 17 unsustainable bioliquids,unsustainable bioliquids,1338513.17147,436479.19561,
+Link,DE0 17 urban central heat,urban central water pits charger,318.24223,1539.40794,2403.35291
+Link,DE0 17 urban central heat,urban central water tanks charger,3.83106,1.42064,0.43105
+Link,DE0 17 urban central water pits,urban central water pits discharger,318.24223,1539.40794,2403.35291
+Link,DE0 17 urban central water tanks,urban central water tanks discharger,3.83106,1.42064,0.43105
+Link,DE0 17 urban decentral heat,urban decentral water tanks charger,88.4394,103.0027,103.29706
+Link,DE0 17 urban decentral water tanks,urban decentral water tanks discharger,88.4394,103.0027,103.29706
+Link,DE0 18,DAC,0.01391,0.01113,0.00233
+Link,DE0 18,DC,600.00131,600.00197,600.03015
+Link,DE0 18,H2 Electrolysis,0.05853,153.61066,153.72917
+Link,DE0 18,battery charger,1.05019,66.87673,67.17347
+Link,DE0 18,electricity distribution grid,3500.88502,6468.91466,7829.88893
+Link,DE0 18 H2,Fischer-Tropsch,0.15338,22.30575,22.31683
+Link,DE0 18 H2,H2 Fuel Cell,0.12055,0.1078,0.00505
+Link,DE0 18 H2,H2 pipeline,2.93396,21.33736,0.67493
+Link,DE0 18 H2,H2 turbine,0.61746,38.22044,38.7959
+Link,DE0 18 H2,Sabatier,0.08614,0.07132,0.00338
+Link,DE0 18 H2,methanolisation,21.73851,22.08562,0.03274
+Link,DE0 18 battery,battery discharger,1.07465,68.25577,68.55863
+Link,DE0 18 biogas,biogas to gas,337.03791,337.07538,0.00523
+Link,DE0 18 biogas,biogas to gas CC,2.43268,0.03761,237.51831
+Link,DE0 18 co2 stored,CO2 pipeline,3.95279,9.12583,0.11457
+Link,DE0 18 home battery,home battery discharger,25.95864,51.62662,25.75913
+Link,DE0 18 low voltage,BEV charger,2356.29813,14338.36893,22190.32289
+Link,DE0 18 low voltage,electricity distribution grid,3500.88502,6468.91466,7829.88893
+Link,DE0 18 low voltage,home battery charger,25.36784,50.58355,25.23869
+Link,DE0 18 low voltage,rural air heat pump,0.09252,0.02876,0.00146
+Link,DE0 18 low voltage,rural ground heat pump,52.80826,179.92006,169.13669
+Link,DE0 18 low voltage,rural resistive heater,54.16523,464.46653,410.3167
+Link,DE0 18 low voltage,urban central air heat pump,0.06045,82.48005,111.25873
+Link,DE0 18 low voltage,urban central resistive heater,488.44022,2569.82324,2689.16008
+Link,DE0 18 low voltage,urban decentral air heat pump,54.03253,534.82422,766.86125
+Link,DE0 18 low voltage,urban decentral resistive heater,5.5038,1974.2937,2758.89437
+Link,DE0 18 non-sequestered HVC,waste CHP,337.01899,470.31838,470.32112
+Link,DE0 18 non-sequestered HVC,waste CHP CC,0.89081,0.66194,0.00504
+Link,DE0 18 process emissions,process emissions,47.75149,0.01576,0.00022
+Link,DE0 18 process emissions,process emissions CC,1.91578,47.17581,47.17792
+Link,DE0 18 rural heat,rural water tanks charger,429.36715,516.346,516.52416
+Link,DE0 18 rural water tanks,rural water tanks discharger,429.36715,516.346,516.52416
+Link,DE0 18 solid biomass,biomass to liquid,0.08389,0.04843,0.0026
+Link,DE0 18 solid biomass,biomass to liquid CC,0.06003,0.04025,0.00437
+Link,DE0 18 solid biomass,rural biomass boiler,210.85438,99.87846,8e-05
+Link,DE0 18 solid biomass,solid biomass,74.23905,,
+Link,DE0 18 solid biomass,solid biomass for industry,116.30297,0.60449,0.00112
+Link,DE0 18 solid biomass,solid biomass for industry CC,0.2366,141.4426,154.74833
+Link,DE0 18 solid biomass,urban central solid biomass CHP,596.14028,391.17376,0.00302
+Link,DE0 18 solid biomass,urban central solid biomass CHP CC,0.07007,0.03239,0.00253
+Link,DE0 18 solid biomass,urban decentral biomass boiler,1932.86355,1208.71205,1362.71596
+Link,DE0 18 unsustainable bioliquids,unsustainable bioliquids,1401493.0082,488225.15869,
+Link,DE0 18 urban central heat,urban central water pits charger,1031.11845,2888.13964,3485.74337
+Link,DE0 18 urban central heat,urban central water tanks charger,4.02594,1.46194,1.08793
+Link,DE0 18 urban central water pits,urban central water pits discharger,1031.11845,2888.13964,3485.74337
+Link,DE0 18 urban central water tanks,urban central water tanks discharger,4.02594,1.46194,1.08793
+Link,DE0 18 urban decentral heat,urban decentral water tanks charger,82.35081,2483.26269,2483.50136
+Link,DE0 18 urban decentral water tanks,urban decentral water tanks discharger,82.35081,2483.26269,2483.50136
+Link,DE0 19,DAC,0.0138,0.01149,0.00257
+Link,DE0 19,DC,2000.00695,4000.00777,4000.04421
+Link,DE0 19,H2 Electrolysis,0.05748,0.4956,0.35408
+Link,DE0 19,battery charger,1.04897,16.09474,1180.08695
+Link,DE0 19,electricity distribution grid,2966.02457,4367.93333,5336.62335
+Link,DE0 19 H2,Fischer-Tropsch,0.1533,3.6526,0.01068
+Link,DE0 19 H2,H2 Fuel Cell,0.1208,0.117,0.00507
+Link,DE0 19 H2,H2 pipeline (Kernnetz),13000.0,35020.0,35020.0
+Link,DE0 19 H2,H2 turbine,0.66103,18.29021,18.82343
+Link,DE0 19 H2,Sabatier,0.08922,0.0735,0.0034
+Link,DE0 19 H2,methanolisation,3.69286,0.28177,0.03369
+Link,DE0 19 battery,battery discharger,1.07339,16.42663,1204.4212
+Link,DE0 19 biogas,biogas to gas,198.31187,198.34786,0.00543
+Link,DE0 19 biogas,biogas to gas CC,1.80783,0.03566,11.59072
+Link,DE0 19 co2 stored,CO2 pipeline,5.17624,206.23089,436.02137
+Link,DE0 19 home battery,home battery discharger,31.12437,447.44173,538.01019
+Link,DE0 19 low voltage,BEV charger,980.94059,5969.14622,9237.96023
+Link,DE0 19 low voltage,electricity distribution grid,2966.02457,4367.93333,5336.62335
+Link,DE0 19 low voltage,home battery charger,30.41601,438.40157,527.14018
+Link,DE0 19 low voltage,rural air heat pump,0.07528,0.02424,0.00128
+Link,DE0 19 low voltage,rural ground heat pump,25.92587,299.17501,328.16934
+Link,DE0 19 low voltage,rural resistive heater,54.10845,1000.28099,1005.1469
+Link,DE0 19 low voltage,urban central air heat pump,0.10303,104.00346,104.00563
+Link,DE0 19 low voltage,urban central resistive heater,925.40568,1863.85876,1566.33763
+Link,DE0 19 low voltage,urban decentral air heat pump,0.03499,29.72434,91.55983
+Link,DE0 19 low voltage,urban decentral resistive heater,1.39857,119.29341,376.73637
+Link,DE0 19 non-sequestered HVC,waste CHP,138.62726,211.15778,211.16052
+Link,DE0 19 non-sequestered HVC,waste CHP CC,0.68799,0.23327,0.00407
+Link,DE0 19 process emissions,process emissions,201.07584,0.02767,0.00038
+Link,DE0 19 process emissions,process emissions CC,0.75033,214.19589,214.38589
+Link,DE0 19 rural heat,rural water tanks charger,404.95437,550.22008,550.56897
+Link,DE0 19 rural water tanks,rural water tanks discharger,404.95437,550.22008,550.56897
+Link,DE0 19 solid biomass,biomass to liquid,0.08352,0.04429,0.00238
+Link,DE0 19 solid biomass,biomass to liquid CC,0.05988,0.03387,0.00266
+Link,DE0 19 solid biomass,rural biomass boiler,871.37098,622.40236,6e-05
+Link,DE0 19 solid biomass,solid biomass,133.63029,,
+Link,DE0 19 solid biomass,solid biomass for industry,173.37893,174.52212,0.0014
+Link,DE0 19 solid biomass,solid biomass for industry CC,0.23643,0.27232,192.7962
+Link,DE0 19 solid biomass,urban central solid biomass CHP,1340.87275,242.80884,0.00262
+Link,DE0 19 solid biomass,urban central solid biomass CHP CC,0.07918,0.02848,0.00182
+Link,DE0 19 solid biomass,urban decentral biomass boiler,419.40037,198.66586,257.95831
+Link,DE0 19 unsustainable bioliquids,unsustainable bioliquids,826099.99216,268855.66303,
+Link,DE0 19 urban central heat,urban central water pits charger,388.40438,1843.48267,1843.72936
+Link,DE0 19 urban central heat,urban central water tanks charger,3.69021,1.37133,0.30677
+Link,DE0 19 urban central water pits,urban central water pits discharger,388.40438,1843.48267,1843.72936
+Link,DE0 19 urban central water tanks,urban central water tanks discharger,3.69021,1.37133,0.30677
+Link,DE0 19 urban decentral heat,urban decentral water tanks charger,16.50553,159.09847,159.49843
+Link,DE0 19 urban decentral water tanks,urban decentral water tanks discharger,16.50553,159.09847,159.49843
+Link,DE0 2,DAC,0.01433,0.01108,0.00189
+Link,DE0 2,DC,3000.02537,17176.6711,18778.76825
+Link,DE0 2,H2 Electrolysis,0.06067,0.18601,0.0139
+Link,DE0 2,battery charger,1.04859,101.75516,101.85451
+Link,DE0 2,electricity distribution grid,11917.32286,20761.4225,26397.05682
+Link,DE0 2 H2,Fischer-Tropsch,0.15343,14.19341,14.20507
+Link,DE0 2 H2,H2 Fuel Cell,0.12234,0.12291,0.00591
+Link,DE0 2 H2,H2 pipeline,24.74104,43.04169,16.457
+Link,DE0 2 H2,H2 pipeline retrofitted,2.90271,493.81151,899.84136
+Link,DE0 2 H2,H2 turbine,0.66286,26.79693,27.24548
+Link,DE0 2 H2,Sabatier,0.08268,0.07138,0.00339
+Link,DE0 2 H2,methanolisation,76.68748,76.93391,0.02857
+Link,DE0 2 battery,battery discharger,1.07301,103.85342,103.95482
+Link,DE0 2 biogas,biogas to gas,341.09943,341.13677,0.00536
+Link,DE0 2 biogas,biogas to gas CC,2.67827,0.03727,163.215
+Link,DE0 2 co2 stored,CO2 pipeline,9.01775,2013.32343,2731.0181
+Link,DE0 2 home battery,home battery discharger,113.47873,971.22427,1305.84406
+Link,DE0 2 low voltage,BEV charger,5562.57349,33848.95561,52385.26489
+Link,DE0 2 low voltage,electricity distribution grid,11917.32286,20761.4225,26397.05682
+Link,DE0 2 low voltage,home battery charger,110.89607,951.60156,1279.46065
+Link,DE0 2 low voltage,rural air heat pump,0.09006,0.02785,0.0014
+Link,DE0 2 low voltage,rural ground heat pump,116.49064,203.03224,193.12722
+Link,DE0 2 low voltage,rural resistive heater,77.41056,301.58292,255.98231
+Link,DE0 2 low voltage,urban central air heat pump,0.06127,137.98403,329.88939
+Link,DE0 2 low voltage,urban central resistive heater,553.38915,7138.97713,6585.92372
+Link,DE0 2 low voltage,urban decentral air heat pump,127.51424,1658.46559,2472.80686
+Link,DE0 2 low voltage,urban decentral resistive heater,90.83164,5806.50468,8396.95781
+Link,DE0 2 non-sequestered HVC,waste CHP,794.70296,1086.12412,1086.12703
+Link,DE0 2 non-sequestered HVC,waste CHP CC,1.25212,0.25383,0.0054
+Link,DE0 2 process emissions,process emissions,1896.63839,0.02012,0.00027
+Link,DE0 2 process emissions,process emissions CC,13.65806,1273.85447,1273.85659
+Link,DE0 2 rural heat,rural water tanks charger,523.05126,545.09537,545.39917
+Link,DE0 2 rural water tanks,rural water tanks discharger,523.05126,545.09537,545.39917
+Link,DE0 2 solid biomass,biomass to liquid,0.08249,0.04563,0.00229
+Link,DE0 2 solid biomass,biomass to liquid CC,0.05918,0.03535,0.00232
+Link,DE0 2 solid biomass,rural biomass boiler,107.39911,50.87373,6e-05
+Link,DE0 2 solid biomass,solid biomass,330.36377,204.15739,
+Link,DE0 2 solid biomass,solid biomass for industry,770.37407,952.92564,0.00105
+Link,DE0 2 solid biomass,solid biomass for industry CC,0.28114,0.37464,1243.0247
+Link,DE0 2 solid biomass,urban central solid biomass CHP,1870.51203,239.01713,0.0027
+Link,DE0 2 solid biomass,urban central solid biomass CHP CC,0.06845,0.03012,0.00201
+Link,DE0 2 solid biomass,urban decentral biomass boiler,4921.85416,5216.22436,2884.81993
+Link,DE0 2 unsustainable bioliquids,unsustainable bioliquids,1419277.46167,492291.37529,
+Link,DE0 2 urban central heat,urban central water pits charger,1412.35677,7877.61288,8199.36955
+Link,DE0 2 urban central heat,urban central water tanks charger,3.91792,1.40644,0.91673
+Link,DE0 2 urban central water pits,urban central water pits discharger,1412.35677,7877.61288,8199.36955
+Link,DE0 2 urban central water tanks,urban central water tanks discharger,3.91792,1.40644,0.91673
+Link,DE0 2 urban decentral heat,urban decentral water tanks charger,109.7794,4593.99321,4594.44678
+Link,DE0 2 urban decentral water tanks,urban decentral water tanks discharger,109.7794,4593.99321,4594.44678
+Link,DE0 20,DAC,0.01664,0.0128,0.00199
+Link,DE0 20,DC,600.01834,6954.91723,6954.91844
+Link,DE0 20,H2 Electrolysis,0.05705,2958.05696,3931.85524
+Link,DE0 20,battery charger,1.04667,3170.60158,3264.93914
+Link,DE0 20,electricity distribution grid,1167.15718,2246.75878,2311.32742
+Link,DE0 20 H2,Fischer-Tropsch,0.15257,1.83456,0.01095
+Link,DE0 20 H2,H2 Fuel Cell,0.11105,0.10978,0.00534
+Link,DE0 20 H2,H2 pipeline,9.21008,44.40613,27.55453
+Link,DE0 20 H2,H2 pipeline (Kernnetz),18533.33333,18533.33333,18533.33333
+Link,DE0 20 H2,H2 pipeline retrofitted,3.65615,0.73146,0.13734
+Link,DE0 20 H2,H2 turbine,0.6623,23.34653,23.88387
+Link,DE0 20 H2,Sabatier,0.08535,0.06683,0.0034
+Link,DE0 20 H2,methanolisation,1.18626,0.26922,0.03548
+Link,DE0 20 battery,battery discharger,1.07105,3235.98169,3332.26456
+Link,DE0 20 biogas,biogas to gas,635.77508,635.8135,0.00535
+Link,DE0 20 biogas,biogas to gas CC,8.0585,0.03862,253.32884
+Link,DE0 20 co2 stored,CO2 pipeline,152.58334,1266.61105,2706.27771
+Link,DE0 20 home battery,home battery discharger,21.03793,135.758,49.97562
+Link,DE0 20 low voltage,BEV charger,827.75705,5037.00519,7795.36167
+Link,DE0 20 low voltage,electricity distribution grid,1167.15718,2246.75878,2311.32742
+Link,DE0 20 low voltage,home battery charger,20.55912,133.01513,48.96591
+Link,DE0 20 low voltage,rural air heat pump,1.41656,0.02655,0.0013
+Link,DE0 20 low voltage,rural ground heat pump,12.7364,334.44958,321.72195
+Link,DE0 20 low voltage,rural resistive heater,6.62114,1058.77083,1058.78498
+Link,DE0 20 low voltage,urban central air heat pump,0.04371,11.19501,11.22723
+Link,DE0 20 low voltage,urban central resistive heater,3.33836,972.02897,972.05317
+Link,DE0 20 low voltage,urban decentral air heat pump,0.0154,0.01023,0.00068
+Link,DE0 20 low voltage,urban decentral resistive heater,1.36133,0.44321,0.01444
+Link,DE0 20 non-sequestered HVC,waste CHP,116.66932,176.63727,176.63985
+Link,DE0 20 non-sequestered HVC,waste CHP CC,2.12861,0.3548,0.00364
+Link,DE0 20 process emissions,process emissions,0.22271,0.01666,0.0002
+Link,DE0 20 process emissions,process emissions CC,11.5173,11.99909,11.51965
+Link,DE0 20 rural heat,rural water tanks charger,40.07781,763.0968,763.2735
+Link,DE0 20 rural water tanks,rural water tanks discharger,40.07781,763.0968,763.2735
+Link,DE0 20 solid biomass,biomass to liquid,0.13602,0.06292,0.00309
+Link,DE0 20 solid biomass,biomass to liquid CC,0.10472,0.0692,1035.39139
+Link,DE0 20 solid biomass,rural biomass boiler,619.04233,293.23586,
+Link,DE0 20 solid biomass,solid biomass for industry,41.83488,0.20089,0.00121
+Link,DE0 20 solid biomass,solid biomass for industry CC,0.53559,48.05251,49.47188
+Link,DE0 20 solid biomass,urban central solid biomass CHP,4837.54513,4390.4405,306.27143
+Link,DE0 20 solid biomass,urban central solid biomass CHP CC,0.09897,0.04073,0.0037
+Link,DE0 20 solid biomass,urban decentral biomass boiler,103.76437,49.14846,0.00209
+Link,DE0 20 unsustainable bioliquids,unsustainable bioliquids,2658236.57655,901024.32336,
+Link,DE0 20 urban central heat,urban central water pits charger,163.00097,1658.20405,1659.17433
+Link,DE0 20 urban central heat,urban central water tanks charger,3.92416,1.35397,0.43365
+Link,DE0 20 urban central water pits,urban central water pits discharger,163.00097,1658.20405,1659.17433
+Link,DE0 20 urban central water tanks,urban central water tanks discharger,3.92416,1.35397,0.43365
+Link,DE0 20 urban decentral heat,urban decentral water tanks charger,17.05075,21.07851,17.16332
+Link,DE0 20 urban decentral water tanks,urban decentral water tanks discharger,17.05075,21.07851,17.16332
+Link,DE0 21,DAC,0.01563,0.01122,0.0021
+Link,DE0 21,H2 Electrolysis,0.06034,0.28382,0.02048
+Link,DE0 21,battery charger,1.05197,958.75194,958.94142
+Link,DE0 21,electricity distribution grid,3888.85623,7480.99073,9330.91431
+Link,DE0 21 H2,Fischer-Tropsch,0.15266,4.2606,0.01111
+Link,DE0 21 H2,H2 Fuel Cell,0.1067,0.11973,0.00589
+Link,DE0 21 H2,H2 pipeline,6.71883,18.92008,0.72543
+Link,DE0 21 H2,H2 pipeline (Kernnetz),2040.0,47568.33333,47568.33333
+Link,DE0 21 H2,H2 turbine,0.66161,38.69292,39.06806
+Link,DE0 21 H2,Sabatier,0.08145,0.07107,0.00338
+Link,DE0 21 H2,methanolisation,2.6518,0.26,0.02766
+Link,DE0 21 battery,battery discharger,1.07647,978.5221,978.71549
+Link,DE0 21 biogas,biogas to gas,393.01878,393.05652,0.0053
+Link,DE0 21 biogas,biogas to gas CC,2.19784,0.03782,335.56824
+Link,DE0 21 co2 stored,CO2 pipeline,3.14808,879.94854,3738.43775
+Link,DE0 21 home battery,home battery discharger,2.52591,323.54734,643.65935
+Link,DE0 21 low voltage,BEV charger,2883.32069,17545.3671,27153.53211
+Link,DE0 21 low voltage,electricity distribution grid,3888.85623,7480.99073,9330.91431
+Link,DE0 21 low voltage,home battery charger,2.46843,317.01035,630.65479
+Link,DE0 21 low voltage,rural air heat pump,0.0629,0.0269,0.00135
+Link,DE0 21 low voltage,rural ground heat pump,60.20002,130.69264,134.16061
+Link,DE0 21 low voltage,rural resistive heater,26.7582,256.62863,243.43885
+Link,DE0 21 low voltage,urban central air heat pump,0.04192,0.13352,121.79172
+Link,DE0 21 low voltage,urban central resistive heater,3.72846,2804.61173,3169.66829
+Link,DE0 21 low voltage,urban decentral air heat pump,66.14177,757.52298,1126.7626
+Link,DE0 21 low voltage,urban decentral resistive heater,170.64644,2971.42858,4230.95648
+Link,DE0 21 non-sequestered HVC,waste CHP,408.17408,555.46856,555.47168
+Link,DE0 21 non-sequestered HVC,waste CHP CC,0.9123,0.36574,0.00657
+Link,DE0 21 process emissions,process emissions,283.9369,0.0171,0.00033
+Link,DE0 21 process emissions,process emissions CC,1.0149,324.36668,341.526
+Link,DE0 21 rural heat,rural water tanks charger,333.56688,361.03139,361.24793
+Link,DE0 21 rural water tanks,rural water tanks discharger,333.56688,361.03139,361.24793
+Link,DE0 21 solid biomass,biomass to liquid,0.08357,0.04586,0.00229
+Link,DE0 21 solid biomass,biomass to liquid CC,0.06062,0.03573,0.00234
+Link,DE0 21 solid biomass,rural biomass boiler,174.86509,124.79686,5e-05
+Link,DE0 21 solid biomass,solid biomass,139.94061,,
+Link,DE0 21 solid biomass,solid biomass for industry,389.11741,463.0931,0.0012
+Link,DE0 21 solid biomass,solid biomass for industry CC,0.25406,0.48335,573.31373
+Link,DE0 21 solid biomass,urban central solid biomass CHP,739.05389,363.3757,29.71731
+Link,DE0 21 solid biomass,urban central solid biomass CHP CC,0.04562,0.03022,0.00199
+Link,DE0 21 solid biomass,urban decentral biomass boiler,2691.59072,3311.26792,1935.56267
+Link,DE0 21 unsustainable bioliquids,unsustainable bioliquids,1631673.66527,555515.09625,
+Link,DE0 21 urban central heat,urban central water pits charger,363.81549,2845.23026,4511.96403
+Link,DE0 21 urban central heat,urban central water tanks charger,4.09216,1.44719,0.58324
+Link,DE0 21 urban central water pits,urban central water pits discharger,363.81549,2845.23026,4511.96403
+Link,DE0 21 urban central water tanks,urban central water tanks discharger,4.09216,1.44719,0.58324
+Link,DE0 21 urban decentral heat,urban decentral water tanks charger,1445.57138,1588.53888,1588.82507
+Link,DE0 21 urban decentral water tanks,urban decentral water tanks discharger,1445.57138,1588.53888,1588.82507
+Link,DE0 22,DAC,0.01445,0.01136,0.00153
+Link,DE0 22,H2 Electrolysis,0.05334,0.20232,0.05128
+Link,DE0 22,battery charger,1.01694,8.59468,318.74807
+Link,DE0 22,electricity distribution grid,1406.07079,2153.9009,2312.48532
+Link,DE0 22 H2,Fischer-Tropsch,0.15242,11.33743,11.34901
+Link,DE0 22 H2,H2 Fuel Cell,0.10402,0.11508,0.00542
+Link,DE0 22 H2,H2 turbine,0.61732,26.69083,27.28935
+Link,DE0 22 H2,Sabatier,0.08859,0.08424,0.00345
+Link,DE0 22 H2,methanolisation,1.78564,0.30624,0.04005
+Link,DE0 22 battery,battery discharger,1.04062,8.77191,325.32088
+Link,DE0 22 biogas,biogas to gas,252.13281,252.16939,0.00562
+Link,DE0 22 biogas,biogas to gas CC,1.726,0.03607,70.01896
+Link,DE0 22 co2 stored,CO2 pipeline,3.32376,20.67537,260.1164
+Link,DE0 22 home battery,home battery discharger,15.00418,131.37677,34.22874
+Link,DE0 22 low voltage,BEV charger,699.3236,4255.4716,6585.84595
+Link,DE0 22 low voltage,electricity distribution grid,1406.07079,2153.9009,2312.48532
+Link,DE0 22 low voltage,home battery charger,14.6627,128.72242,33.53718
+Link,DE0 22 low voltage,rural air heat pump,0.12089,0.02415,0.0011
+Link,DE0 22 low voltage,rural ground heat pump,14.69616,260.28286,245.59006
+Link,DE0 22 low voltage,rural resistive heater,8.17146,693.18539,693.19926
+Link,DE0 22 low voltage,urban central air heat pump,0.04436,0.06367,0.01161
+Link,DE0 22 low voltage,urban central resistive heater,5.15414,532.0684,637.69983
+Link,DE0 22 low voltage,urban decentral air heat pump,0.0349,0.03475,0.00082
+Link,DE0 22 low voltage,urban decentral resistive heater,1.39895,0.41952,0.01423
+Link,DE0 22 non-sequestered HVC,waste CHP,99.76989,142.95964,142.96237
+Link,DE0 22 non-sequestered HVC,waste CHP CC,0.58791,0.2009,0.00402
+Link,DE0 22 process emissions,process emissions,15.59618,0.04231,0.00032
+Link,DE0 22 process emissions,process emissions CC,0.40324,17.84273,19.64992
+Link,DE0 22 rural heat,rural water tanks charger,128.41175,632.77294,632.97656
+Link,DE0 22 rural water tanks,rural water tanks discharger,128.41175,632.77294,632.97656
+Link,DE0 22 solid biomass,biomass to liquid,0.09307,0.0601,0.0031
+Link,DE0 22 solid biomass,biomass to liquid CC,0.06703,0.05931,138.03898
+Link,DE0 22 solid biomass,rural biomass boiler,474.06192,541.69416,295.34519
+Link,DE0 22 solid biomass,solid biomass for industry,53.51689,63.44223,0.00146
+Link,DE0 22 solid biomass,solid biomass for industry CC,0.23513,0.808,79.90937
+Link,DE0 22 solid biomass,urban central solid biomass CHP,307.54307,113.14485,0.00426
+Link,DE0 22 solid biomass,urban central solid biomass CHP CC,0.06045,0.0377,0.00344
+Link,DE0 22 solid biomass,urban decentral biomass boiler,193.86407,625.89394,539.17589
+Link,DE0 22 unsustainable bioliquids,unsustainable bioliquids,1047993.88454,343830.41075,
+Link,DE0 22 urban central heat,urban central water pits charger,107.97412,462.24904,642.04625
+Link,DE0 22 urban central heat,urban central water tanks charger,3.85764,1.36004,1.02193
+Link,DE0 22 urban central water pits,urban central water pits discharger,107.97412,462.24904,642.04625
+Link,DE0 22 urban central water tanks,urban central water tanks discharger,3.85764,1.36004,1.02193
+Link,DE0 22 urban decentral heat,urban decentral water tanks charger,16.48078,21.24736,16.59011
+Link,DE0 22 urban decentral water tanks,urban decentral water tanks discharger,16.48078,21.24736,16.59011
+Link,DE0 23,DAC,0.01546,0.01119,0.00148
+Link,DE0 23,H2 Electrolysis,0.0565,0.16871,0.01476
+Link,DE0 23,battery charger,1.05478,779.09511,779.3256
+Link,DE0 23,electricity distribution grid,1583.36798,2128.79751,2229.3743
+Link,DE0 23 H2,Fischer-Tropsch,0.15277,0.77339,0.01173
+Link,DE0 23 H2,H2 Fuel Cell,0.10711,0.08423,0.00364
+Link,DE0 23 H2,H2 pipeline,9.68528,967.1404,983.43529
+Link,DE0 23 H2,H2 turbine,0.66185,4.09433,0.10222
+Link,DE0 23 H2,Sabatier,0.08139,0.0615,0.00336
+Link,DE0 23 H2,methanolisation,6.75905,0.19917,0.03251
+Link,DE0 23 battery,battery discharger,1.07935,795.16062,795.39586
+Link,DE0 23 biogas,biogas to gas,319.55301,319.58989,0.00572
+Link,DE0 23 biogas,biogas to gas CC,2.22263,0.03649,73.34481
+Link,DE0 23 co2 stored,CO2 pipeline,2.91956,83.93372,81.72381
+Link,DE0 23 home battery,home battery discharger,16.68302,29.75907,19.84882
+Link,DE0 23 low voltage,BEV charger,690.20569,4199.988,6499.9785
+Link,DE0 23 low voltage,electricity distribution grid,1583.36798,2128.79751,2229.3743
+Link,DE0 23 low voltage,home battery charger,16.30333,29.15781,19.4478
+Link,DE0 23 low voltage,rural air heat pump,1.79799,0.0252,0.00093
+Link,DE0 23 low voltage,rural ground heat pump,10.24055,205.56719,195.32797
+Link,DE0 23 low voltage,rural resistive heater,6.0873,442.49614,442.50909
+Link,DE0 23 low voltage,urban central air heat pump,0.04169,0.03786,0.00235
+Link,DE0 23 low voltage,urban central resistive heater,3.02724,186.15313,193.9698
+Link,DE0 23 low voltage,urban decentral air heat pump,0.03811,0.03002,0.0008
+Link,DE0 23 low voltage,urban decentral resistive heater,1.41299,0.42973,0.01419
+Link,DE0 23 non-sequestered HVC,waste CHP,97.22434,121.057,121.05975
+Link,DE0 23 non-sequestered HVC,waste CHP CC,0.74979,7.18533,0.00588
+Link,DE0 23 process emissions,process emissions,24.70808,0.04427,0.00026
+Link,DE0 23 process emissions,process emissions CC,0.9112,25.42684,25.42894
+Link,DE0 23 rural heat,rural water tanks charger,31.25561,899.36556,899.58467
+Link,DE0 23 rural water tanks,rural water tanks discharger,31.25561,899.36556,899.58467
+Link,DE0 23 solid biomass,biomass to liquid,0.13002,0.05837,0.00313
+Link,DE0 23 solid biomass,biomass to liquid CC,0.10096,0.05675,108.32009
+Link,DE0 23 solid biomass,rural biomass boiler,528.31736,1346.29493,1096.03951
+Link,DE0 23 solid biomass,solid biomass for industry,67.07602,66.56534,0.00157
+Link,DE0 23 solid biomass,solid biomass for industry CC,0.39286,1.35317,73.56738
+Link,DE0 23 solid biomass,urban central solid biomass CHP,2206.81995,2027.03927,0.00267
+Link,DE0 23 solid biomass,urban central solid biomass CHP CC,0.06707,0.03159,0.00219
+Link,DE0 23 solid biomass,urban decentral biomass boiler,77.04199,342.57547,306.08199
+Link,DE0 23 unsustainable bioliquids,unsustainable bioliquids,1328428.90944,429664.33197,
+Link,DE0 23 urban central heat,urban central water pits charger,25.82663,169.99713,186.46178
+Link,DE0 23 urban central heat,urban central water tanks charger,3.63899,1.19962,0.82021
+Link,DE0 23 urban central water pits,urban central water pits discharger,25.82663,169.99713,186.46178
+Link,DE0 23 urban central water tanks,urban central water tanks discharger,3.63899,1.19962,0.82021
+Link,DE0 23 urban decentral heat,urban decentral water tanks charger,16.50485,21.31743,16.61221
+Link,DE0 23 urban decentral water tanks,urban decentral water tanks discharger,16.50485,21.31743,16.61221
+Link,DE0 24,DAC,0.01476,0.01061,0.00155
+Link,DE0 24,H2 Electrolysis,0.05999,0.16986,0.02381
+Link,DE0 24,battery charger,1.09626,12.33959,2272.55954
+Link,DE0 24,electricity distribution grid,1877.20057,2935.90448,3173.02136
+Link,DE0 24 H2,Fischer-Tropsch,0.16917,2.99136,0.01178
+Link,DE0 24 H2,H2 Fuel Cell,0.1149,0.08102,0.00491
+Link,DE0 24 H2,H2 turbine,0.68706,8.72204,0.11621
+Link,DE0 24 H2,Sabatier,0.09276,0.07097,0.00342
+Link,DE0 24 H2,methanolisation,0.99672,0.24368,0.03527
+Link,DE0 24 battery,battery discharger,1.12179,12.59405,2319.42136
+Link,DE0 24 biogas,biogas to gas,420.25355,420.2908,0.0056
+Link,DE0 24 biogas,biogas to gas CC,1.73049,0.03685,66.20961
+Link,DE0 24 co2 stored,CO2 pipeline,4.26212,72.61148,265.15408
+Link,DE0 24 home battery,home battery discharger,4.45958,25.85203,6.75735
+Link,DE0 24 low voltage,BEV charger,1062.4718,6465.27385,10005.77646
+Link,DE0 24 low voltage,electricity distribution grid,1877.20057,2935.90448,3173.02136
+Link,DE0 24 low voltage,home battery charger,4.35809,25.32971,6.62082
+Link,DE0 24 low voltage,rural air heat pump,0.09161,0.0239,0.00129
+Link,DE0 24 low voltage,rural ground heat pump,29.39867,359.84322,338.50152
+Link,DE0 24 low voltage,rural resistive heater,41.82801,902.00037,860.18643
+Link,DE0 24 low voltage,urban central air heat pump,0.04733,0.03854,0.04004
+Link,DE0 24 low voltage,urban central resistive heater,2.35397,392.83386,923.78985
+Link,DE0 24 low voltage,urban decentral air heat pump,0.04952,0.03935,0.00158
+Link,DE0 24 low voltage,urban decentral resistive heater,1.41094,0.4264,0.01423
+Link,DE0 24 non-sequestered HVC,waste CHP,150.22773,191.00056,191.00368
+Link,DE0 24 non-sequestered HVC,waste CHP CC,0.63348,0.8537,0.00649
+Link,DE0 24 process emissions,process emissions,90.67087,0.03697,0.00038
+Link,DE0 24 process emissions,process emissions CC,0.40726,104.08007,110.03392
+Link,DE0 24 rural heat,rural water tanks charger,539.51798,1225.02169,1225.19852
+Link,DE0 24 rural water tanks,rural water tanks discharger,539.51798,1225.02169,1225.19852
+Link,DE0 24 solid biomass,biomass to liquid,0.09559,0.05478,0.00305
+Link,DE0 24 solid biomass,biomass to liquid CC,0.0703,0.0489,73.1238
+Link,DE0 24 solid biomass,rural biomass boiler,573.72299,314.02997,0.00012
+Link,DE0 24 solid biomass,solid biomass for industry,164.23368,202.92752,0.00138
+Link,DE0 24 solid biomass,solid biomass for industry CC,0.24999,0.47788,257.48421
+Link,DE0 24 solid biomass,urban central solid biomass CHP,4608.82257,311.86357,0.00394
+Link,DE0 24 solid biomass,urban central solid biomass CHP CC,0.04973,0.02831,0.00344
+Link,DE0 24 solid biomass,urban decentral biomass boiler,473.19395,1387.05962,1511.74885
+Link,DE0 24 unsustainable bioliquids,unsustainable bioliquids,1742198.84993,558969.62027,
+Link,DE0 24 urban central heat,urban central water pits charger,102.77667,345.12112,828.70936
+Link,DE0 24 urban central heat,urban central water tanks charger,3.88537,1.38756,1.05545
+Link,DE0 24 urban central water pits,urban central water pits discharger,102.77667,345.12112,828.70936
+Link,DE0 24 urban central water tanks,urban central water tanks discharger,3.88537,1.38756,1.05545
+Link,DE0 24 urban decentral heat,urban decentral water tanks charger,16.52343,21.24269,16.6393
+Link,DE0 24 urban decentral water tanks,urban decentral water tanks discharger,16.52343,21.24269,16.6393
+Link,DE0 25,DAC,0.01406,0.01109,0.00182
+Link,DE0 25,H2 Electrolysis,0.05675,0.1647,0.01197
+Link,DE0 25,battery charger,1.01568,5.50874,5.50194
+Link,DE0 25,electricity distribution grid,2272.14042,4394.41035,5485.77097
+Link,DE0 25 H2,Fischer-Tropsch,0.15278,3.92349,0.01151
+Link,DE0 25 H2,H2 Fuel Cell,0.10987,0.13273,0.00618
+Link,DE0 25 H2,H2 turbine,0.61656,36.26961,36.41944
+Link,DE0 25 H2,Sabatier,0.08924,0.07143,0.0034
+Link,DE0 25 H2,methanolisation,1.7473,0.23732,0.02754
+Link,DE0 25 battery,battery discharger,1.03933,5.62234,5.6154
+Link,DE0 25 biogas,biogas to gas,251.86496,251.90143,0.00541
+Link,DE0 25 biogas,biogas to gas CC,1.85023,0.03623,48.45203
+Link,DE0 25 co2 stored,CO2 pipeline,1.21097,3.11346,0.01758
+Link,DE0 25 home battery,home battery discharger,21.54251,154.44001,141.76503
+Link,DE0 25 low voltage,BEV charger,1574.0597,9578.3502,14823.63055
+Link,DE0 25 low voltage,electricity distribution grid,2272.14042,4394.41035,5485.77097
+Link,DE0 25 low voltage,home battery charger,21.05223,151.31969,138.90079
+Link,DE0 25 low voltage,rural air heat pump,0.09825,0.02747,0.00134
+Link,DE0 25 low voltage,rural ground heat pump,35.63417,92.14596,85.87103
+Link,DE0 25 low voltage,rural resistive heater,28.70949,174.665,149.72234
+Link,DE0 25 low voltage,urban central air heat pump,0.05782,0.1316,81.85777
+Link,DE0 25 low voltage,urban central resistive heater,30.54346,1510.72714,1510.94287
+Link,DE0 25 low voltage,urban decentral air heat pump,0.04967,505.47189,710.53013
+Link,DE0 25 low voltage,urban decentral resistive heater,1.40579,1698.80804,2345.33157
+Link,DE0 25 non-sequestered HVC,waste CHP,228.95567,323.83243,323.83533
+Link,DE0 25 non-sequestered HVC,waste CHP CC,0.72861,0.24154,0.00445
+Link,DE0 25 process emissions,process emissions,33.41623,0.0252,0.00029
+Link,DE0 25 process emissions,process emissions CC,0.57761,36.13113,36.90702
+Link,DE0 25 rural heat,rural water tanks charger,263.44323,343.47359,343.75767
+Link,DE0 25 rural water tanks,rural water tanks discharger,263.44323,343.47359,343.75767
+Link,DE0 25 solid biomass,biomass to liquid,0.08451,0.0456,0.00228
+Link,DE0 25 solid biomass,biomass to liquid CC,0.06063,0.03534,0.0023
+Link,DE0 25 solid biomass,rural biomass boiler,68.60329,32.49652,5e-05
+Link,DE0 25 solid biomass,solid biomass for industry,176.80362,224.71756,0.00131
+Link,DE0 25 solid biomass,solid biomass for industry CC,0.23634,0.28273,294.26751
+Link,DE0 25 solid biomass,urban central solid biomass CHP,150.94641,42.91312,0.00286
+Link,DE0 25 solid biomass,urban central solid biomass CHP CC,0.06654,0.03055,0.00208
+Link,DE0 25 solid biomass,urban decentral biomass boiler,1343.34291,1122.60224,486.28197
+Link,DE0 25 unsustainable bioliquids,unsustainable bioliquids,1047400.87816,347299.70827,
+Link,DE0 25 urban central heat,urban central water pits charger,133.23973,1472.64263,1928.95518
+Link,DE0 25 urban central heat,urban central water tanks charger,3.84259,1.3762,0.48906
+Link,DE0 25 urban central water pits,urban central water pits discharger,133.23973,1472.64263,1928.95518
+Link,DE0 25 urban central water tanks,urban central water tanks discharger,3.84259,1.3762,0.48906
+Link,DE0 25 urban decentral heat,urban decentral water tanks charger,16.47654,1571.35557,1571.76081
+Link,DE0 25 urban decentral water tanks,urban decentral water tanks discharger,16.47654,1571.35557,1571.76081
+Link,DE0 26,DAC,0.01423,0.01093,0.00171
+Link,DE0 26,H2 Electrolysis,0.06471,0.23274,0.01533
+Link,DE0 26,battery charger,1.13428,1136.03637,1136.17485
+Link,DE0 26,electricity distribution grid,1593.1769,2556.80945,2878.8179
+Link,DE0 26 H2,Fischer-Tropsch,0.1694,2.64431,0.01123
+Link,DE0 26 H2,H2 Fuel Cell,0.11659,0.11711,0.0055
+Link,DE0 26 H2,H2 pipeline,31.89345,109.53451,509.47795
+Link,DE0 26 H2,H2 turbine,0.68663,37.3243,37.55114
+Link,DE0 26 H2,Sabatier,0.09967,0.07103,0.00338
+Link,DE0 26 H2,methanolisation,9.00421,0.22068,0.025
+Link,DE0 26 battery,battery discharger,1.1607,1159.46226,1159.6036
+Link,DE0 26 biogas,biogas to gas,196.80563,196.84181,0.00549
+Link,DE0 26 biogas,biogas to gas CC,2.04794,0.03575,41.49766
+Link,DE0 26 co2 stored,CO2 pipeline,4.47318,5.98899,198.73743
+Link,DE0 26 home battery,home battery discharger,13.85928,50.78822,13.23933
+Link,DE0 26 low voltage,BEV charger,754.53701,4591.45208,7105.8155
+Link,DE0 26 low voltage,electricity distribution grid,1593.1769,2556.80945,2878.8179
+Link,DE0 26 low voltage,home battery charger,13.54385,49.76209,12.97184
+Link,DE0 26 low voltage,rural air heat pump,0.12512,0.02691,0.00141
+Link,DE0 26 low voltage,rural ground heat pump,16.33568,179.59213,164.69744
+Link,DE0 26 low voltage,rural resistive heater,10.17023,418.28032,408.12443
+Link,DE0 26 low voltage,urban central air heat pump,0.05146,0.06411,22.08876
+Link,DE0 26 low voltage,urban central resistive heater,3.26984,440.93389,465.94327
+Link,DE0 26 low voltage,urban decentral air heat pump,0.05197,54.91553,74.61538
+Link,DE0 26 low voltage,urban decentral resistive heater,1.40968,164.88816,223.66685
+Link,DE0 26 non-sequestered HVC,waste CHP,107.88662,146.49555,146.49829
+Link,DE0 26 non-sequestered HVC,waste CHP CC,0.75534,0.23185,0.00421
+Link,DE0 26 process emissions,process emissions,543.17894,0.03356,0.00026
+Link,DE0 26 process emissions,process emissions CC,1.51617,320.42638,320.42848
+Link,DE0 26 rural heat,rural water tanks charger,109.47388,848.01086,848.22363
+Link,DE0 26 rural water tanks,rural water tanks discharger,109.47388,848.01086,848.22363
+Link,DE0 26 solid biomass,biomass to liquid,0.10195,0.04387,0.0024
+Link,DE0 26 solid biomass,biomass to liquid CC,0.07658,0.03322,0.00281
+Link,DE0 26 solid biomass,rural biomass boiler,245.32178,113.63266,5e-05
+Link,DE0 26 solid biomass,solid biomass for industry,45.50242,46.7174,0.00135
+Link,DE0 26 solid biomass,solid biomass for industry CC,0.26213,0.22855,52.00473
+Link,DE0 26 solid biomass,urban central solid biomass CHP,128.06605,64.32884,0.00263
+Link,DE0 26 solid biomass,urban central solid biomass CHP CC,0.06062,0.02809,0.00209
+Link,DE0 26 solid biomass,urban decentral biomass boiler,446.57361,859.71179,981.19604
+Link,DE0 26 unsustainable bioliquids,unsustainable bioliquids,820872.05806,273448.83947,
+Link,DE0 26 urban central heat,urban central water pits charger,75.77746,439.35025,693.38809
+Link,DE0 26 urban central heat,urban central water tanks charger,3.77654,1.44368,1.04651
+Link,DE0 26 urban central water pits,urban central water pits discharger,75.77746,439.35025,693.38809
+Link,DE0 26 urban central water tanks,urban central water tanks discharger,3.77654,1.44368,1.04651
+Link,DE0 26 urban decentral heat,urban decentral water tanks charger,16.48752,195.86795,196.09964
+Link,DE0 26 urban decentral water tanks,urban decentral water tanks discharger,16.48752,195.86795,196.09964
+Link,DE0 27,DAC,0.01394,0.01117,0.00254
+Link,DE0 27,H2 Electrolysis,0.05519,508.68438,508.91102
+Link,DE0 27,battery charger,1.01866,221.8253,509.59663
+Link,DE0 27,electricity distribution grid,1824.53121,3283.62616,3599.81688
+Link,DE0 27 H2,Fischer-Tropsch,0.15253,361.626,361.63712
+Link,DE0 27 H2,H2 Fuel Cell,0.10722,0.10424,0.0051
+Link,DE0 27 H2,H2 turbine,0.61683,44.4421,44.96324
+Link,DE0 27 H2,Sabatier,0.08761,0.07087,0.00337
+Link,DE0 27 H2,methanolisation,11.42174,11.77092,0.03289
+Link,DE0 27 battery,battery discharger,1.04238,226.3995,520.10488
+Link,DE0 27 biogas,biogas to gas,315.20419,315.24147,0.00522
+Link,DE0 27 biogas,biogas to gas CC,2.18007,0.03742,197.08681
+Link,DE0 27 co2 stored,CO2 pipeline,2.75806,228.70076,712.08117
+Link,DE0 27 home battery,home battery discharger,10.88731,116.00685,121.37813
+Link,DE0 27 low voltage,BEV charger,1029.05944,6261.95544,9691.11716
+Link,DE0 27 low voltage,electricity distribution grid,1824.53121,3283.62616,3599.81688
+Link,DE0 27 low voltage,home battery charger,10.63953,113.66303,118.9258
+Link,DE0 27 low voltage,rural air heat pump,0.07948,0.02543,0.00135
+Link,DE0 27 low voltage,rural ground heat pump,26.96929,214.57553,217.36343
+Link,DE0 27 low voltage,rural resistive heater,46.42633,685.67863,648.56046
+Link,DE0 27 low voltage,urban central air heat pump,0.0527,0.10109,32.20878
+Link,DE0 27 low voltage,urban central resistive heater,46.83865,896.01354,849.23481
+Link,DE0 27 low voltage,urban decentral air heat pump,0.06024,99.98094,99.98316
+Link,DE0 27 low voltage,urban decentral resistive heater,1.42073,395.74845,395.76182
+Link,DE0 27 non-sequestered HVC,waste CHP,147.01085,195.79505,195.79817
+Link,DE0 27 non-sequestered HVC,waste CHP CC,0.74944,3.61926,0.00756
+Link,DE0 27 process emissions,process emissions,339.68008,0.0133,0.00021
+Link,DE0 27 process emissions,process emissions CC,1.23521,200.55235,200.55445
+Link,DE0 27 rural heat,rural water tanks charger,272.20435,301.08053,301.34687
+Link,DE0 27 rural water tanks,rural water tanks discharger,272.20435,301.08053,301.34687
+Link,DE0 27 solid biomass,biomass to liquid,0.08625,0.04472,0.00302
+Link,DE0 27 solid biomass,biomass to liquid CC,0.06147,0.03508,16.10164
+Link,DE0 27 solid biomass,rural biomass boiler,458.30385,291.12444,0.00013
+Link,DE0 27 solid biomass,solid biomass for industry,99.18484,1.45239,0.00104
+Link,DE0 27 solid biomass,solid biomass for industry CC,0.22979,132.88006,154.74837
+Link,DE0 27 solid biomass,urban central solid biomass CHP,593.94714,389.4584,0.00386
+Link,DE0 27 solid biomass,urban central solid biomass CHP CC,0.06137,0.02943,0.00367
+Link,DE0 27 solid biomass,urban decentral biomass boiler,618.57741,1084.94364,1491.31701
+Link,DE0 27 unsustainable bioliquids,unsustainable bioliquids,1310296.47572,439036.07467,
+Link,DE0 27 urban central heat,urban central water pits charger,230.5088,814.84735,985.54664
+Link,DE0 27 urban central heat,urban central water tanks charger,3.89643,1.39781,1.04923
+Link,DE0 27 urban central water pits,urban central water pits discharger,230.5088,814.84735,985.54664
+Link,DE0 27 urban central water tanks,urban central water tanks discharger,3.89643,1.39781,1.04923
+Link,DE0 27 urban decentral heat,urban decentral water tanks charger,16.7676,175.36385,175.56287
+Link,DE0 27 urban decentral water tanks,urban decentral water tanks discharger,16.7676,175.36385,175.56287
+Link,DE0 28,DAC,0.01521,0.0111,0.00161
+Link,DE0 28,H2 Electrolysis,0.05663,0.20129,0.01599
+Link,DE0 28,battery charger,1.05333,3542.32848,3583.34203
+Link,DE0 28,electricity distribution grid,2291.43558,3560.66863,4453.76656
+Link,DE0 28 H2,Fischer-Tropsch,0.15286,3.235,0.01241
+Link,DE0 28 H2,H2 Fuel Cell,0.10821,0.08957,0.00565
+Link,DE0 28 H2,H2 pipeline,4.32824,22.72504,0.69945
+Link,DE0 28 H2,H2 turbine,0.66053,4.25117,0.07569
+Link,DE0 28 H2,Sabatier,0.08591,0.071,0.00345
+Link,DE0 28 H2,methanolisation,2.10503,0.26256,0.04147
+Link,DE0 28 battery,battery discharger,1.07786,3615.37387,3657.23314
+Link,DE0 28 biogas,biogas to gas,292.54923,292.58611,0.00576
+Link,DE0 28 biogas,biogas to gas CC,1.82195,0.03637,97.73129
+Link,DE0 28 co2 stored,CO2 pipeline,1.65947,0.55905,146.56919
+Link,DE0 28 home battery,home battery discharger,24.25584,13.12311,8.41207
+Link,DE0 28 low voltage,BEV charger,1403.11552,8538.13345,13213.77202
+Link,DE0 28 low voltage,electricity distribution grid,2291.43558,3560.66863,4453.76656
+Link,DE0 28 low voltage,home battery charger,23.7038,12.85797,8.24212
+Link,DE0 28 low voltage,rural air heat pump,3.20552,0.02629,0.00136
+Link,DE0 28 low voltage,rural ground heat pump,21.19328,160.21421,149.6062
+Link,DE0 28 low voltage,rural resistive heater,12.7827,292.79207,280.02452
+Link,DE0 28 low voltage,urban central air heat pump,0.04385,0.05005,76.27959
+Link,DE0 28 low voltage,urban central resistive heater,2.37096,890.74382,899.12435
+Link,DE0 28 low voltage,urban decentral air heat pump,0.0464,276.926,454.99176
+Link,DE0 28 low voltage,urban decentral resistive heater,1.40783,833.63955,1342.7272
+Link,DE0 28 non-sequestered HVC,waste CHP,199.99723,267.04602,267.04929
+Link,DE0 28 non-sequestered HVC,waste CHP CC,0.67747,0.21359,0.00472
+Link,DE0 28 process emissions,process emissions,125.69553,0.04515,0.00043
+Link,DE0 28 process emissions,process emissions CC,0.57004,145.82989,153.77542
+Link,DE0 28 rural heat,rural water tanks charger,49.9358,593.40709,593.58211
+Link,DE0 28 rural water tanks,rural water tanks discharger,49.9358,593.40709,593.58211
+Link,DE0 28 solid biomass,biomass to liquid,0.08516,0.04539,0.00235
+Link,DE0 28 solid biomass,biomass to liquid CC,0.06183,0.03485,0.00248
+Link,DE0 28 solid biomass,rural biomass boiler,184.14609,82.37147,4e-05
+Link,DE0 28 solid biomass,solid biomass,48.99777,,
+Link,DE0 28 solid biomass,solid biomass for industry,181.37006,207.70499,0.0017
+Link,DE0 28 solid biomass,solid biomass for industry CC,0.2352,0.18622,248.6053
+Link,DE0 28 solid biomass,urban central solid biomass CHP,857.87566,499.62866,0.00353
+Link,DE0 28 solid biomass,urban central solid biomass CHP CC,0.04965,0.02691,0.00227
+Link,DE0 28 solid biomass,urban decentral biomass boiler,1083.15622,1124.05448,793.75787
+Link,DE0 28 unsustainable bioliquids,unsustainable bioliquids,1215273.29982,401041.59998,
+Link,DE0 28 urban central heat,urban central water pits charger,243.58131,794.05083,1178.04248
+Link,DE0 28 urban central heat,urban central water tanks charger,3.91913,1.38052,1.0132
+Link,DE0 28 urban central water pits,urban central water pits discharger,243.58131,794.05083,1178.04248
+Link,DE0 28 urban central water tanks,urban central water tanks discharger,3.91913,1.38052,1.0132
+Link,DE0 28 urban decentral heat,urban decentral water tanks charger,16.49132,98.96121,99.20281
+Link,DE0 28 urban decentral water tanks,urban decentral water tanks discharger,16.49132,98.96121,99.20281
+Link,DE0 29,DAC,0.01543,0.01201,0.00163
+Link,DE0 29,H2 Electrolysis,0.05624,0.17497,0.02853
+Link,DE0 29,battery charger,1.0514,29.01513,166.18515
+Link,DE0 29,electricity distribution grid,1028.38686,1397.03229,1448.57397
+Link,DE0 29 H2,Fischer-Tropsch,0.15266,1.44344,0.01154
+Link,DE0 29 H2,H2 Fuel Cell,0.1051,0.0697,0.00466
+Link,DE0 29 H2,H2 pipeline,4.91621,93.35564,102.53622
+Link,DE0 29 H2,H2 turbine,0.6488,5.53936,0.16222
+Link,DE0 29 H2,Sabatier,0.08601,0.08151,0.0034
+Link,DE0 29 H2,methanolisation,2.64088,0.25541,0.03914
+Link,DE0 29 battery,battery discharger,1.07589,29.61345,169.61201
+Link,DE0 29 biogas,biogas to gas,245.0332,245.06956,0.00573
+Link,DE0 29 biogas,biogas to gas CC,1.71917,0.03572,35.66921
+Link,DE0 29 home battery,home battery discharger,11.74267,8.93306,4.50344
+Link,DE0 29 low voltage,BEV charger,470.59809,2863.64828,4431.83463
+Link,DE0 29 low voltage,electricity distribution grid,1028.38686,1397.03229,1448.57397
+Link,DE0 29 low voltage,home battery charger,11.47542,8.75258,4.41246
+Link,DE0 29 low voltage,rural air heat pump,0.35689,0.02547,0.00088
+Link,DE0 29 low voltage,rural ground heat pump,8.25033,121.10787,121.10905
+Link,DE0 29 low voltage,rural resistive heater,4.24452,313.61011,313.62304
+Link,DE0 29 low voltage,urban central air heat pump,0.04134,0.02601,0.00255
+Link,DE0 29 low voltage,urban central resistive heater,1.99465,37.42381,197.97107
+Link,DE0 29 low voltage,urban decentral air heat pump,0.03725,0.02986,0.00083
+Link,DE0 29 low voltage,urban decentral resistive heater,1.4063,0.42603,0.01409
+Link,DE0 29 non-sequestered HVC,waste CHP,66.24927,66.33096,66.25354
+Link,DE0 29 non-sequestered HVC,waste CHP CC,0.56845,0.08052,1.3004
+Link,DE0 29 process emissions,process emissions,78.15592,0.04919,0.00042
+Link,DE0 29 process emissions,process emissions CC,0.50336,89.69019,93.81048
+Link,DE0 29 rural heat,rural water tanks charger,39.00927,338.34024,338.55668
+Link,DE0 29 rural water tanks,rural water tanks discharger,39.00927,338.34024,338.55668
+Link,DE0 29 solid biomass,biomass to liquid,0.11422,0.05814,0.00316
+Link,DE0 29 solid biomass,biomass to liquid CC,0.08673,0.05474,123.31751
+Link,DE0 29 solid biomass,rural biomass boiler,354.47953,906.18407,723.13716
+Link,DE0 29 solid biomass,solid biomass for industry,55.74203,58.04671,0.00157
+Link,DE0 29 solid biomass,solid biomass for industry CC,0.30098,0.4377,63.42025
+Link,DE0 29 solid biomass,urban central solid biomass CHP,292.29938,164.88612,0.00375
+Link,DE0 29 solid biomass,urban central solid biomass CHP CC,0.06038,0.02519,0.00273
+Link,DE0 29 solid biomass,urban decentral biomass boiler,79.2076,395.34878,357.82945
+Link,DE0 29 unsustainable bioliquids,unsustainable bioliquids,1018650.72561,322861.95617,
+Link,DE0 29 urban central heat,urban central water pits charger,11.71645,73.6927,179.98916
+Link,DE0 29 urban central heat,urban central water tanks charger,3.14485,1.0246,0.4492
+Link,DE0 29 urban central water pits,urban central water pits discharger,11.71645,73.6927,179.98916
+Link,DE0 29 urban central water tanks,urban central water tanks discharger,3.14485,1.0246,0.4492
+Link,DE0 29 urban decentral heat,urban decentral water tanks charger,16.51091,21.36555,16.61948
+Link,DE0 29 urban decentral water tanks,urban decentral water tanks discharger,16.51091,21.36555,16.61948
+Link,DE0 3,DAC,0.01457,0.01089,0.0019
+Link,DE0 3,DC,2000.02267,2000.95112,2000.95191
+Link,DE0 3,H2 Electrolysis,0.05346,0.15921,0.0136
+Link,DE0 3,battery charger,1.0201,601.65136,1944.81853
+Link,DE0 3,electricity distribution grid,5268.73031,6372.34904,8542.55638
+Link,DE0 3 H2,Fischer-Tropsch,0.15253,60.66956,60.68099
+Link,DE0 3 H2,H2 Fuel Cell,0.10554,0.1367,0.00633
+Link,DE0 3 H2,H2 turbine,0.6162,13.60319,13.71635
+Link,DE0 3 H2,Sabatier,0.08843,0.07139,0.00342
+Link,DE0 3 H2,methanolisation,1.40465,0.25912,0.03187
+Link,DE0 3 battery,battery discharger,1.04386,614.05784,1984.9221
+Link,DE0 3 biogas,biogas to gas,280.21964,280.25614,0.00559
+Link,DE0 3 biogas,biogas to gas CC,1.71791,0.03603,31.39574
+Link,DE0 3 co2 stored,CO2 pipeline,2.14972,1.66099,359.20287
+Link,DE0 3 home battery,home battery discharger,53.09069,18.01992,13.83996
+Link,DE0 3 low voltage,BEV charger,2189.4737,13323.22139,20619.26192
+Link,DE0 3 low voltage,electricity distribution grid,5268.73031,6372.34904,8542.55638
+Link,DE0 3 low voltage,home battery charger,51.8824,17.65585,13.56034
+Link,DE0 3 low voltage,rural air heat pump,0.08373,0.02942,0.00138
+Link,DE0 3 low voltage,rural ground heat pump,51.18786,78.80794,73.5713
+Link,DE0 3 low voltage,rural resistive heater,56.33006,103.18954,78.21348
+Link,DE0 3 low voltage,urban central air heat pump,0.05342,215.91835,215.93309
+Link,DE0 3 low voltage,urban central resistive heater,62.40307,1819.66976,1757.35725
+Link,DE0 3 low voltage,urban decentral air heat pump,50.2147,115.55477,445.99687
+Link,DE0 3 low voltage,urban decentral resistive heater,36.89899,374.74962,1436.61349
+Link,DE0 3 non-sequestered HVC,waste CHP,310.60291,534.80817,534.8104
+Link,DE0 3 non-sequestered HVC,waste CHP CC,0.70499,0.13703,0.00232
+Link,DE0 3 process emissions,process emissions,195.28715,0.03617,0.00031
+Link,DE0 3 process emissions,process emissions CC,0.51457,205.26373,205.26585
+Link,DE0 3 rural heat,rural water tanks charger,392.32632,399.12284,392.47161
+Link,DE0 3 rural water tanks,rural water tanks discharger,392.32632,399.12284,392.47161
+Link,DE0 3 solid biomass,biomass to liquid,0.08692,0.04602,0.00229
+Link,DE0 3 solid biomass,biomass to liquid CC,0.0634,0.03523,0.00227
+Link,DE0 3 solid biomass,rural biomass boiler,0.00366,0.00033,5e-05
+Link,DE0 3 solid biomass,solid biomass,152.19005,,
+Link,DE0 3 solid biomass,solid biomass for industry,421.08556,526.17976,0.00153
+Link,DE0 3 solid biomass,solid biomass for industry CC,0.24743,0.20039,686.20048
+Link,DE0 3 solid biomass,urban central solid biomass CHP,147.04008,74.09847,0.00327
+Link,DE0 3 solid biomass,urban central solid biomass CHP CC,0.06398,0.03131,0.00217
+Link,DE0 3 solid biomass,urban decentral biomass boiler,1943.03866,4957.57276,4037.18613
+Link,DE0 3 unsustainable bioliquids,unsustainable bioliquids,1163933.67451,378538.3979,
+Link,DE0 3 urban central heat,urban central water pits charger,603.05967,2018.73853,2124.24977
+Link,DE0 3 urban central heat,urban central water tanks charger,3.96327,1.41519,0.30539
+Link,DE0 3 urban central water pits,urban central water pits discharger,603.05967,2018.73853,2124.24977
+Link,DE0 3 urban central water tanks,urban central water tanks discharger,3.96327,1.41519,0.30539
+Link,DE0 3 urban decentral heat,urban decentral water tanks charger,116.41433,128.79777,129.0576
+Link,DE0 3 urban decentral water tanks,urban decentral water tanks discharger,116.41433,128.79777,129.0576
+Link,DE0 4,DAC,0.01435,0.01097,0.00169
+Link,DE0 4,H2 Electrolysis,0.0571,0.20997,0.04806
+Link,DE0 4,battery charger,1.01981,7.24197,7.50238
+Link,DE0 4,electricity distribution grid,1855.19039,2819.40351,3046.19905
+Link,DE0 4 H2,Fischer-Tropsch,0.15298,650.35634,650.36772
+Link,DE0 4 H2,H2 Fuel Cell,0.10842,0.12789,0.00536
+Link,DE0 4 H2,H2 turbine,0.61607,22.19748,22.81927
+Link,DE0 4 H2,Sabatier,0.08851,0.06625,0.00344
+Link,DE0 4 H2,methanolisation,3.21162,0.28728,0.03548
+Link,DE0 4 battery,battery discharger,1.04356,7.39131,7.65709
+Link,DE0 4 biogas,biogas to gas,378.42604,378.4634,0.00553
+Link,DE0 4 biogas,biogas to gas CC,1.8274,0.03706,126.19233
+Link,DE0 4 co2 stored,CO2 pipeline,1.4061,170.54169,487.93567
+Link,DE0 4 home battery,home battery discharger,3.41849,100.97267,26.30852
+Link,DE0 4 low voltage,BEV charger,1035.66408,6302.14548,9753.316
+Link,DE0 4 low voltage,electricity distribution grid,1855.19039,2819.40351,3046.19905
+Link,DE0 4 low voltage,home battery charger,3.34068,98.9326,25.77698
+Link,DE0 4 low voltage,rural air heat pump,0.08349,0.02337,0.00128
+Link,DE0 4 low voltage,rural ground heat pump,29.95851,326.51903,305.80502
+Link,DE0 4 low voltage,rural resistive heater,56.26243,964.23127,907.9847
+Link,DE0 4 low voltage,urban central air heat pump,0.06265,1.85416,11.93004
+Link,DE0 4 low voltage,urban central resistive heater,90.99785,1017.27929,1012.84155
+Link,DE0 4 low voltage,urban decentral air heat pump,0.03665,0.04996,0.00239
+Link,DE0 4 low voltage,urban decentral resistive heater,1.40049,0.41597,0.01466
+Link,DE0 4 non-sequestered HVC,waste CHP,152.18074,228.02886,228.03134
+Link,DE0 4 non-sequestered HVC,waste CHP CC,0.57099,0.18378,0.00328
+Link,DE0 4 process emissions,process emissions,140.85533,0.03343,0.0004
+Link,DE0 4 process emissions,process emissions CC,0.51395,163.47685,172.8193
+Link,DE0 4 rural heat,rural water tanks charger,507.222,695.58593,695.76685
+Link,DE0 4 rural water tanks,rural water tanks discharger,507.222,695.58593,695.76685
+Link,DE0 4 solid biomass,biomass to liquid,0.09021,0.05448,0.00309
+Link,DE0 4 solid biomass,biomass to liquid CC,0.06559,0.0491,89.34845
+Link,DE0 4 solid biomass,rural biomass boiler,559.70773,312.83363,0.00012
+Link,DE0 4 solid biomass,solid biomass for industry,155.10377,177.50817,0.00137
+Link,DE0 4 solid biomass,solid biomass for industry CC,0.24781,0.82989,211.82213
+Link,DE0 4 solid biomass,urban central solid biomass CHP,261.82326,131.89725,0.00426
+Link,DE0 4 solid biomass,urban central solid biomass CHP CC,0.08011,0.0401,0.00361
+Link,DE0 4 solid biomass,urban decentral biomass boiler,473.16113,1279.79585,1216.41542
+Link,DE0 4 unsustainable bioliquids,unsustainable bioliquids,1569889.28449,515504.09141,
+Link,DE0 4 urban central heat,urban central water pits charger,349.77426,1233.63602,1507.31759
+Link,DE0 4 urban central heat,urban central water tanks charger,3.90312,1.36843,0.6005
+Link,DE0 4 urban central water pits,urban central water pits discharger,349.77426,1233.63602,1507.31759
+Link,DE0 4 urban central water tanks,urban central water tanks discharger,3.90312,1.36843,0.6005
+Link,DE0 4 urban decentral heat,urban decentral water tanks charger,16.49776,21.42276,16.6186
+Link,DE0 4 urban decentral water tanks,urban decentral water tanks discharger,16.49776,21.42276,16.6186
+Link,DE0 5,DAC,0.0144,0.01122,0.00248
+Link,DE0 5,H2 Electrolysis,0.0572,2.87844,0.17674
+Link,DE0 5,battery charger,1.05165,1049.08114,1049.86108
+Link,DE0 5,electricity distribution grid,3257.67087,6152.9137,7850.86746
+Link,DE0 5 H2,Fischer-Tropsch,0.15322,1.52051,0.01072
+Link,DE0 5 H2,H2 Fuel Cell,0.12002,0.11463,0.00537
+Link,DE0 5 H2,H2 pipeline,3.37341,11.74039,0.44737
+Link,DE0 5 H2,H2 pipeline (Kernnetz),31533.33333,67258.33333,67258.33333
+Link,DE0 5 H2,H2 turbine,0.6617,22.55823,23.02584
+Link,DE0 5 H2,Sabatier,0.08194,0.06584,0.00342
+Link,DE0 5 H2,methanolisation,3.92524,0.26745,0.03479
+Link,DE0 5 battery,battery discharger,1.07614,1070.71395,1071.50998
+Link,DE0 5 biogas,biogas to gas,500.60924,500.64721,0.00547
+Link,DE0 5 biogas,biogas to gas CC,2.63774,0.03797,197.51357
+Link,DE0 5 co2 stored,CO2 pipeline,0.35548,368.43755,1627.27634
+Link,DE0 5 home battery,home battery discharger,4.23744,1.63567,1.11496
+Link,DE0 5 low voltage,BEV charger,3146.47204,19146.67599,29631.74713
+Link,DE0 5 low voltage,electricity distribution grid,3257.67087,6152.9137,7850.86746
+Link,DE0 5 low voltage,home battery charger,4.141,1.60263,1.09243
+Link,DE0 5 low voltage,rural air heat pump,0.09479,0.02466,0.00132
+Link,DE0 5 low voltage,rural ground heat pump,74.02096,509.76028,537.57389
+Link,DE0 5 low voltage,rural resistive heater,93.15419,1550.6973,1500.65632
+Link,DE0 5 low voltage,urban central air heat pump,0.06516,456.98895,456.99141
+Link,DE0 5 low voltage,urban central resistive heater,844.60806,2142.04272,2420.91505
+Link,DE0 5 low voltage,urban decentral air heat pump,72.13797,264.07592,496.33283
+Link,DE0 5 low voltage,urban decentral resistive heater,1.378,1122.84645,2046.48862
+Link,DE0 5 non-sequestered HVC,waste CHP,450.12362,727.63101,727.6335
+Link,DE0 5 non-sequestered HVC,waste CHP CC,1.01455,0.18343,0.00308
+Link,DE0 5 process emissions,process emissions,107.7661,0.0278,0.00038
+Link,DE0 5 process emissions,process emissions CC,2.24143,127.63327,136.89386
+Link,DE0 5 rural heat,rural water tanks charger,775.13447,787.00998,787.24283
+Link,DE0 5 rural water tanks,rural water tanks discharger,775.13447,787.00998,787.24283
+Link,DE0 5 solid biomass,biomass to liquid,0.08375,0.04659,0.00242
+Link,DE0 5 solid biomass,biomass to liquid CC,0.06076,0.03729,0.00294
+Link,DE0 5 solid biomass,rural biomass boiler,1199.48938,813.80405,6e-05
+Link,DE0 5 solid biomass,solid biomass,270.23014,,
+Link,DE0 5 solid biomass,solid biomass for industry,211.03929,227.96694,0.00145
+Link,DE0 5 solid biomass,solid biomass for industry CC,0.24885,0.53534,265.09452
+Link,DE0 5 solid biomass,urban central solid biomass CHP,4241.34079,1444.50569,319.23513
+Link,DE0 5 solid biomass,urban central solid biomass CHP CC,0.07133,0.03099,0.00194
+Link,DE0 5 solid biomass,urban decentral biomass boiler,2129.79925,1127.09698,1838.23653
+Link,DE0 5 unsustainable bioliquids,unsustainable bioliquids,2077741.19531,675613.6029,
+Link,DE0 5 urban central heat,urban central water pits charger,1378.44177,3002.58651,3040.00661
+Link,DE0 5 urban central heat,urban central water tanks charger,3.83818,1.4903,0.18499
+Link,DE0 5 urban central water pits,urban central water pits discharger,1378.44177,3002.58651,3040.00661
+Link,DE0 5 urban central water tanks,urban central water tanks discharger,3.83818,1.4903,0.18499
+Link,DE0 5 urban decentral heat,urban decentral water tanks charger,35.95276,49.57133,49.81439
+Link,DE0 5 urban decentral water tanks,urban decentral water tanks discharger,35.95276,49.57133,49.81439
+Link,DE0 6,DAC,0.01399,0.01237,185.53896
+Link,DE0 6,DC,1400.00005,14350.64751,14350.72496
+Link,DE0 6,H2 Electrolysis,0.05784,15391.73181,19006.97776
+Link,DE0 6,battery charger,1.05556,4009.77842,6198.54608
+Link,DE0 6,electricity distribution grid,2033.81038,3560.96952,4079.03029
+Link,DE0 6 H2,Fischer-Tropsch,0.15305,1.25286,0.01038
+Link,DE0 6 H2,H2 Fuel Cell,0.11622,0.07268,0.00404
+Link,DE0 6 H2,H2 pipeline,11.06723,17.76899,0.59905
+Link,DE0 6 H2,H2 turbine,0.66277,24.5041,24.77664
+Link,DE0 6 H2,Sabatier,0.08183,0.0689,0.00333
+Link,DE0 6 H2,methanolisation,19.49838,19.8295,0.03368
+Link,DE0 6 battery,battery discharger,1.08015,4092.46296,6326.3646
+Link,DE0 6 biogas,biogas to gas,282.28533,282.50047,0.00516
+Link,DE0 6 biogas,biogas to gas CC,2.45029,66.64517,402.05011
+Link,DE0 6 co2 stored,CO2 pipeline,0.89679,1.31884,166.65976
+Link,DE0 6 home battery,home battery discharger,5.33827,409.90155,400.52326
+Link,DE0 6 low voltage,BEV charger,729.80155,4440.93371,6872.8705
+Link,DE0 6 low voltage,electricity distribution grid,2033.81038,3560.96952,4079.03029
+Link,DE0 6 low voltage,home battery charger,5.21678,401.61986,392.43105
+Link,DE0 6 low voltage,rural air heat pump,0.07298,0.02502,0.00131
+Link,DE0 6 low voltage,rural ground heat pump,22.49662,285.87768,301.47909
+Link,DE0 6 low voltage,rural resistive heater,50.63063,1025.4946,1029.98201
+Link,DE0 6 low voltage,urban central air heat pump,0.05097,0.02223,0.00148
+Link,DE0 6 low voltage,urban central resistive heater,16.43053,16.95367,0.0359
+Link,DE0 6 low voltage,urban decentral air heat pump,0.18935,71.91398,94.56278
+Link,DE0 6 low voltage,urban decentral resistive heater,1.80404,312.15615,402.31945
+Link,DE0 6 non-sequestered HVC,waste CHP,102.74217,102.81865,102.74562
+Link,DE0 6 non-sequestered HVC,waste CHP CC,0.8505,0.10897,5.90661
+Link,DE0 6 process emissions,process emissions,26.66819,0.01322,0.0002
+Link,DE0 6 process emissions,process emissions CC,2.54644,26.17276,26.17488
+Link,DE0 6 rural heat,rural water tanks charger,468.71613,533.53587,533.86967
+Link,DE0 6 rural water tanks,rural water tanks discharger,468.71613,533.53587,533.86967
+Link,DE0 6 solid biomass,biomass to liquid,0.08397,0.04464,0.00263
+Link,DE0 6 solid biomass,biomass to liquid CC,0.05959,0.03492,0.00477
+Link,DE0 6 solid biomass,rural biomass boiler,803.47982,555.63837,0.0001
+Link,DE0 6 solid biomass,solid biomass,341.49963,,
+Link,DE0 6 solid biomass,solid biomass for industry,220.17079,113.22029,0.00106
+Link,DE0 6 solid biomass,solid biomass for industry CC,0.25149,230.662,459.16235
+Link,DE0 6 solid biomass,urban central solid biomass CHP,6105.92505,438.40057,0.00252
+Link,DE0 6 solid biomass,urban central solid biomass CHP CC,0.05745,0.02326,0.00196
+Link,DE0 6 solid biomass,urban decentral biomass boiler,230.61106,129.00256,43.47487
+Link,DE0 6 unsustainable bioliquids,unsustainable bioliquids,1175487.15676,408843.22965,
+Link,DE0 6 urban central heat,urban central water pits charger,269.978,354.25053,965.97497
+Link,DE0 6 urban central heat,urban central water tanks charger,3.85339,1.51182,0.705
+Link,DE0 6 urban central water pits,urban central water pits discharger,269.978,354.25053,965.97497
+Link,DE0 6 urban central water tanks,urban central water tanks discharger,3.85339,1.51182,0.705
+Link,DE0 6 urban decentral heat,urban decentral water tanks charger,38.1342,378.48593,378.89843
+Link,DE0 6 urban decentral water tanks,urban decentral water tanks discharger,38.1342,378.48593,378.89843
+Link,DE0 7,DAC,0.01439,0.01106,0.00164
+Link,DE0 7,DC,2000.00695,2000.00738,2000.00711
+Link,DE0 7,H2 Electrolysis,0.05711,0.17817,0.01381
+Link,DE0 7,battery charger,1.05373,23.60677,23.67106
+Link,DE0 7,electricity distribution grid,2877.16566,4193.95772,4996.19461
+Link,DE0 7 H2,Fischer-Tropsch,0.15329,1.61834,0.01223
+Link,DE0 7 H2,H2 Fuel Cell,0.11333,0.11781,0.00588
+Link,DE0 7 H2,H2 pipeline,9.74105,993.08653,985.83643
+Link,DE0 7 H2,H2 turbine,0.66046,4.75513,0.10505
+Link,DE0 7 H2,Sabatier,0.08656,0.06827,0.00347
+Link,DE0 7 H2,methanolisation,12.97155,13.21435,0.04091
+Link,DE0 7 battery,battery discharger,1.07827,24.09356,24.15918
+Link,DE0 7 biogas,biogas to gas,449.34962,449.387,0.00581
+Link,DE0 7 biogas,biogas to gas CC,2.32696,0.03694,73.9825
+Link,DE0 7 home battery,home battery discharger,30.7196,10.81245,10.66931
+Link,DE0 7 low voltage,BEV charger,1639.41712,9976.05831,15439.13091
+Link,DE0 7 low voltage,electricity distribution grid,2877.16566,4193.95772,4996.19461
+Link,DE0 7 low voltage,home battery charger,30.02045,10.59399,10.45374
+Link,DE0 7 low voltage,rural air heat pump,0.16396,0.02826,0.00147
+Link,DE0 7 low voltage,rural ground heat pump,31.8012,208.15965,193.03734
+Link,DE0 7 low voltage,rural resistive heater,11.99736,497.7963,485.81359
+Link,DE0 7 low voltage,urban central air heat pump,0.05397,34.33117,81.50067
+Link,DE0 7 low voltage,urban central resistive heater,153.3445,1777.21757,1623.92795
+Link,DE0 7 low voltage,urban decentral air heat pump,0.04146,188.08637,295.99428
+Link,DE0 7 low voltage,urban decentral resistive heater,1.40822,627.67656,958.66193
+Link,DE0 7 non-sequestered HVC,waste CHP,234.09594,389.40244,389.40478
+Link,DE0 7 non-sequestered HVC,waste CHP CC,0.81053,0.13547,0.00248
+Link,DE0 7 process emissions,process emissions,92.19317,0.04969,0.00043
+Link,DE0 7 process emissions,process emissions CC,1.01441,102.058,106.00289
+Link,DE0 7 rural heat,rural water tanks charger,128.55383,183.49341,183.86946
+Link,DE0 7 rural water tanks,rural water tanks discharger,128.55383,183.49341,183.86946
+Link,DE0 7 solid biomass,biomass to liquid,0.08596,0.04429,0.0024
+Link,DE0 7 solid biomass,biomass to liquid CC,0.06249,0.03364,0.00263
+Link,DE0 7 solid biomass,rural biomass boiler,254.86974,120.72798,5e-05
+Link,DE0 7 solid biomass,solid biomass,56.16184,,
+Link,DE0 7 solid biomass,solid biomass for industry,196.20222,206.5636,0.00178
+Link,DE0 7 solid biomass,solid biomass for industry CC,0.24489,0.20131,230.8478
+Link,DE0 7 solid biomass,urban central solid biomass CHP,596.12531,305.25009,0.0036
+Link,DE0 7 solid biomass,urban central solid biomass CHP CC,0.06132,0.02909,0.0023
+Link,DE0 7 solid biomass,urban decentral biomass boiler,1236.6419,1785.2275,2084.32738
+Link,DE0 7 unsustainable bioliquids,unsustainable bioliquids,1864802.16229,591607.55575,
+Link,DE0 7 urban central heat,urban central water pits charger,431.7905,1660.3261,1731.26739
+Link,DE0 7 urban central heat,urban central water tanks charger,3.93166,1.38712,0.46631
+Link,DE0 7 urban central water pits,urban central water pits discharger,431.7905,1660.3261,1731.26739
+Link,DE0 7 urban central water tanks,urban central water tanks discharger,3.93166,1.38712,0.46631
+Link,DE0 7 urban decentral heat,urban decentral water tanks charger,16.50922,32.37018,32.64166
+Link,DE0 7 urban decentral water tanks,urban decentral water tanks discharger,16.50922,32.37018,32.64166
+Link,DE0 8,DAC,0.01542,0.01124,0.00191
+Link,DE0 8,H2 Electrolysis,0.05644,0.20016,0.04386
+Link,DE0 8,battery charger,1.05206,7.02925,188.13119
+Link,DE0 8,electricity distribution grid,1731.01496,2964.66334,3495.65788
+Link,DE0 8 H2,Fischer-Tropsch,0.15255,5.71928,0.01123
+Link,DE0 8 H2,H2 Fuel Cell,0.10609,0.10445,0.00543
+Link,DE0 8 H2,H2 turbine,0.66006,35.00743,35.51318
+Link,DE0 8 H2,Sabatier,0.08716,0.07109,0.0034
+Link,DE0 8 H2,methanolisation,1.10315,0.26254,0.03148
+Link,DE0 8 battery,battery discharger,1.07657,7.1742,192.01059
+Link,DE0 8 biogas,biogas to gas,391.68231,391.71952,0.00542
+Link,DE0 8 biogas,biogas to gas CC,1.67377,0.03706,81.86289
+Link,DE0 8 home battery,home battery discharger,15.14947,66.98121,19.06141
+Link,DE0 8 low voltage,BEV charger,1164.39045,7085.46158,10965.59036
+Link,DE0 8 low voltage,electricity distribution grid,1731.01496,2964.66334,3495.65788
+Link,DE0 8 low voltage,home battery charger,14.80469,65.62792,18.67629
+Link,DE0 8 low voltage,rural air heat pump,0.1314,0.02386,0.00131
+Link,DE0 8 low voltage,rural ground heat pump,24.96046,363.63429,343.68279
+Link,DE0 8 low voltage,rural resistive heater,14.63671,1001.35565,986.73426
+Link,DE0 8 low voltage,urban central air heat pump,0.04338,0.04678,0.0223
+Link,DE0 8 low voltage,urban central resistive heater,3.14859,745.70445,1068.6617
+Link,DE0 8 low voltage,urban decentral air heat pump,0.04594,9.06685,73.78161
+Link,DE0 8 low voltage,urban decentral resistive heater,1.40877,31.93172,274.69264
+Link,DE0 8 non-sequestered HVC,waste CHP,165.82209,223.02711,223.03009
+Link,DE0 8 non-sequestered HVC,waste CHP CC,0.60292,0.51882,0.00584
+Link,DE0 8 process emissions,process emissions,27.92159,0.02473,0.0003
+Link,DE0 8 process emissions,process emissions CC,0.33986,30.95432,31.2266
+Link,DE0 8 rural heat,rural water tanks charger,199.7559,887.1545,887.31637
+Link,DE0 8 rural water tanks,rural water tanks discharger,199.7559,887.1545,887.31637
+Link,DE0 8 solid biomass,biomass to liquid,0.10095,0.04435,0.00241
+Link,DE0 8 solid biomass,biomass to liquid CC,0.07514,0.03392,0.00287
+Link,DE0 8 solid biomass,rural biomass boiler,639.22207,364.38441,5e-05
+Link,DE0 8 solid biomass,solid biomass,363.77134,,
+Link,DE0 8 solid biomass,solid biomass for industry,157.36545,215.5955,0.00134
+Link,DE0 8 solid biomass,solid biomass for industry CC,0.27222,0.26431,295.53594
+Link,DE0 8 solid biomass,urban central solid biomass CHP,312.49184,172.03121,0.00279
+Link,DE0 8 solid biomass,urban central solid biomass CHP CC,0.05722,0.02713,0.00209
+Link,DE0 8 solid biomass,urban decentral biomass boiler,537.1481,1429.8534,1279.0124
+Link,DE0 8 unsustainable bioliquids,unsustainable bioliquids,1623991.30605,526739.35154,
+Link,DE0 8 urban central heat,urban central water pits charger,88.74234,638.10509,1461.46047
+Link,DE0 8 urban central heat,urban central water tanks charger,3.828,1.37992,1.02045
+Link,DE0 8 urban central water pits,urban central water pits discharger,88.74234,638.10509,1461.46047
+Link,DE0 8 urban central water tanks,urban central water tanks discharger,3.828,1.37992,1.02045
+Link,DE0 8 urban decentral heat,urban decentral water tanks charger,16.49084,52.26782,52.5249
+Link,DE0 8 urban decentral water tanks,urban decentral water tanks discharger,16.49084,52.26782,52.5249
+Link,DE0 9,DAC,0.01456,0.0111,0.00189
+Link,DE0 9,H2 Electrolysis,0.05677,0.1825,0.01484
+Link,DE0 9,battery charger,1.02449,2712.59863,3741.59142
+Link,DE0 9,electricity distribution grid,3042.6286,3773.58679,5488.37386
+Link,DE0 9 H2,Fischer-Tropsch,0.15277,14.36457,14.37608
+Link,DE0 9 H2,H2 Fuel Cell,0.10913,0.1363,0.00647
+Link,DE0 9 H2,H2 turbine,0.61619,5.18775,0.07594
+Link,DE0 9 H2,Sabatier,0.08928,0.072,0.00343
+Link,DE0 9 H2,methanolisation,1.76301,0.27516,0.03449
+Link,DE0 9 battery,battery discharger,1.04835,2768.53438,3818.74575
+Link,DE0 9 biogas,biogas to gas,249.58929,249.62581,0.00566
+Link,DE0 9 biogas,biogas to gas CC,1.72579,0.03599,63.04355
+Link,DE0 9 home battery,home battery discharger,18.84527,7.06005,4.92945
+Link,DE0 9 low voltage,BEV charger,2455.07352,14939.4295,23120.53526
+Link,DE0 9 low voltage,electricity distribution grid,3042.6286,3773.58679,5488.37386
+Link,DE0 9 low voltage,home battery charger,18.41637,6.91741,4.82985
+Link,DE0 9 low voltage,rural air heat pump,0.08489,0.02904,0.00139
+Link,DE0 9 low voltage,rural ground heat pump,53.16137,60.11315,58.5025
+Link,DE0 9 low voltage,rural resistive heater,33.23465,35.47063,26.58105
+Link,DE0 9 low voltage,urban central air heat pump,0.0595,124.74881,217.60135
+Link,DE0 9 low voltage,urban central resistive heater,21.01279,1142.15406,1237.43752
+Link,DE0 9 low voltage,urban decentral air heat pump,56.2994,185.41195,562.74063
+Link,DE0 9 low voltage,urban decentral resistive heater,39.1677,593.59161,1773.92244
+Link,DE0 9 non-sequestered HVC,waste CHP,367.68228,654.21141,654.21361
+Link,DE0 9 non-sequestered HVC,waste CHP CC,0.63755,0.11843,0.00227
+Link,DE0 9 process emissions,process emissions,53.84377,0.04433,0.00037
+Link,DE0 9 process emissions,process emissions CC,0.49106,60.90174,62.65267
+Link,DE0 9 rural heat,rural water tanks charger,440.4855,446.86725,440.60916
+Link,DE0 9 rural water tanks,rural water tanks discharger,440.4855,446.86725,440.60916
+Link,DE0 9 solid biomass,biomass to liquid,0.08627,0.04648,0.00228
+Link,DE0 9 solid biomass,biomass to liquid CC,0.0629,0.0355,0.00226
+Link,DE0 9 solid biomass,rural biomass boiler,0.00088,0.00028,4e-05
+Link,DE0 9 solid biomass,solid biomass for industry,160.82522,189.43664,0.00167
+Link,DE0 9 solid biomass,solid biomass for industry CC,0.23204,0.18808,238.45817
+Link,DE0 9 solid biomass,urban central solid biomass CHP,448.85482,156.89956,0.00376
+Link,DE0 9 solid biomass,urban central solid biomass CHP CC,0.06868,0.03284,0.00229
+Link,DE0 9 solid biomass,urban decentral biomass boiler,2216.07544,4952.02148,3902.3016
+Link,DE0 9 unsustainable bioliquids,unsustainable bioliquids,1037490.57668,338803.33472,
+Link,DE0 9 urban central heat,urban central water pits charger,267.29067,1572.65454,1806.03495
+Link,DE0 9 urban central heat,urban central water tanks charger,3.91687,1.41672,0.26402
+Link,DE0 9 urban central water pits,urban central water pits discharger,267.29067,1572.65454,1806.03495
+Link,DE0 9 urban central water tanks,urban central water tanks discharger,3.91687,1.41672,0.26402
+Link,DE0 9 urban decentral heat,urban decentral water tanks charger,71.5688,94.23847,94.4907
+Link,DE0 9 urban decentral water tanks,urban decentral water tanks discharger,71.5688,94.23847,94.4907
+StorageUnit,DE0 0,PHS,300.0,300.0,300.0
+StorageUnit,DE0 1,hydro,169.5,169.5,169.5
+StorageUnit,DE0 11,PHS,160.0,160.0,160.0
+StorageUnit,DE0 15,PHS,999.8,999.8,999.8
+StorageUnit,DE0 16,PHS,1740.0,1740.0,1740.0
+StorageUnit,DE0 16,hydro,120.0,120.0,120.0
+StorageUnit,DE0 18,PHS,120.0,120.0,120.0
+StorageUnit,DE0 21,PHS,161.42,161.42,161.42
+StorageUnit,DE0 22,PHS,400.0,400.0,400.0
+StorageUnit,DE0 24,PHS,164.0,164.0,164.0
+StorageUnit,DE0 25,PHS,278.0,278.0,278.0
+StorageUnit,DE0 26,PHS,1294.0,1294.0,1294.0
+StorageUnit,DE0 29,PHS,142.0,142.0,142.0
+StorageUnit,DE0 3,PHS,44.0,44.0,44.0
+StorageUnit,DE0 4,PHS,1060.0,1060.0,1060.0
+StorageUnit,DE0 7,PHS,93.0,93.0,93.0
+StorageUnit,DE0 8,PHS,480.0,480.0,480.0
+StorageUnit,DE0 9,PHS,90.0,90.0,90.0
+Store,DE gas,gas,9241.34881,1976.04716,24.07432
+Store,DE methanol,methanol,6401.25778,2970304.6318,4724273.65938
+Store,DE oil,oil,9859.03658,2580.0131,33.63748
+Store,DE0 0 H2,H2 Store,700.4687,221622.23853,778131.52584
+Store,DE0 0 battery,battery,1.79864,337.01183,3792.79046
+Store,DE0 0 co2 stored,co2 stored,111.93235,24.00885,0.46891
+Store,DE0 0 home battery,home battery,31.44451,249.17215,249.26145
+Store,DE0 0 non-sequestered HVC,non-sequestered HVC,1967878.30314,1375387.67387,821746.23469
+Store,DE0 0 rural water tanks,rural water tanks,62.59671,80.9728,81.00542
+Store,DE0 0 urban central water pits,urban central water pits,45586.39741,202971.57284,275037.68257
+Store,DE0 0 urban central water tanks,urban central water tanks,238.99944,328.35962,393.47256
+Store,DE0 0 urban decentral water tanks,urban decentral water tanks,2.50064,82.72795,82.75468
+Store,DE0 1 H2,H2 Store,7.75811,2.07587,0.06638
+Store,DE0 1 battery,battery,1.8821,28183.14617,30269.67278
+Store,DE0 1 co2 stored,co2 stored,112.18188,24.54714,0.45699
+Store,DE0 1 home battery,home battery,59.88237,72.82472,72.90624
+Store,DE0 1 non-sequestered HVC,non-sequestered HVC,2069925.75208,1446710.58199,864359.18834
+Store,DE0 1 rural water tanks,rural water tanks,8.45625,139.31672,139.34281
+Store,DE0 1 urban central water pits,urban central water pits,30494.523,190371.67777,248432.31946
+Store,DE0 1 urban central water tanks,urban central water tanks,237.73033,323.8881,368.62625
+Store,DE0 1 urban decentral water tanks,urban decentral water tanks,13.92348,78.40833,78.44582
+Store,DE0 10 H2,H2 Store,1028.10168,87761.39934,321960.38226
+Store,DE0 10 battery,battery,1.8718,3530.04761,5803.69167
+Store,DE0 10 co2 stored,co2 stored,112.76076,19.60012,0.4141
+Store,DE0 10 home battery,home battery,29.78813,1464.11914,1464.50562
+Store,DE0 10 non-sequestered HVC,non-sequestered HVC,616697.52177,431021.6585,257520.42982
+Store,DE0 10 rural water tanks,rural water tanks,51.19143,82.91781,82.95751
+Store,DE0 10 urban central water pits,urban central water pits,37110.16885,118020.62727,123399.93948
+Store,DE0 10 urban central water tanks,urban central water tanks,236.97216,321.43,349.29857
+Store,DE0 10 urban decentral water tanks,urban decentral water tanks,2.47639,0.90273,0.02525
+Store,DE0 11 H2,H2 Store,5.05631,2.03808,0.06321
+Store,DE0 11 battery,battery,1.79167,87.60957,1506.59492
+Store,DE0 11 co2 stored,co2 stored,111.96755,23.78246,0.4584
+Store,DE0 11 home battery,home battery,42.57003,45.33679,42.64601
+Store,DE0 11 non-sequestered HVC,non-sequestered HVC,1649531.71402,1152889.1718,688811.12863
+Store,DE0 11 rural water tanks,rural water tanks,61.86309,66.43529,61.89897
+Store,DE0 11 urban central water pits,urban central water pits,32286.12077,176229.80485,195707.53573
+Store,DE0 11 urban central water tanks,urban central water tanks,234.27828,318.34691,377.20522
+Store,DE0 11 urban decentral water tanks,urban decentral water tanks,2.47816,3.10318,0.04054
+Store,DE0 12 H2,H2 Store,5.05612,2.04113,0.06277
+Store,DE0 12 battery,battery,1.80042,3746.15154,3752.46765
+Store,DE0 12 co2 stored,co2 stored,112.03199,25.67843,0.44126
+Store,DE0 12 home battery,home battery,7.68857,11.43951,11.507
+Store,DE0 12 non-sequestered HVC,non-sequestered HVC,671990.48591,469666.96559,280609.65491
+Store,DE0 12 rural water tanks,rural water tanks,38.93752,77.14168,77.17513
+Store,DE0 12 urban central water pits,urban central water pits,6556.25788,53687.01418,69044.31608
+Store,DE0 12 urban central water tanks,urban central water tanks,221.68509,304.72967,328.57874
+Store,DE0 12 urban decentral water tanks,urban decentral water tanks,2.47599,1.4783,0.04089
+Store,DE0 13 H2,H2 Store,1212.9492,118131.8827,822036.24073
+Store,DE0 13 battery,battery,1.78289,17249.62575,21921.79772
+Store,DE0 13 co2 stored,co2 stored,112.14406,47.01635,0.45718
+Store,DE0 13 home battery,home battery,7.93132,52.50879,52.59285
+Store,DE0 13 non-sequestered HVC,non-sequestered HVC,1388619.56549,970532.69555,579859.48498
+Store,DE0 13 rural water tanks,rural water tanks,68.70429,91.49236,91.52415
+Store,DE0 13 urban central water pits,urban central water pits,104645.88698,167056.88301,176643.0178
+Store,DE0 13 urban central water tanks,urban central water tanks,244.47056,335.55236,353.46644
+Store,DE0 13 urban decentral water tanks,urban decentral water tanks,2.47802,0.71447,0.01784
+Store,DE0 14 H2,H2 Store,700.96378,511446.21018,1069302.4179
+Store,DE0 14 battery,battery,1.78051,128.65523,133.36789
+Store,DE0 14 co2 stored,co2 stored,111.96367,21.76229,0.42315
+Store,DE0 14 home battery,home battery,17.06587,1218.48471,1218.58755
+Store,DE0 14 non-sequestered HVC,non-sequestered HVC,2421428.55419,1692382.59361,1011139.65929
+Store,DE0 14 rural water tanks,rural water tanks,19.60181,26.65992,19.63498
+Store,DE0 14 urban central water pits,urban central water pits,29404.20429,245107.58732,406721.40679
+Store,DE0 14 urban central water tanks,urban central water tanks,238.37064,323.6292,364.14838
+Store,DE0 14 urban decentral water tanks,urban decentral water tanks,91.68318,147.23396,147.27206
+Store,DE0 15 H2,H2 Store,1406.24345,254253.72554,256457.15799
+Store,DE0 15 battery,battery,1.84869,3821.40043,9019.78896
+Store,DE0 15 co2 stored,co2 stored,112.19748,41.84542,0.67638
+Store,DE0 15 home battery,home battery,25.44254,1612.83854,2234.77429
+Store,DE0 15 non-sequestered HVC,non-sequestered HVC,1915467.48485,1338756.75348,799860.53549
+Store,DE0 15 rural water tanks,rural water tanks,75.33658,92.51756,92.56589
+Store,DE0 15 urban central water pits,urban central water pits,139604.3237,325466.38182,340055.14133
+Store,DE0 15 urban central water tanks,urban central water tanks,235.44972,321.61299,373.17992
+Store,DE0 15 urban decentral water tanks,urban decentral water tanks,2.47967,90.23561,90.29836
+Store,DE0 16 H2,H2 Store,7.44716,2.14253,0.06727
+Store,DE0 16 battery,battery,2.01013,37007.68625,37008.44986
+Store,DE0 16 co2 stored,co2 stored,113.28942,31.97774,0.49044
+Store,DE0 16 home battery,home battery,49.17951,57.31798,49.40556
+Store,DE0 16 non-sequestered HVC,non-sequestered HVC,1746698.29448,1220800.74787,729385.93018
+Store,DE0 16 rural water tanks,rural water tanks,28.40319,38.6374,38.67132
+Store,DE0 16 urban central water pits,urban central water pits,17712.99109,141081.21761,167508.16338
+Store,DE0 16 urban central water tanks,urban central water tanks,233.19803,316.11537,327.9323
+Store,DE0 16 urban decentral water tanks,urban decentral water tanks,2.46087,3.38183,0.04001
+Store,DE0 17 H2,H2 Store,5.04356,2.02903,0.06247
+Store,DE0 17 battery,battery,1.8491,36.84672,37.3654
+Store,DE0 17 co2 stored,co2 stored,111.99806,22.77755,0.45888
+Store,DE0 17 home battery,home battery,102.04702,103.41766,102.12243
+Store,DE0 17 non-sequestered HVC,non-sequestered HVC,3374569.73734,2358551.14309,1409152.16704
+Store,DE0 17 rural water tanks,rural water tanks,83.45545,84.28216,83.47493
+Store,DE0 17 urban central water pits,urban central water pits,47736.33394,230911.19029,360502.93651
+Store,DE0 17 urban central water tanks,urban central water tanks,231.18438,316.91262,342.92395
+Store,DE0 17 urban decentral water tanks,urban decentral water tanks,13.26591,15.45041,13.31006
+Store,DE0 18 H2,H2 Store,933.80289,166349.73335,218970.72129
+Store,DE0 18 battery,battery,1.74993,589.68832,593.30345
+Store,DE0 18 co2 stored,co2 stored,112.17656,21.04145,0.42194
+Store,DE0 18 home battery,home battery,77.95977,296.61831,296.72548
+Store,DE0 18 non-sequestered HVC,non-sequestered HVC,2928111.56071,2046513.00941,1222720.24948
+Store,DE0 18 rural water tanks,rural water tanks,64.40507,77.4519,77.47862
+Store,DE0 18 urban central water pits,urban central water pits,154667.76676,433220.94658,522861.50534
+Store,DE0 18 urban central water tanks,urban central water tanks,242.94479,331.16523,396.81634
+Store,DE0 18 urban decentral water tanks,urban decentral water tanks,12.35262,372.4894,372.5252
+Store,DE0 19 H2,H2 Store,2208.04782,100485.3182,315820.74944
+Store,DE0 19 battery,battery,1.7606,141.71993,10406.24425
+Store,DE0 19 co2 stored,co2 stored,111.97351,29.1086,0.58002
+Store,DE0 19 home battery,home battery,93.49101,1342.34169,3098.99429
+Store,DE0 19 non-sequestered HVC,non-sequestered HVC,1218989.84018,851975.24566,509025.53765
+Store,DE0 19 rural water tanks,rural water tanks,60.74316,82.53301,82.58534
+Store,DE0 19 urban central water pits,urban central water pits,58260.65755,276522.40121,276559.40402
+Store,DE0 19 urban central water tanks,urban central water tanks,222.68488,305.43747,323.94971
+Store,DE0 19 urban decentral water tanks,urban decentral water tanks,2.47583,21.38894,21.44894
+Store,DE0 2 H2,H2 Store,1341.66279,1560581.1888,7114766.13308
+Store,DE0 2 battery,battery,1.83809,897.09532,898.21714
+Store,DE0 2 co2 stored,co2 stored,112.41012,26.28647,0.42693
+Store,DE0 2 home battery,home battery,340.47896,3327.77331,7521.66594
+Store,DE0 2 non-sequestered HVC,non-sequestered HVC,6912468.12952,4831255.79776,2886507.08164
+Store,DE0 2 rural water tanks,rural water tanks,78.45769,81.76431,78.50326
+Store,DE0 2 urban central water pits,urban central water pits,211853.5148,1181641.9325,1229905.43192
+Store,DE0 2 urban central water tanks,urban central water tanks,236.42613,321.29766,376.61745
+Store,DE0 2 urban decentral water tanks,urban decentral water tanks,16.46691,689.09898,689.16702
+Store,DE0 20 H2,H2 Store,2214.25434,136872.63833,503421.17194
+Store,DE0 20 battery,battery,1.66271,27958.78633,28790.84065
+Store,DE0 20 co2 stored,co2 stored,111.97951,23.58403,0.45451
+Store,DE0 20 home battery,home battery,63.14059,575.62634,575.70126
+Store,DE0 20 non-sequestered HVC,non-sequestered HVC,1028632.55974,718930.91221,429536.18193
+Store,DE0 20 rural water tanks,rural water tanks,6.01167,108.45285,108.47935
+Store,DE0 20 urban central water pits,urban central water pits,24450.14552,248730.60676,248876.15018
+Store,DE0 20 urban central water tanks,urban central water tanks,236.80251,318.5078,344.67639
+Store,DE0 20 urban decentral water tanks,urban decentral water tanks,2.55761,0.60416,0.01689
+Store,DE0 21 H2,H2 Store,1331.64756,1219497.87669,2014168.045
+Store,DE0 21 battery,battery,1.84301,8454.35306,8456.15876
+Store,DE0 21 co2 stored,co2 stored,112.07938,21.96369,0.41787
+Store,DE0 21 home battery,home battery,15.0881,1866.93486,7414.93837
+Store,DE0 21 non-sequestered HVC,non-sequestered HVC,3583029.03888,2504247.32429,1496200.56117
+Store,DE0 21 rural water tanks,rural water tanks,50.03503,54.15471,50.06751
+Store,DE0 21 urban central water pits,urban central water pits,54572.3239,426784.53917,676794.60516
+Store,DE0 21 urban central water tanks,urban central water tanks,246.94053,334.2707,369.4663
+Store,DE0 21 urban decentral water tanks,urban decentral water tanks,216.83571,238.28083,238.32376
+Store,DE0 22 H2,H2 Store,700.52873,54880.40548,890839.72629
+Store,DE0 22 battery,battery,1.77699,75.49272,2810.7891
+Store,DE0 22 co2 stored,co2 stored,111.9423,25.55773,0.47491
+Store,DE0 22 home battery,home battery,45.03616,394.1777,394.27052
+Store,DE0 22 non-sequestered HVC,non-sequestered HVC,869031.59366,607382.7534,362890.04192
+Store,DE0 22 rural water tanks,rural water tanks,19.26176,94.91594,94.94648
+Store,DE0 22 urban central water pits,urban central water pits,16196.11869,69337.35582,96306.93714
+Store,DE0 22 urban central water tanks,urban central water tanks,232.78856,314.86011,376.52828
+Store,DE0 22 urban decentral water tanks,urban decentral water tanks,2.47212,0.71499,0.0164
+Store,DE0 23 H2,H2 Store,8.16941,2.41292,0.07823
+Store,DE0 23 battery,battery,1.88256,6869.59528,6872.20556
+Store,DE0 23 co2 stored,co2 stored,112.16598,24.74831,0.5707
+Store,DE0 23 home battery,home battery,50.06917,171.4754,171.53494
+Store,DE0 23 non-sequestered HVC,non-sequestered HVC,857701.00262,599463.58725,358158.61594
+Store,DE0 23 rural water tanks,rural water tanks,4.68834,130.21649,130.24936
+Store,DE0 23 urban central water pits,urban central water pits,3873.99473,25499.56992,27969.26725
+Store,DE0 23 urban central water tanks,urban central water tanks,219.59384,291.98463,341.47997
+Store,DE0 23 urban decentral water tanks,urban decentral water tanks,2.47573,0.72189,0.0161
+Store,DE0 24 H2,H2 Store,5.21934,1.87145,0.06281
+Store,DE0 24 battery,battery,1.94726,108.35336,20039.80899
+Store,DE0 24 co2 stored,co2 stored,112.00108,23.59183,0.45091
+Store,DE0 24 home battery,home battery,13.40363,77.65172,77.73036
+Store,DE0 24 non-sequestered HVC,non-sequestered HVC,1320306.5989,922787.46046,551333.36982
+Store,DE0 24 rural water tanks,rural water tanks,80.9277,183.75325,183.77978
+Store,DE0 24 urban central water pits,urban central water pits,15416.50117,51768.16847,124306.40438
+Store,DE0 24 urban central water tanks,urban central water tanks,234.46187,318.19415,381.88505
+Store,DE0 24 urban decentral water tanks,urban decentral water tanks,2.47851,0.70789,0.01738
+Store,DE0 25 H2,H2 Store,5.05506,2.02824,0.06237
+Store,DE0 25 battery,battery,1.73628,48.17109,48.5553
+Store,DE0 25 co2 stored,co2 stored,112.04124,24.41693,0.44532
+Store,DE0 25 home battery,home battery,64.65506,463.35374,463.50059
+Store,DE0 25 non-sequestered HVC,non-sequestered HVC,1956043.82193,1367116.32926,816804.39435
+Store,DE0 25 rural water tanks,rural water tanks,39.51648,51.52104,51.56365
+Store,DE0 25 urban central water pits,urban central water pits,19985.95926,220896.39466,289343.2771
+Store,DE0 25 urban central water tanks,urban central water tanks,231.8806,314.92714,344.43915
+Store,DE0 25 urban decentral water tanks,urban decentral water tanks,2.47148,233.23185,233.29264
+Store,DE0 26 H2,H2 Store,5.36663,2.05278,0.06419
+Store,DE0 26 battery,battery,2.00697,10017.51638,10019.14677
+Store,DE0 26 co2 stored,co2 stored,112.04991,33.45024,0.44921
+Store,DE0 26 home battery,home battery,41.61812,152.42518,152.48759
+Store,DE0 26 non-sequestered HVC,non-sequestered HVC,937643.88273,655337.19068,391541.14809
+Store,DE0 26 rural water tanks,rural water tanks,16.42108,127.20163,127.23355
+Store,DE0 26 urban central water pits,urban central water pits,11366.61865,65902.53735,104008.21289
+Store,DE0 26 urban central water tanks,urban central water tanks,227.89456,315.01318,378.16467
+Store,DE0 26 urban decentral water tanks,urban decentral water tanks,2.47313,26.90706,26.94182
+Store,DE0 27 H2,H2 Store,701.99142,290425.31238,536975.81475
+Store,DE0 27 battery,battery,1.78024,1956.09665,4680.92989
+Store,DE0 27 co2 stored,co2 stored,112.10077,19.60308,0.41411
+Store,DE0 27 home battery,home battery,32.79917,1002.1538,1398.26581
+Store,DE0 27 non-sequestered HVC,non-sequestered HVC,1278785.90772,893767.85759,533995.16777
+Store,DE0 27 rural water tanks,rural water tanks,40.83065,45.16208,40.8706
+Store,DE0 27 urban central water pits,urban central water pits,34576.31938,122227.10262,147831.99608
+Store,DE0 27 urban central water tanks,urban central water tanks,235.12924,319.47986,382.79557
+Store,DE0 27 urban decentral water tanks,urban decentral water tanks,2.51514,23.78944,23.81929
+Store,DE0 28 H2,H2 Store,7.48428,2.07681,0.06651
+Store,DE0 28 battery,battery,1.79647,31236.39662,31598.48445
+Store,DE0 28 co2 stored,co2 stored,112.2417,24.69407,0.45345
+Store,DE0 28 home battery,home battery,72.79936,75.7156,72.86222
+Store,DE0 28 non-sequestered HVC,non-sequestered HVC,1743615.84615,1218646.36595,728098.76202
+Store,DE0 28 rural water tanks,rural water tanks,7.49037,81.52069,81.54695
+Store,DE0 28 urban central water pits,urban central water pits,36537.19678,119107.62496,176706.37134
+Store,DE0 28 urban central water tanks,urban central water tanks,236.49892,319.80613,380.94757
+Store,DE0 28 urban decentral water tanks,urban decentral water tanks,2.4737,12.37048,12.40672
+Store,DE0 29 H2,H2 Store,5.69356,2.04181,0.06349
+Store,DE0 29 battery,battery,1.76392,255.55305,1465.45477
+Store,DE0 29 co2 stored,co2 stored,111.96747,23.79047,0.58596
+Store,DE0 29 home battery,home battery,35.23815,51.72422,51.80282
+Store,DE0 29 non-sequestered HVC,non-sequestered HVC,584800.24334,408728.04232,244200.77057
+Store,DE0 29 rural water tanks,rural water tanks,5.85139,44.89965,44.93211
+Store,DE0 29 urban central water pits,urban central water pits,1757.46706,11053.90522,26998.37454
+Store,DE0 29 urban central water tanks,urban central water tanks,189.77512,251.60466,278.7117
+Store,DE0 29 urban decentral water tanks,urban decentral water tanks,2.47664,0.7282,0.01629
+Store,DE0 3 H2,H2 Store,5.05582,2.03713,0.06276
+Store,DE0 3 battery,battery,1.79138,5304.95802,17149.72732
+Store,DE0 3 co2 stored,co2 stored,112.11351,24.69622,0.47307
+Store,DE0 3 home battery,home battery,159.29955,160.5048,159.3641
+Store,DE0 3 non-sequestered HVC,non-sequestered HVC,2720803.09555,1901621.16969,1136152.42138
+Store,DE0 3 rural water tanks,rural water tanks,58.84895,59.86843,58.87074
+Store,DE0 3 urban central water pits,urban central water pits,90458.95071,302810.77919,318637.46521
+Store,DE0 3 urban central water tanks,urban central water tanks,239.16292,324.562,342.99088
+Store,DE0 3 urban decentral water tanks,urban decentral water tanks,17.46215,19.31966,17.50112
+Store,DE0 4 H2,H2 Store,700.39207,98242.17979,1309012.50655
+Store,DE0 4 battery,battery,1.71965,63.52262,66.18328
+Store,DE0 4 co2 stored,co2 stored,111.93227,31.38647,0.4491
+Store,DE0 4 home battery,home battery,10.2825,302.94004,303.0333
+Store,DE0 4 non-sequestered HVC,non-sequestered HVC,1286993.32023,899504.17471,537422.41747
+Store,DE0 4 rural water tanks,rural water tanks,76.0833,104.33789,104.36503
+Store,DE0 4 urban central water pits,urban central water pits,52466.13898,185045.40347,226097.63893
+Store,DE0 4 urban central water tanks,urban central water tanks,235.53318,318.11092,354.34819
+Store,DE0 4 urban decentral water tanks,urban decentral water tanks,2.47466,0.73875,0.01813
+Store,DE0 5 H2,H2 Store,1178.02909,270510.43623,1054356.25999
+Store,DE0 5 battery,battery,1.82857,9250.74981,9257.86655
+Store,DE0 5 co2 stored,co2 stored,111.96704,30.68154,0.49235
+Store,DE0 5 home battery,home battery,12.73308,14.26572,12.81565
+Store,DE0 5 non-sequestered HVC,non-sequestered HVC,3910040.5064,2732801.87511,1632753.94544
+Store,DE0 5 rural water tanks,rural water tanks,116.27017,118.0515,116.3051
+Store,DE0 5 urban central water pits,urban central water pits,206766.26518,450387.97707,456000.99156
+Store,DE0 5 urban central water tanks,urban central water tanks,231.61424,321.54629,332.70974
+Store,DE0 5 urban decentral water tanks,urban decentral water tanks,5.39291,2.04279,0.03646
+Store,DE0 6 H2,H2 Store,1225.37365,358855.30298,915124.90414
+Store,DE0 6 battery,battery,1.8893,35359.15315,62658.51157
+Store,DE0 6 co2 stored,co2 stored,112.26536,19.59911,0.41443
+Store,DE0 6 home battery,home battery,18.66013,2353.50138,2355.12597
+Store,DE0 6 non-sequestered HVC,non-sequestered HVC,906905.75723,633853.72859,378705.52769
+Store,DE0 6 rural water tanks,rural water tanks,70.30742,80.03038,70.35749
+Store,DE0 6 urban central water pits,urban central water pits,40496.70009,53137.5798,144896.24565
+Store,DE0 6 urban central water tanks,urban central water tanks,232.53233,323.76305,366.30634
+Store,DE0 6 urban decentral water tanks,urban decentral water tanks,5.72013,51.05276,51.11463
+Store,DE0 7 H2,H2 Store,7.85954,2.06555,0.06406
+Store,DE0 7 battery,battery,1.81452,207.5491,208.7259
+Store,DE0 7 co2 stored,co2 stored,112.23758,26.65443,0.45838
+Store,DE0 7 home battery,home battery,92.17132,93.68034,92.24369
+Store,DE0 7 non-sequestered HVC,non-sequestered HVC,2037261.82549,1423881.14079,850719.3923
+Store,DE0 7 rural water tanks,rural water tanks,19.28307,27.52401,19.33948
+Store,DE0 7 urban central water pits,urban central water pits,64768.57449,249048.91533,259690.10809
+Store,DE0 7 urban central water tanks,urban central water tanks,237.25515,320.96049,349.09996
+Store,DE0 7 urban decentral water tanks,urban decentral water tanks,2.47638,2.37914,0.04072
+Store,DE0 8 H2,H2 Store,700.64385,779217.15847,3685019.27887
+Store,DE0 8 battery,battery,1.81963,61.70532,1659.02289
+Store,DE0 8 co2 stored,co2 stored,111.92389,24.37996,0.43333
+Store,DE0 8 home battery,home battery,45.47887,219.49139,219.55243
+Store,DE0 8 non-sequestered HVC,non-sequestered HVC,1446958.30161,1011306.75076,604220.56293
+Store,DE0 8 rural water tanks,rural water tanks,29.96339,133.07317,133.09746
+Store,DE0 8 urban central water pits,urban central water pits,13311.35108,95715.76409,219219.07049
+Store,DE0 8 urban central water tanks,urban central water tanks,230.99997,314.2711,375.85004
+Store,DE0 8 urban decentral water tanks,urban decentral water tanks,2.47363,5.36655,0.03856
+Store,DE0 9 H2,H2 Store,5.05569,2.07485,0.06612
+Store,DE0 9 battery,battery,1.77853,23919.57838,32993.95902
+Store,DE0 9 co2 stored,co2 stored,112.19693,24.83566,0.49083
+Store,DE0 9 home battery,home battery,56.57875,61.53148,56.64305
+Store,DE0 9 non-sequestered HVC,non-sequestered HVC,3050857.21123,2132302.28533,1273976.35407
+Store,DE0 9 rural water tanks,rural water tanks,66.07283,67.03009,66.09137
+Store,DE0 9 urban central water pits,urban central water pits,40093.5998,235898.18175,270905.24318
+Store,DE0 9 urban central water tanks,urban central water tanks,236.36269,321.85409,337.78623
+Store,DE0 9 urban decentral water tanks,urban decentral water tanks,10.73532,14.13577,10.77316
+Generator,DE0 0 biogas,biogas,,780138.65575,1217834.58512
+Generator,DE0 1 biogas,biogas,,390057.79104,609765.71084
+Generator,DE0 10 biogas,biogas,,932883.20933,1436207.907
+Generator,DE0 11 biogas,biogas,,313155.58067,482680.72574
+Generator,DE0 12 biogas,biogas,,80960.35241,129639.63604
+Generator,DE0 13 biogas,biogas,,783169.91362,1166205.05296
+Generator,DE0 14 biogas,biogas,,1209322.36957,1897458.37149
+Generator,DE0 15 biogas,biogas,,885925.48305,1313207.03195
+Generator,DE0 16 biogas,biogas,,228168.86623,357009.80161
+Generator,DE0 17 biogas,biogas,,266316.97511,423918.41432
+Generator,DE0 18 biogas,biogas,,1342473.47713,2080689.99541
+Generator,DE0 19 biogas,biogas,,62255.04553,101566.10167
+Generator,DE0 2 biogas,biogas,,910119.87001,1429794.17002
+Generator,DE0 20 biogas,biogas,,1470252.09294,2219191.33596
+Generator,DE0 21 biogas,biogas,,1856750.25187,2939608.01528
+Generator,DE0 22 biogas,biogas,,409932.02994,613399.09033
+Generator,DE0 23 biogas,biogas,,413380.92867,642534.43914
+Generator,DE0 24 biogas,biogas,,372101.02142,580029.06086
+Generator,DE0 25 biogas,biogas,,269091.4644,424471.01192
+Generator,DE0 26 biogas,biogas,,234266.36063,363551.43429
+Generator,DE0 27 biogas,biogas,,1088355.84834,1726509.99716
+Generator,DE0 28 biogas,biogas,,550871.75402,856160.39068
+Generator,DE0 29 biogas,biogas,,209870.48485,312496.22343
+Generator,DE0 3 biogas,biogas,,170893.14407,275059.4498
+Generator,DE0 4 biogas,biogas,,742383.16581,1105477.06398
+Generator,DE0 5 biogas,biogas,,1159427.80986,1730250.60415
+Generator,DE0 6 biogas,biogas,,2190642.08766,3521976.20821
+Generator,DE0 7 biogas,biogas,,417026.3088,648121.41559
+Generator,DE0 8 biogas,biogas,,465028.74126,717150.24277
+Generator,DE0 9 biogas,biogas,,353794.88841,552294.91184
+Link,DE methanol,shipping methanol,,661.93246,1512.98848
+Link,DE0 0 H2,H2 CCGT,,0.84311,0.0688
+Link,DE0 0 H2,H2 OCGT,,2207.86984,6784.27411
+Link,DE0 0 H2,H2 pipeline,,20.17122,0.49739
+Link,DE0 0 H2,H2 pipeline (Kernnetz),,4785.0,4785.0
+Link,DE0 0 H2,H2 pipeline retrofitted,,302.46517,302.79436
+Link,DE0 0 H2,urban central H2 CHP,,10.34256,19.50378
+Link,DE0 1,DC,,4000.00066,4000.00043
+Link,DE0 1 H2,H2 CCGT,,0.39929,0.01818
+Link,DE0 1 H2,H2 OCGT,,4.6188,0.09323
+Link,DE0 1 H2,H2 pipeline retrofitted,,369.12469,485.71746
+Link,DE0 1 H2,urban central H2 CHP,,1.05919,0.07208
+Link,DE0 10 H2,H2 CCGT,,0.56093,0.02276
+Link,DE0 10 H2,H2 OCGT,,1428.37395,1885.08777
+Link,DE0 10 H2,H2 pipeline (Kernnetz),,8250.0,8250.0
+Link,DE0 10 H2,urban central H2 CHP,,3.42484,528.60274
+Link,DE0 10 co2 stored,co2 sequestered,,590.68129,2572.0179
+Link,DE0 11 H2,H2 CCGT,,0.51792,0.02719
+Link,DE0 11 H2,H2 OCGT,,9.11422,0.1598
+Link,DE0 11 H2,H2 pipeline,,47.8717,983.41486
+Link,DE0 11 H2,H2 pipeline (Kernnetz),,30883.33333,30883.33333
+Link,DE0 11 H2,urban central H2 CHP,,0.86038,0.05692
+Link,DE0 12 H2,H2 CCGT,,0.67976,0.04033
+Link,DE0 12 H2,H2 OCGT,,41.14327,41.34143
+Link,DE0 12 H2,H2 pipeline,,63.92077,466.96083
+Link,DE0 12 H2,H2 pipeline (Kernnetz),,14933.33333,14933.33333
+Link,DE0 12 H2,urban central H2 CHP,,65.74558,426.51587
+Link,DE0 13 H2,H2 CCGT,,0.60404,0.04744
+Link,DE0 13 H2,H2 OCGT,,16.94024,5651.20103
+Link,DE0 13 H2,H2 pipeline (Kernnetz),,7466.66667,7466.66667
+Link,DE0 13 H2,urban central H2 CHP,,581.01773,1024.21597
+Link,DE0 14 H2,H2 CCGT,,0.9252,0.07652
+Link,DE0 14 H2,H2 OCGT,,7092.16512,7132.0087
+Link,DE0 14 H2,H2 pipeline,,16.40343,0.56123
+Link,DE0 14 H2,H2 pipeline (Kernnetz),,1080.0,1080.0
+Link,DE0 14 H2,H2 pipeline retrofitted,,29.23575,169.52936
+Link,DE0 14 H2,urban central H2 CHP,,340.64275,3430.7969
+Link,DE0 15 H2,H2 CCGT,,0.62024,0.04704
+Link,DE0 15 H2,H2 OCGT,,26.46021,48.65302
+Link,DE0 15 H2,H2 pipeline (Kernnetz),,51026.66667,51026.66667
+Link,DE0 15 H2,H2 pipeline retrofitted,,3.04416,0.30573
+Link,DE0 15 H2,urban central H2 CHP,,70.51641,70.56236
+Link,DE0 16 H2,H2 CCGT,,0.34483,0.00911
+Link,DE0 16 H2,H2 OCGT,,6.11178,0.07967
+Link,DE0 16 H2,H2 pipeline (Kernnetz),,960.0,960.0
+Link,DE0 16 H2,urban central H2 CHP,,1.46305,219.5674
+Link,DE0 17,DC,,1.0028,1.0028
+Link,DE0 17 H2,H2 CCGT,,0.76893,0.04936
+Link,DE0 17 H2,H2 OCGT,,53.06908,53.23898
+Link,DE0 17 H2,H2 pipeline,,17.2393,0.67464
+Link,DE0 17 H2,H2 pipeline (Kernnetz),,36641.66667,36641.66667
+Link,DE0 17 H2,urban central H2 CHP,,216.48835,2778.49633
+Link,DE0 18 H2,H2 CCGT,,0.63731,0.03112
+Link,DE0 18 H2,H2 OCGT,,3548.63579,3579.93698
+Link,DE0 18 H2,H2 pipeline (Kernnetz),,6705.0,6705.0
+Link,DE0 18 H2,urban central H2 CHP,,8.12836,1.03163
+Link,DE0 19 H2,H2 CCGT,,0.62655,0.04404
+Link,DE0 19 H2,H2 OCGT,,34.19811,42.19071
+Link,DE0 19 H2,H2 pipeline,,26.34611,0.80206
+Link,DE0 19 H2,urban central H2 CHP,,13.03974,13.13545
+Link,DE0 2 H2,H2 CCGT,,1.07031,0.12274
+Link,DE0 2 H2,H2 OCGT,,12085.53762,38834.18988
+Link,DE0 2 H2,H2 pipeline (Kernnetz),,46240.0,46240.0
+Link,DE0 2 H2,urban central H2 CHP,,1439.98736,5093.65958
+Link,DE0 20 H2,H2 CCGT,,0.61156,0.03839
+Link,DE0 20 H2,H2 OCGT,,64.72076,2489.42605
+Link,DE0 20 H2,urban central H2 CHP,,3.76157,1124.11407
+Link,DE0 21,DC,,1.20592,1.20592
+Link,DE0 21 H2,H2 CCGT,,1.06127,0.11957
+Link,DE0 21 H2,H2 OCGT,,21255.55734,21284.85732
+Link,DE0 21 H2,H2 pipeline retrofitted,,28.12527,521.95888
+Link,DE0 21 H2,urban central H2 CHP,,2541.77688,5354.90685
+Link,DE0 22 H2,H2 CCGT,,0.66765,0.04632
+Link,DE0 22 H2,H2 OCGT,,292.26801,3426.35101
+Link,DE0 22 H2,H2 pipeline,,118.67917,1059.36819
+Link,DE0 22 H2,H2 pipeline (Kernnetz),,16825.0,16825.0
+Link,DE0 22 H2,urban central H2 CHP,,4.37193,43.55984
+Link,DE0 23 H2,H2 CCGT,,0.39105,0.01802
+Link,DE0 23 H2,H2 OCGT,,4.59374,0.11602
+Link,DE0 23 H2,urban central H2 CHP,,0.46989,0.01381
+Link,DE0 24,DC,,2000.00009,2000.01273
+Link,DE0 24 H2,H2 CCGT,,0.51693,0.02755
+Link,DE0 24 H2,H2 OCGT,,11.43608,11.57188
+Link,DE0 24 H2,H2 pipeline,,27.90446,1.30528
+Link,DE0 24 H2,H2 pipeline (Kernnetz),,20466.66667,20466.66667
+Link,DE0 24 H2,urban central H2 CHP,,0.52775,0.04191
+Link,DE0 25 H2,H2 CCGT,,0.92438,0.07062
+Link,DE0 25 H2,H2 OCGT,,3653.4508,3653.68896
+Link,DE0 25 H2,H2 pipeline,,25.84602,3.57267
+Link,DE0 25 H2,H2 pipeline (Kernnetz),,18800.0,18800.0
+Link,DE0 25 H2,H2 pipeline retrofitted,,456.26203,899.75611
+Link,DE0 25 H2,urban central H2 CHP,,1533.33761,2537.51907
+Link,DE0 26 H2,H2 CCGT,,0.93794,0.05751
+Link,DE0 26 H2,H2 OCGT,,338.47333,338.96777
+Link,DE0 26 H2,H2 pipeline (Kernnetz),,3035.0,3035.0
+Link,DE0 26 H2,urban central H2 CHP,,2.91467,111.19212
+Link,DE0 27,DC,,1.93044,1.95053
+Link,DE0 27 H2,H2 CCGT,,0.6181,0.0276
+Link,DE0 27 H2,H2 OCGT,,6210.24907,6213.36847
+Link,DE0 27 H2,H2 pipeline,,21.07678,0.80715
+Link,DE0 27 H2,H2 pipeline (Kernnetz),,11130.0,11130.0
+Link,DE0 27 H2,H2 pipeline retrofitted,,9.60779,1.25766
+Link,DE0 27 H2,urban central H2 CHP,,3.73197,629.09376
+Link,DE0 27 co2 stored,co2 sequestered,,607.02467,831.2699
+Link,DE0 28 H2,H2 CCGT,,0.40605,0.01595
+Link,DE0 28 H2,H2 OCGT,,4.79828,0.08328
+Link,DE0 28 H2,H2 pipeline (Kernnetz),,1080.0,1080.0
+Link,DE0 28 H2,H2 pipeline retrofitted,,33.00783,56.7141
+Link,DE0 28 H2,urban central H2 CHP,,0.61775,0.14385
+Link,DE0 29 H2,H2 CCGT,,0.49129,0.0283
+Link,DE0 29 H2,H2 OCGT,,6.54657,0.2008
+Link,DE0 29 H2,H2 pipeline (Kernnetz),,27933.33333,27933.33333
+Link,DE0 29 H2,urban central H2 CHP,,0.42332,0.03456
+Link,DE0 3 H2,H2 CCGT,,0.58333,0.02923
+Link,DE0 3 H2,H2 OCGT,,20.7997,20.94292
+Link,DE0 3 H2,H2 pipeline,,1178.7024,3025.95334
+Link,DE0 3 H2,H2 pipeline (Kernnetz),,32816.66667,32816.66667
+Link,DE0 3 H2,urban central H2 CHP,,79.78001,3562.21792
+Link,DE0 4 H2,H2 CCGT,,0.67682,0.05123
+Link,DE0 4 H2,H2 OCGT,,69.05787,12763.3152
+Link,DE0 4 H2,H2 pipeline,,16.67877,0.66208
+Link,DE0 4 H2,H2 pipeline (Kernnetz),,7650.0,7650.0
+Link,DE0 4 H2,urban central H2 CHP,,464.33871,464.49567
+Link,DE0 5 H2,H2 CCGT,,0.62183,0.05797
+Link,DE0 5 H2,H2 OCGT,,2886.57938,7368.54214
+Link,DE0 5 H2,urban central H2 CHP,,451.48725,1737.10532
+Link,DE0 6 H2,H2 CCGT,,0.49027,0.01784
+Link,DE0 6 H2,H2 OCGT,,4110.99967,4111.45567
+Link,DE0 6 H2,H2 pipeline (Kernnetz),,55868.33333,55868.33333
+Link,DE0 6 H2,H2 pipeline retrofitted,,1.91638,0.28549
+Link,DE0 6 H2,urban central H2 CHP,,0.46846,0.02641
+Link,DE0 6 co2 stored,co2 sequestered,,1814.81325,5962.67946
+Link,DE0 7 H2,H2 CCGT,,0.42486,0.02105
+Link,DE0 7 H2,H2 OCGT,,5.44215,0.11982
+Link,DE0 7 H2,H2 pipeline (Kernnetz),,4030.0,4030.0
+Link,DE0 7 H2,H2 pipeline retrofitted,,963.73255,1799.91478
+Link,DE0 7 H2,urban central H2 CHP,,2.16706,356.04033
+Link,DE0 8 H2,H2 CCGT,,0.82699,0.07505
+Link,DE0 8 H2,H2 OCGT,,6277.25476,15902.3904
+Link,DE0 8 H2,H2 pipeline,,17.72771,0.61415
+Link,DE0 8 H2,H2 pipeline (Kernnetz),,7650.0,7650.0
+Link,DE0 8 H2,H2 pipeline retrofitted,,2.67677,0.64737
+Link,DE0 8 H2,urban central H2 CHP,,1.67958,286.46795
+Link,DE0 9,DC,,2000.00008,2000.03554
+Link,DE0 9 H2,H2 CCGT,,0.42453,0.01715
+Link,DE0 9 H2,H2 OCGT,,6.02275,0.08404
+Link,DE0 9 H2,H2 pipeline,,394.93237,2238.34666
+Link,DE0 9 H2,H2 pipeline retrofitted,,290.84429,624.11434
+Link,DE0 9 H2,urban central H2 CHP,,597.92018,2744.97315
+Store,DE0 0 EV battery,EV battery,,21900.68468,33893.90152
+Store,DE0 1 EV battery,EV battery,,23036.3794,35651.52351
+Store,DE0 10 EV battery,EV battery,,6863.27907,10621.73664
+Store,DE0 10 co2 sequestered,co2 sequestered,,2537271.84,22090052.70446
+Store,DE0 11 EV battery,EV battery,,18357.77846,28410.83485
+Store,DE0 12 EV battery,EV battery,,7478.63916,11574.07921
+Store,DE0 13 EV battery,EV battery,,15454.06502,23916.99463
+Store,DE0 14 EV battery,EV battery,,26948.28392,41705.65874
+Store,DE0 15 EV battery,EV battery,,21317.40023,32991.19981
+Store,DE0 16 EV battery,EV battery,,19439.15359,30084.39083
+Store,DE0 17 EV battery,EV battery,,37555.87305,58122.15835
+Store,DE0 18 EV battery,EV battery,,32587.20211,50432.55201
+Store,DE0 19 EV battery,EV battery,,13566.2414,20995.36416
+Store,DE0 2 EV battery,EV battery,,76929.44457,119057.4202
+Store,DE0 20 EV battery,EV battery,,11447.73907,17716.73107
+Store,DE0 21 EV battery,EV battery,,39875.83432,61712.57297
+Store,DE0 22 EV battery,EV battery,,9671.52637,14967.8317
+Store,DE0 23 EV battery,EV battery,,9545.42726,14772.67841
+Store,DE0 24 EV battery,EV battery,,14693.80421,22740.40105
+Store,DE0 25 EV battery,EV battery,,21768.97773,33690.06943
+Store,DE0 26 EV battery,EV battery,,10435.11836,16149.58068
+Store,DE0 27 EV battery,EV battery,,14231.71692,22025.26627
+Store,DE0 27 co2 sequestered,co2 sequestered,,3125066.05333,6250152.88457
+Store,DE0 28 EV battery,EV battery,,19404.84876,30031.30005
+Store,DE0 29 EV battery,EV battery,,6508.29155,10072.35144
+Store,DE0 3 EV battery,EV battery,,30280.0486,46861.95891
+Store,DE0 4 EV battery,EV battery,,14323.05791,22166.62727
+Store,DE0 5 EV battery,EV battery,,43515.1727,67344.87984
+Store,DE0 6 EV battery,EV battery,,10093.03115,15620.16024
+Store,DE0 6 co2 sequestered,co2 sequestered,,14337462.3825,51659759.6307
+Store,DE0 7 EV battery,EV battery,,22672.85979,35088.93389
+Store,DE0 8 EV battery,EV battery,,16103.32176,24921.79628
+Store,DE0 9 EV battery,EV battery,,33953.24887,52546.67105
+Link,DE0 15,DC,,,0.03225
