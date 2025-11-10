@@ -4,13 +4,13 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251106-flex-scnenario-expansion
+  prefix: 20251110-flex-fix-capacities
   name:
   # # main scenarios
-  - LowFlex
-  - LowBattery
+  # - LowFlex
+  # - LowBattery
   - Base
-  - HighFlex
+  # - HighFlex
   # # sensitivity scenarios
   # # LowFlex variations
   # - LowFlex75
@@ -802,7 +802,8 @@ flexibility_comparison:
   # - LowFlex
   # - LowBattery
   - Base
-  # - HighFlex
+  # - HigFlex
+  # - MedFlex
   # - LowFlex75
   # - LowFlex50
   # - LowFlexHeatModelMargin0.1

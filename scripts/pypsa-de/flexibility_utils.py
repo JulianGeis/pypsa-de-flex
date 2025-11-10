@@ -162,6 +162,7 @@ tech_colors = {
     "Battery": "palegreen",
     "Power-to-heat": "crimson",
     "Electrolysis": "#ff29d9",
+    "Iron-air battery": "#c9954d",
     "Others": "grey",
     "V2G": "tomato",
     "iron-air battery": "#f5e6b3",

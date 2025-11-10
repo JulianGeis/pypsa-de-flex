@@ -47,7 +47,7 @@ capa_groups = {
         "Offshore wind": ["offwind-ac", "offwind-dc"],
         "Solar": ["solar", "solar rooftop", "solar-hsat"],
     },
-    "Dispatchable": {
+    "Backup": {
         "Gas": ["OCGT", "CCGT"],
         "Gas CHP": ["urban central gas CHP", "urban central gas CHP CC"],
         "H2": ["H2 turbine", "H2 OCGT"],
@@ -66,11 +66,12 @@ capa_groups = {
             "urban central oil CHP",
         ],
     },
-    "Storage": {
+    "Storage Discharge": {
         "Pumped storage": ["PHS"],
         "Battery": ["battery discharger", "home battery discharger"],
+        "Iron-air battery": ["iron-air battery discharger"],
     },
-    "Demand-side flex": {
+    "Demand-Side Flex": {
         "Power-to-heat": [
             "rural air heat pump",
             "rural ground heat pump",
@@ -81,6 +82,7 @@ capa_groups = {
             "urban decentral resistive heater",
         ],
         "Electrolysis": ["H2 Electrolysis"],
+        "Fischer-Tropsch": ["Fischer-Tropsch"],
     },
 }
 
@@ -1227,6 +1229,7 @@ if __name__ == "__main__":
         output_dir=output_dir,
     )
 
+    planning_horizons = [2025, 2035]
     # Capacity comparison
     logger.info("Plotting capacity comparison for DE")
     data = get_capacities(networks, scenarios, planning_horizons)

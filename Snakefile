@@ -591,7 +591,6 @@ rule modify_prenetwork:
         offshore_connection_points="ariadne-data/offshore_connection_points.csv",
         base_capacities_3H="flex-data/Base_capacities_{clusters}cl_3H.csv",
         base_capacities_1H="flex-data/Base_capacities_{clusters}cl_1H.csv",
-        base_capacities_365H="flex-data/Base_capacities_{clusters}cl_365H.csv",
     output:
         network=resources(
             "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}_final.nc"
