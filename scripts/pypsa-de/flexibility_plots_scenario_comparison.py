@@ -1111,8 +1111,8 @@ if __name__ == "__main__":
 
     # Load flex causes per node and aggregate
     flex_causes_per_node_agg = {}
-    flex_causes_i_agg = {}
     for i, scenario in enumerate(scenarios):
+        flex_causes_i_agg = {}
         flex_causes_per_node_path = snakemake.input.flex_causes_per_node[i]
         if Path(flex_causes_per_node_path).exists():
             flex_causes_i = pd.read_pickle(flex_causes_per_node_path)
@@ -1229,7 +1229,6 @@ if __name__ == "__main__":
         output_dir=output_dir,
     )
 
-    planning_horizons = [2025, 2035]
     # Capacity comparison
     logger.info("Plotting capacity comparison for DE")
     data = get_capacities(networks, scenarios, planning_horizons)

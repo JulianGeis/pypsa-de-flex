@@ -216,6 +216,10 @@ def find_project_root():
 
 # Scenario abbreviations dictionary
 scenario_abbrev = {
+    "LowFlex": "LF",
+    "LowBattery": "LB",
+    "Base": "BA",
+    "HighFlex": "HF",
     "LowFlex50": "LF50",
     "LowFlex75": "LF75",
     "LowBatt50": "LB50",
