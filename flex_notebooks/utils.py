@@ -1,3 +1,5 @@
+import matplotlib.pyplot as plt
+
 # Define flexible technologies
 flex_techs = {
     "no": "",
@@ -300,3 +302,32 @@ def get_condense_sum(df, groups, groups_name, return_original=False):
         return result, df
 
     return result
+
+def df_to_png(df, filename="table.png"):
+    fig, ax = plt.subplots(figsize=(10, 0.5 + 0.25*len(df)))
+    ax.axis('off')
+    tbl = ax.table(cellText=df.values,
+                   colLabels=df.columns,
+                   rowLabels=df.index,
+                   loc='center')
+    tbl.auto_set_font_size(False)
+    tbl.set_fontsize(10)
+    fig.savefig(filename, bbox_inches='tight')
+    plt.close()
+
+scenario_colors = {
+    'LowFlex': 'navy',    
+    'LowBattery': 'teal', 
+    'Base': 'darkorange',        
+    'HighFlex': 'purple',     
+}
+
+sector_colors = {
+    'Electricity': '#110d63',
+    'Heat': '#d15959',
+    'H2': '#bf13a0',
+    'Fuels': '#1abc9c',
+    'Gas': '#e0986c',
+    'Biomass': '#baa741',
+    'Other': 'lightgrey'
+    }

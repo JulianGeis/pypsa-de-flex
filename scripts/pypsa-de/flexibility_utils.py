@@ -1,4 +1,6 @@
 from pathlib import Path
+from numpy import isclose
+
 
 tech_colors = {
     "AC": "#70af1d",
@@ -242,9 +244,34 @@ scenario_abbrev = {
 
 
 def aggregate_small_contributors(df, threshold=0.01):
-    """Aggregate technologies contributing <1% across all columns into 'Other'"""
+    """
+    Aggregate technologies contributing <1% across all columns into 'Other'
+    Takes df with Technologies as index and granularity + year as columns
+    """
     col_totals = df.abs().sum()
     mask = (df.abs() < threshold * col_totals).all(axis=1)
     result = df[~mask].copy()
     result.loc["Other"] = df[mask].sum()
+
+    assert isclose(result.sum(), df.sum()).all(), "Sum mismatch after aggregation"
+
     return result
+
+
+# def collapse_small_columns(df, threshold=0.01, others_name="other"):
+#     """
+#     Collapse columns where all entries are below threshold share into 'other' column
+#     Takes df with Technologies as columns and granularity + year as index
+#     """
+#     row_abs_sum = df.abs().sum(axis=1)
+#     shares = df.abs().div(row_abs_sum, axis=0)
+
+#     cols_keep = (shares >= threshold).any(axis=0)
+#     cols_drop = ~cols_keep
+
+#     df_out = df.loc[:, cols_keep].copy()
+#     df_out[others_name] = df.loc[:, cols_drop].sum(axis=1)
+
+#     assert isclose(df_out.sum(axis=1), df.sum(axis=1)).all(), "Sum mismatch after collapsing columns"
+
+#     return df_out

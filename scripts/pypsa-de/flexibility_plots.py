@@ -379,6 +379,8 @@ def plot_flexibility_provision_multiyear(
         if gran_data.empty:
             continue
 
+        n_years = len(gran_data.index)  # Number of bars (years)
+        
         # Separate positive and negative contributions
         positive_data = gran_data.clip(lower=0)  # Solutions (positive)
         negative_data = gran_data.clip(upper=0)  # Any negative contributions
@@ -407,11 +409,11 @@ def plot_flexibility_provision_multiyear(
                 alpha=0.8,
             )
 
-        # Apply hatching to bars
+        # Apply hatching to bars - FIX: Correct patch-to-technology mapping
         for j, patch in enumerate(axes[i].patches):
-            # Determine which technology this patch belongs to
-            tech_idx = j % len(flexibility_df.columns)
-            if hatches[tech_idx]:
+            # In stacked bars: patches ordered as [tech0_year0, tech0_year1, ..., tech1_year0, tech1_year1, ...]
+            tech_idx = j // n_years  # Correct technology index
+            if tech_idx < len(hatches) and hatches[tech_idx]:
                 patch.set_hatch(hatches[tech_idx])
                 patch.set_edgecolor("black")  # Make hatch lines visible
 
@@ -481,7 +483,8 @@ def plot_flexibility_provision_multiyear(
     if save_path:
         plt.savefig(save_path, bbox_inches="tight", dpi=300)
 
-    plt.close()
+    plt.tight_layout()
+    plt.show()
 
     return fig, axes
 
@@ -1240,6 +1243,7 @@ if __name__ == "__main__":
         r"^(Supply_|Demand_)", "", regex=True
     )
     flex_contributions_raw_df = flex_contributions_raw_df.swaplevel(0, 1).sort_index()
+    flex_contributions_raw_df = aggregate_small_contributors(flex_contributions_raw_df.T.groupby(level=0).sum(), threshold=0.01).T
 
     plot_flexibility_provision_multiyear(
         flex_contributions_raw_df,
