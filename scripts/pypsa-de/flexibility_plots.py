@@ -484,7 +484,7 @@ def plot_flexibility_provision_multiyear(
         plt.savefig(save_path, bbox_inches="tight", dpi=300)
 
     plt.tight_layout()
-    plt.show()
+    plt.close()
 
     return fig, axes
 
@@ -1146,7 +1146,7 @@ if __name__ == "__main__":
             clusters=27,
             opts="",
             sector_opts="None",
-            run="MedFlex",
+            run="Base",
         )
 
     configure_logging(snakemake)

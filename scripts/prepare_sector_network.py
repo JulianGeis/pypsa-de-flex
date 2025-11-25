@@ -6658,7 +6658,7 @@ if __name__ == "__main__":
             clusters="27",
             sector_opts="",
             planning_horizons="2025",
-            run="MedFlex",
+            run="Base",
         )
 
     configure_logging(snakemake)  # pylint: disable=E0606

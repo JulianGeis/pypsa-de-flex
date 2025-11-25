@@ -279,26 +279,35 @@ LowFlex:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    Link:
-      battery discharger: 0.50
-      home battery discharger: 0.50
-    Store:
-      H2 Store: 0.50
-      rural water tanks: 0.25
-      urban decentral water tanks: 0.25
-      urban decentral water pits: 0.25
-      urban central water tanks: 0.25
-      urban central water pits: 0.25
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.50
+        home battery discharger: 0.50
+      Store:
+        H2 Store: 0.50
+        rural water tanks: 0.25
+        urban decentral water tanks: 0.25
+        urban decentral water pits: 0.25
+        urban central water tanks: 0.25
+        urban central water pits: 0.25
 
 LowBattery:
 
   electricity:
     transmission_limit: v1.5
 
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    Link:
-      battery discharger: 0.5
-      home battery discharger: 0.5
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.5
+        home battery discharger: 0.5
 
 Base:
 
@@ -389,23 +398,25 @@ LowFlex75:
         H2 Electrolysis: 0.75
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.75
-      home battery discharger: 0.75
-      rural air heat pump: 0.75
-      rural ground heat pump: 0.75
-      rural resistive heater: 0.75
-      urban central air heat pump: 0.75
-      urban central resistive heater: 0.75
-      urban decentral air heat pump: 0.75
-      urban decentral resistive heater: 0.75
-      urban central water pits discharger: 0.75
-      urban central water tanks discharger: 0.75
-      urban decentral water pits discharger: 0.75
-      urban decentral water tanks discharger: 0.75
-      rural water tanks charger: 0.75
-    Store:
-      H2 Store: 0.75
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        rural air heat pump: 0.75
+        rural ground heat pump: 0.75
+        rural resistive heater: 0.75
+        urban central air heat pump: 0.75
+        urban central resistive heater: 0.75
+        urban decentral air heat pump: 0.75
+        urban decentral resistive heater: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks charger: 0.75
+      Store:
+        H2 Store: 0.75
 
 LowFlex50:
 
@@ -445,26 +456,28 @@ LowFlex50:
         H2 Electrolysis: 0.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.5
-      home battery discharger: 0.5
-      rural air heat pump: 0.5
-      rural ground heat pump: 0.5
-      rural resistive heater: 0.5
-      urban central air heat pump: 0.5
-      urban central resistive heater: 0.5
-      urban decentral air heat pump: 0.5
-      urban decentral resistive heater: 0.5
-      urban central water pits discharger: 0.5
-      urban central water tanks discharger: 0.5
-      urban decentral water pits discharger: 0.5
-      urban decentral water tanks discharger: 0.5
-      rural water tanks charger: 0.5
-    Store:
-      H2 Store: 0.5
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.5
+        home battery discharger: 0.5
+        rural air heat pump: 0.5
+        rural ground heat pump: 0.5
+        rural resistive heater: 0.5
+        urban central air heat pump: 0.5
+        urban central resistive heater: 0.5
+        urban decentral air heat pump: 0.5
+        urban decentral resistive heater: 0.5
+        urban central water pits discharger: 0.5
+        urban central water tanks discharger: 0.5
+        urban decentral water pits discharger: 0.5
+        urban decentral water tanks discharger: 0.5
+        rural water tanks charger: 0.5
+      Store:
+        H2 Store: 0.5
 
 
-LowFlexHeatModelMargin0.1: # infeasible for 27cl 1H
+LowFlexHeatModelMargin0.1: 
 
   electricity:
     transmission_limit: v1.5
@@ -506,16 +519,18 @@ LowFlexHeatModelMargin0.1: # infeasible for 27cl 1H
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.50
-    Store:
-      H2 Store: 0.50
-      home battery: 0.5
-      rural water tanks: 0.5
-      urban decentral water tanks: 0.5
-      urban decentral water pits: 0.5
-      urban central water tanks: 0.5
-      urban central water pits: 0.5
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.50
+      Store:
+        H2 Store: 0.50
+        home battery: 0.5
+        rural water tanks: 0.5
+        urban decentral water tanks: 0.5
+        urban decentral water pits: 0.5
+        urban central water tanks: 0.5
+        urban central water pits: 0.5
 
 
 LowFlexHeatModelMargin0.2:
@@ -560,16 +575,18 @@ LowFlexHeatModelMargin0.2:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.50
-    Store:
-      H2 Store: 0.50
-      home battery: 0.5
-      rural water tanks: 0.5
-      urban decentral water tanks: 0.5
-      urban decentral water pits: 0.5
-      urban central water tanks: 0.5
-      urban central water pits: 0.5
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.50
+      Store:
+        H2 Store: 0.50
+        home battery: 0.5
+        rural water tanks: 0.5
+        urban decentral water tanks: 0.5
+        urban decentral water pits: 0.5
+        urban central water tanks: 0.5
+        urban central water pits: 0.5
 
 LowFlexHeatModelMargin0.3:
 
@@ -613,11 +630,13 @@ LowFlexHeatModelMargin0.3:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.50
-    Store:
-      H2 Store: 0.50
-      home battery: 0.5
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.50
+      Store:
+        H2 Store: 0.50
+        home battery: 0.5
       rural water tanks: 0.5
       urban decentral water tanks: 0.5
       urban decentral water pits: 0.5
@@ -666,16 +685,18 @@ LowFlexHeatPMINPU50:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.50
-      home battery discharger: 0.50
-    Store:
-      H2 Store: 0.50
-      rural water tanks: 0.50
-      urban decentral water tanks: 0.50
-      urban decentral water pits: 0.50
-      urban central water tanks: 0.50
-      urban central water pits: 0.50
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.50
+        home battery discharger: 0.50
+      Store:
+        H2 Store: 0.50
+        rural water tanks: 0.50
+        urban decentral water tanks: 0.50
+        urban decentral water pits: 0.50
+        urban central water tanks: 0.50
+        urban central water pits: 0.50
 
 
 LowFlexHeatPMINPU25:
@@ -720,16 +741,18 @@ LowFlexHeatPMINPU25:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.50
-      home battery discharger: 0.50
-    Store:
-      H2 Store: 0.50
-      rural water tanks: 0.25
-      urban decentral water tanks: 0.25
-      urban decentral water pits: 0.25
-      urban central water tanks: 0.25
-      urban central water pits: 0.25
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.50
+        home battery discharger: 0.50
+      Store:
+        H2 Store: 0.50
+        rural water tanks: 0.25
+        urban decentral water tanks: 0.25
+        urban decentral water pits: 0.25
+        urban central water tanks: 0.25
+        urban central water pits: 0.25
 
 LowFlexHeatMinStore:
 
@@ -773,16 +796,28 @@ LowFlexHeatMinStore:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.50
-      home battery discharger: 0.50
-    Store:
-      H2 Store: 0.50
-      rural water tanks: 0
-      urban decentral water tanks: 0
-      urban decentral water pits: 0
-      urban central water tanks: 0.25
-      urban central water pits: 0.25
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.50
+        home battery discharger: 0.50
+      Store:
+        H2 Store: 0.50
+        rural water tanks: 0
+        urban decentral water tanks: 0
+        urban decentral water pits: 0
+        urban central water tanks: 0.25
+        urban central water pits: 0.25
+
+LowFlexBEVDSMOFF:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2050 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
 
 
 # Battery
@@ -792,9 +827,11 @@ LowBattery75:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.75
-      home battery discharger: 0.75
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
 
 LowBattery50:
 
@@ -802,9 +839,11 @@ LowBattery50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.5
-      home battery discharger: 0.5
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.5
+        home battery discharger: 0.5
 
 LowBattery25:
 
@@ -812,9 +851,11 @@ LowBattery25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0.25
-      home battery discharger: 0.25
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.25
+        home battery discharger: 0.25
 
 LowBattery0:
 
@@ -822,10 +863,11 @@ LowBattery0:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      battery discharger: 0
-      home battery discharger: 0
-
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0
+        home battery discharger: 0
 
 # PtG / Electrolysis
 LowPtG75:
@@ -834,8 +876,10 @@ LowPtG75:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      H2 Electrolysis: 0.75
+    only_de: false
+    component_limits:
+      Link:
+        H2 Electrolysis: 0.75
 
 
 LowPtG50:
@@ -844,8 +888,10 @@ LowPtG50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      H2 Electrolysis: 0.50
+    only_de: false
+    component_limits:
+      Link:
+        H2 Electrolysis: 0.50
 
 
 LowPtG25:
@@ -854,8 +900,10 @@ LowPtG25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      H2 Electrolysis: 0.25
+    only_de: false
+    component_limits:
+      Link:
+        H2 Electrolysis: 0.25
 
 # PtX
 LowPtX75:
@@ -864,15 +912,17 @@ LowPtX75:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      rural air heat pump: 0.75
-      rural ground heat pump: 0.75
-      rural resistive heater: 0.75
-      urban central air heat pump: 0.75
-      urban central resistive heater: 0.75
-      urban decentral air heat pump: 0.75
-      urban decentral resistive heater: 0.75
-      H2 Electrolysis: 0.75
+    only_de: false
+    component_limits:
+      Link:
+        rural air heat pump: 0.75
+        rural ground heat pump: 0.75
+        rural resistive heater: 0.75
+        urban central air heat pump: 0.75
+        urban central resistive heater: 0.75
+        urban decentral air heat pump: 0.75
+        urban decentral resistive heater: 0.75
+        H2 Electrolysis: 0.75
 
 
 LowPtX50:
@@ -881,15 +931,17 @@ LowPtX50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      rural air heat pump: 0.50
-      rural ground heat pump: 0.50
-      rural resistive heater: 0.50
-      urban central air heat pump: 0.50
-      urban central resistive heater: 0.50
-      urban decentral air heat pump: 0.50
-      urban decentral resistive heater: 0.50
-      H2 Electrolysis: 0.50
+    only_de: false
+    component_limits:
+      Link:
+        rural air heat pump: 0.50
+        rural ground heat pump: 0.50
+        rural resistive heater: 0.50
+        urban central air heat pump: 0.50
+        urban central resistive heater: 0.50
+        urban decentral air heat pump: 0.50
+        urban decentral resistive heater: 0.50
+        H2 Electrolysis: 0.50
 
 
 LowPtX25:
@@ -898,16 +950,17 @@ LowPtX25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      rural air heat pump: 0.25
-      rural ground heat pump: 0.25
-      rural resistive heater: 0.25
-      urban central air heat pump: 0.25
-      urban central resistive heater: 0.25
-      urban decentral air heat pump: 0.25
-      urban decentral resistive heater: 0.25
-      H2 Electrolysis: 0.25
-
+    only_de: false
+    component_limits:
+      Link:
+        rural air heat pump: 0.25
+        rural ground heat pump: 0.25
+        rural resistive heater: 0.25
+        urban central air heat pump: 0.25
+        urban central resistive heater: 0.25
+        urban decentral air heat pump: 0.25
+        urban decentral resistive heater: 0.25
+        H2 Electrolysis: 0.25
 # PtH
 LowPtH75:
 
@@ -915,14 +968,16 @@ LowPtH75:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      rural air heat pump: 0.75
-      rural ground heat pump: 0.75
-      rural resistive heater: 0.75
-      urban central air heat pump: 0.75
-      urban central resistive heater: 0.75
-      urban decentral air heat pump: 0.75
-      urban decentral resistive heater: 0.75
+    only_de: false
+    component_limits:
+      Link:
+        rural air heat pump: 0.75
+        rural ground heat pump: 0.75
+        rural resistive heater: 0.75
+        urban central air heat pump: 0.75
+        urban central resistive heater: 0.75
+        urban decentral air heat pump: 0.75
+        urban decentral resistive heater: 0.75
 
 LowPtH50:
 
@@ -930,14 +985,16 @@ LowPtH50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      rural air heat pump: 0.50
-      rural ground heat pump: 0.50
-      rural resistive heater: 0.50
-      urban central air heat pump: 0.50
-      urban central resistive heater: 0.50
-      urban decentral air heat pump: 0.50
-      urban decentral resistive heater: 0.50
+    only_de: false
+    component_limits:
+      Link:
+        rural air heat pump: 0.50
+        rural ground heat pump: 0.50
+        rural resistive heater: 0.50
+        urban central air heat pump: 0.50
+        urban central resistive heater: 0.50
+        urban decentral air heat pump: 0.50
+        urban decentral resistive heater: 0.50
 
 
 LowPtH25:
@@ -946,14 +1003,16 @@ LowPtH25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      rural air heat pump: 0.25
-      rural ground heat pump: 0.25
-      rural resistive heater: 0.25
-      urban central air heat pump: 0.25
-      urban central resistive heater: 0.25
-      urban decentral air heat pump: 0.25
-      urban decentral resistive heater: 0.25
+    only_de: false
+    component_limits:
+      Link:
+        rural air heat pump: 0.25
+        rural ground heat pump: 0.25
+        rural resistive heater: 0.25
+        urban central air heat pump: 0.25
+        urban central resistive heater: 0.25
+        urban decentral air heat pump: 0.25
+        urban decentral resistive heater: 0.25
 
 # H2 storage
 LowH2Store75:
@@ -962,8 +1021,10 @@ LowH2Store75:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Store:
-      H2 Store: 0.75
+    only_de: false
+    component_limits:
+      Store:
+        H2 Store: 0.75
 
 
 LowH2Store50:
@@ -972,8 +1033,10 @@ LowH2Store50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Store:
-      H2 Store: 0.50
+    only_de: false
+    component_limits:
+      Store:
+        H2 Store: 0.50
 
 LowH2Store25:
 
@@ -981,8 +1044,10 @@ LowH2Store25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Store:
-      H2 Store: 0.25
+    only_de: false
+    component_limits:
+      Store:
+        H2 Store: 0.25
 
 LowH2Store0:
 
@@ -990,8 +1055,10 @@ LowH2Store0:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Store:
-      H2 Store: 0
+    only_de: false
+    component_limits:
+      Store:
+        H2 Store: 0
 
 # Heat storage
 LowHeatStore75:
@@ -1001,11 +1068,13 @@ LowHeatStore75:
 
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      urban central water pits discharger: 0.75
-      urban central water tanks discharger: 0.75
-      urban decentral water pits discharger: 0.75
-      urban decentral water tanks discharger: 0.75
+    only_de: false
+    component_limits:
+      Link:
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
 
 
 LowHeatStore50:
@@ -1014,11 +1083,13 @@ LowHeatStore50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      urban central water pits discharger: 0.50
-      urban central water tanks discharger: 0.50
-      urban decentral water pits discharger: 0.50
-      urban decentral water tanks discharger: 0.50
+    only_de: false
+    component_limits:
+      Link:
+        urban central water pits discharger: 0.50
+        urban central water tanks discharger: 0.50
+        urban decentral water pits discharger: 0.50
+        urban decentral water tanks discharger: 0.50
 
 LowHeatStore25:
 
@@ -1026,11 +1097,13 @@ LowHeatStore25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      urban central water pits discharger: 0.25
-      urban central water tanks discharger: 0.25
-      urban decentral water pits discharger: 0.25
-      urban decentral water tanks discharger: 0.25
+    only_de: false
+    component_limits:
+      Link:
+        urban central water pits discharger: 0.25
+        urban central water tanks discharger: 0.25
+        urban decentral water pits discharger: 0.25
+        urban decentral water tanks discharger: 0.25
 
 LowHeatStore0:
 
@@ -1038,11 +1111,13 @@ LowHeatStore0:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
-    Link:
-      urban central water pits discharger: 0
-      urban central water tanks discharger: 0
-      urban decentral water pits discharger: 0
-      urban decentral water tanks discharger: 0
+    only_de: false
+    component_limits:
+      Link:
+        urban central water pits discharger: 0
+        urban central water tanks discharger: 0
+        urban decentral water pits discharger: 0
+        urban decentral water tanks discharger: 0
 
 
 # Transmission
@@ -1101,7 +1176,17 @@ HighFlexDLR:
     dynamic_line_rating:
       activate: true
 
-HighFlexBEV:
+HighFlexBEV70:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.7
+    v2g: true
+
+HighFlexBEV80:
 
   electricity:
     transmission_limit: v1.5
@@ -1109,6 +1194,16 @@ HighFlexBEV:
   sector:
     bev_dsm: 2030
     bev_dsm_availability: 0.8
+    v2g: true
+
+HighFlexBEV90:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.9
     v2g: true
 
 

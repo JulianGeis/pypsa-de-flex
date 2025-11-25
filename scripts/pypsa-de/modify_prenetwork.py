@@ -1731,9 +1731,18 @@ def restrict_cross_border_flows(n, s_max_pu):
     n.lines.loc[cross_border_lines, "s_max_pu"] = s_max_pu
 
 
-def restrict_component_buildout(n, component_limits, capacities_csv):
+def restrict_component_buildout(n, component_limits, capacities_csv, only_de=False):
     investment_year = snakemake.wildcards.planning_horizons
     capacities = pd.read_csv(capacities_csv, index_col=[0, 1, 2])
+
+    # Filter to only DE buses if requested
+    if only_de:
+        buses = capacities.index.get_level_values(1)
+        de_mask = buses.str.startswith('DE')
+        capacities = capacities[de_mask]
+        logger.info("Restricting component buildout to DE buses only")
+    else:
+        logger.info("Restricting component buildout to all buses")
 
     for c in n.iterate_components(component_limits):
         logger.info(f"Restrict buildout of {c.list_name}")
@@ -1886,7 +1895,7 @@ if __name__ == "__main__":
             ll="vopt",
             sector_opts="none",
             planning_horizons="2045",
-            run="MedFlex",
+            run="Base",
         )
 
     configure_logging(snakemake)
@@ -1994,13 +2003,20 @@ if __name__ == "__main__":
 
     restrict_components_config = snakemake.params.restrict_component_buildout
     if restrict_components_config is not None:
+        if 'component_limits' in restrict_components_config:
+            only_de = restrict_components_config.get('only_de', True)
+            component_limits = restrict_components_config['component_limits']
+        else:
+            only_de = True
+            component_limits = restrict_components_config
+
         if n.snapshot_weightings.generators.iloc[0] == 1.0:
             base_capacities_csv = snakemake.input.base_capacities_1H
         else:
             base_capacities_csv = snakemake.input.base_capacities_3H
 
         restrict_component_buildout(
-            n, restrict_components_config, base_capacities_csv
+            n, component_limits, base_capacities_csv, only_de
         )
 
     if snakemake.params.force_pth_profiles_decentral_rural_p_min_pu:

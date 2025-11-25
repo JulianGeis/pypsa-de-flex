@@ -4,17 +4,17 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251110-flex-fix-capacities
+  prefix: 20251125-flex-restrict-global
   name:
   # # main scenarios
-  # - LowFlex
-  # - LowBattery
-  - Base
+  - LowFlex
+  - LowBattery
+  # - Base
   # - HighFlex
   # # sensitivity scenarios
   # # LowFlex variations
   # - LowFlex75
-  # - LowFlex50
+  - LowFlex50
   # - LowFlexHeatModelMargin0.1
   # - LowFlexHeatModelMargin0.2
   # - LowFlexHeatModelMargin0.3
@@ -799,13 +799,12 @@ scale_capacity:
 # Flexibility comparison settings
 flexibility_comparison:
   scenarios:
-  # - LowFlex
-  # - LowBattery
-  - Base
+  - LowFlex
+  - LowBattery
+  # - Base
   # - HigFlex
-  # - MedFlex
   # - LowFlex75
-  # - LowFlex50
+  - LowFlex50
   # - LowFlexHeatModelMargin0.1
   # - LowFlexHeatModelMargin0.2
   # - LowFlexHeatModelMargin0.3

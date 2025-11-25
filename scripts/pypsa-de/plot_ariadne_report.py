@@ -2775,7 +2775,7 @@ if __name__ == "__main__":
             opts="",
             ll="vopt",
             sector_opts="None",
-            run="MedFlex",
+            run="Base",
         )
 
     configure_logging(snakemake)
