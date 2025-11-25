@@ -802,7 +802,7 @@ flexibility_comparison:
   - LowFlex
   - LowBattery
   # - Base
-  # - HigFlex
+  # - HighFlex
   # - LowFlex75
   - LowFlex50
   # - LowFlexHeatModelMargin0.1

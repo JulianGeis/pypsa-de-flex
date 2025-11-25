@@ -1114,7 +1114,7 @@ rule flexibility_plots_scenario_comparison:
         + config["run"]["prefix"]
         + "/flexibility/scenario_comparison/flex_needs_scenario_comparison.png",
     resources:
-        mem_mb=40000,
+        mem_mb=80000,
     log:
         "results/"
         + config["run"]["prefix"]
