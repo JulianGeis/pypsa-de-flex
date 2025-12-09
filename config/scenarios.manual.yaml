@@ -478,7 +478,7 @@ LowFlex50:
       Store:
         H2 Store: 0.5
 
-  LowFlex50HeatDecentral25:
+LowFlex50HeatDecentral25:
 
   electricity:
     transmission_limit: v1.5

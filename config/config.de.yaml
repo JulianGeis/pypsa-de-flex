@@ -4,23 +4,25 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251125-flex-restrict-global
+  prefix: 20251209-flex-scenario-update
   name:
   # # main scenarios
   - LowFlex
   - LowBattery
-  # - Base
-  # - HighFlex
+  - Base
+  - HighFlex
   # # sensitivity scenarios
   # # LowFlex variations
   # - LowFlex75
-  - LowFlex50
+  # - LowFlex50
+  # - LowFlex50HeatDecentral25
   # - LowFlexHeatModelMargin0.1
   # - LowFlexHeatModelMargin0.2
   # - LowFlexHeatModelMargin0.3
   # - LowFlexHeatPMINPU50
   # - LowFlexHeatPMINPU25
   # - LowFlexHeatMinStore
+  # - LowFlexBEVDSMOFF
   # # battery:
   # - LowBattery75
   # - LowBattery50
@@ -55,7 +57,9 @@ run:
   # - HighFlexIndustry
   # - HighFlexIronAir
   # - HighFlexDLR
-  # - HighFlexBEV
+  # - HighFlexBEV70
+  # - HighFlexBEV80
+  # - HighFlexBEV90
   # # Ariadne scenarios
   # - KN2045_Mix
   # - KN2045_Elek
@@ -485,7 +489,7 @@ solving:
   mem_mb: 70000 #30000 is OK for 22 nodes, 365H; 140000 for 22 nodes 3H; 400000 for 44 nodes 3H
   options:
     assign_all_duals: true
-    load_shedding: false
+    load_shedding: true
     skip_iterations: true # settings for post-discretization: false
     min_iterations: 1 # settings for post-discretization: 1
     max_iterations: 1 # settings for post-discretization: 1
