@@ -4729,6 +4729,9 @@ def get_trade(n, region):
     # var["Trade|Secondary Energy|Electricity|Volume|Exports"] = \
     #     (exporting_p_ac + exports_dc)
 
+    var["Trade|Secondary Energy|Electricity|Gross Export|Volume"] = \
+        (exports_ac + exports_dc)
+
     # Trade|Secondary Energy|Hydrogen|Volume
     h2_carriers = ["H2 pipeline", "H2 pipeline (Kernnetz)", "H2 pipeline retrofitted"]
     exports_h2, imports_h2 = get_export_import(n, region, h2_carriers)

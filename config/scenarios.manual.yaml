@@ -255,6 +255,10 @@ LowFlex:
     min_part_load_methanolisation: 1
     min_part_load_methanation: 1
 
+  solving:
+    force_pth_profiles_decentral_rural: true
+    force_pth_profiles_decentral_rural_margin: 0.1
+
   must_run:
     2020:
       all:
@@ -278,7 +282,7 @@ LowFlex:
       all:
         H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
     only_de: false
     component_limits:
       Link:
@@ -286,11 +290,11 @@ LowFlex:
         home battery discharger: 0.50
       Store:
         H2 Store: 0.50
-        rural water tanks: 0.25
-        urban decentral water tanks: 0.25
-        urban decentral water pits: 0.25
-        urban central water tanks: 0.25
-        urban central water pits: 0.25
+        rural water tanks: 0.5
+        urban decentral water tanks: 0.5
+        urban decentral water pits: 0.5
+        urban central water tanks: 0.5
+        urban central water pits: 0.5
 
 LowBattery:
 
@@ -369,33 +373,32 @@ LowFlex75:
     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
-    force_pth_profiles_decentral_rural_p_min_pu: false
-    min_part_load_fischer_tropsch: 0.75
-    min_part_load_methanolisation: 0.75
-    min_part_load_methanation: 0.75
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
 
   must_run:
     2020:
       DE:
-        H2 Electrolysis: 0.75
+        H2 Electrolysis: 1
     2025:
       DE:
-        H2 Electrolysis: 0.75
+        H2 Electrolysis: 1
     2030:
       DE:
-        H2 Electrolysis: 0.75
+        H2 Electrolysis: 1
     2035:
       DE:
-        H2 Electrolysis: 0.75
+        H2 Electrolysis: 1
     2040:
       DE:
-        H2 Electrolysis: 0.75
+        H2 Electrolysis: 1
     2045:
       DE:
-        H2 Electrolysis: 0.75
+        H2 Electrolysis: 1
     2050:
       DE:
-        H2 Electrolysis: 0.75
+        H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
     only_de: false
@@ -403,13 +406,13 @@ LowFlex75:
       Link:
         battery discharger: 0.75
         home battery discharger: 0.75
-        rural air heat pump: 0.75
-        rural ground heat pump: 0.75
-        rural resistive heater: 0.75
-        urban central air heat pump: 0.75
-        urban central resistive heater: 0.75
-        urban decentral air heat pump: 0.75
-        urban decentral resistive heater: 0.75
+        # rural air heat pump: 0.75
+        # rural ground heat pump: 0.75
+        # rural resistive heater: 0.75
+        # urban central air heat pump: 0.75
+        # urban central resistive heater: 0.75
+        # urban decentral air heat pump: 0.75
+        # urban decentral resistive heater: 0.75
         urban central water pits discharger: 0.75
         urban central water tanks discharger: 0.75
         urban decentral water pits discharger: 0.75
@@ -427,33 +430,32 @@ LowFlex50:
     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
-    force_pth_profiles_decentral_rural_p_min_pu: false
-    min_part_load_fischer_tropsch: 0.5
-    min_part_load_methanolisation: 0.5
-    min_part_load_methanation: 0.5
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
 
   must_run:
     2020:
       DE:
-        H2 Electrolysis: 0.5
+        H2 Electrolysis: 1
     2025:
       DE:
-        H2 Electrolysis: 0.5
+        H2 Electrolysis: 1
     2030:
       DE:
-        H2 Electrolysis: 0.5
+        H2 Electrolysis: 1
     2035:
       DE:
-        H2 Electrolysis: 0.5
+        H2 Electrolysis: 1
     2040:
       DE:
-        H2 Electrolysis: 0.5
+        H2 Electrolysis: 1
     2045:
       DE:
-        H2 Electrolysis: 0.5
+        H2 Electrolysis: 1
     2050:
       DE:
-        H2 Electrolysis: 0.5
+        H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
     only_de: false
@@ -461,18 +463,75 @@ LowFlex50:
       Link:
         battery discharger: 0.5
         home battery discharger: 0.5
-        rural air heat pump: 0.5
-        rural ground heat pump: 0.5
-        rural resistive heater: 0.5
-        urban central air heat pump: 0.5
-        urban central resistive heater: 0.5
-        urban decentral air heat pump: 0.5
-        urban decentral resistive heater: 0.5
+        # rural air heat pump: 0.5
+        # rural ground heat pump: 0.5
+        # rural resistive heater: 0.5
+        # urban central air heat pump: 0.5
+        # urban central resistive heater: 0.5
+        # urban decentral air heat pump: 0.5
+        # urban decentral resistive heater: 0.5
         urban central water pits discharger: 0.5
         urban central water tanks discharger: 0.5
         urban decentral water pits discharger: 0.5
         urban decentral water tanks discharger: 0.5
         rural water tanks charger: 0.5
+      Store:
+        H2 Store: 0.5
+
+  LowFlex50HeatDecentral25:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2020:
+      DE:
+        H2 Electrolysis: 1
+    2025:
+      DE:
+        H2 Electrolysis: 1
+    2030:
+      DE:
+        H2 Electrolysis: 1
+    2035:
+      DE:
+        H2 Electrolysis: 1
+    2040:
+      DE:
+        H2 Electrolysis: 1
+    2045:
+      DE:
+        H2 Electrolysis: 1
+    2050:
+      DE:
+        H2 Electrolysis: 1
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.5
+        home battery discharger: 0.5
+        # rural air heat pump: 0.5
+        # rural ground heat pump: 0.5
+        # rural resistive heater: 0.5
+        # urban central air heat pump: 0.5
+        # urban central resistive heater: 0.5
+        # urban decentral air heat pump: 0.5
+        # urban decentral resistive heater: 0.5
+        urban central water pits discharger: 0.5
+        urban central water tanks discharger: 0.5
+        urban decentral water pits discharger: 0.25
+        urban decentral water tanks discharger: 0.25
+        rural water tanks charger: 0.25
       Store:
         H2 Store: 0.5
 
@@ -522,10 +581,10 @@ LowFlexHeatModelMargin0.1:
     only_de: false
     component_limits:
       Link:
-        battery discharger: 0.50
+        battery discharger: 0.5
+        home battery discharger: 0.5
       Store:
-        H2 Store: 0.50
-        home battery: 0.5
+        H2 Store: 0.5
         rural water tanks: 0.5
         urban decentral water tanks: 0.5
         urban decentral water pits: 0.5
@@ -579,9 +638,9 @@ LowFlexHeatModelMargin0.2:
     component_limits:
       Link:
         battery discharger: 0.50
+        home battery discharger: 0.50
       Store:
         H2 Store: 0.50
-        home battery: 0.5
         rural water tanks: 0.5
         urban decentral water tanks: 0.5
         urban decentral water pits: 0.5
@@ -634,14 +693,14 @@ LowFlexHeatModelMargin0.3:
     component_limits:
       Link:
         battery discharger: 0.50
+        home battery discharger: 0.50
       Store:
         H2 Store: 0.50
-        home battery: 0.5
-      rural water tanks: 0.5
-      urban decentral water tanks: 0.5
-      urban decentral water pits: 0.5
-      urban central water tanks: 0.5
-      urban central water pits: 0.5
+        rural water tanks: 0.5
+        urban decentral water tanks: 0.5
+        urban decentral water pits: 0.5
+        urban central water tanks: 0.5
+        urban central water pits: 0.5
 
 LowFlexHeatPMINPU50:
 
