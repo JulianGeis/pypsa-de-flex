@@ -117,7 +117,7 @@ rule add_brownfield:
         ),
     threads: 4
     resources:
-        mem_mb=10000,
+        mem_mb=20000,
     log:
         logs(
             "add_brownfield_base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}.log"

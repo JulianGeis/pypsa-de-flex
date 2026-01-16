@@ -1445,7 +1445,7 @@ def get_primary_energy(n, region):
 
     var["Primary Energy|Wind"] = renewable_electricity.filter(like="wind").sum()
 
-    assert isclose(
+    assert isclose(     # FLEX may fail for LowFlex
         renewable_electricity.sum() + solar_thermal_heat,
         (
             var["Primary Energy|Hydro"]
@@ -1640,7 +1640,7 @@ def get_secondary_energy(n, region, _industry_demand):
         + var["Secondary Energy|Electricity|Waste"]
     )
 
-    assert isclose(
+    assert isclose(     # FLEX may fail for LowFlex
         electricity_supply[
             ~electricity_supply.index.str.contains(
                 "PHS|battery discharger|home battery discharger|V2G|DSM"
@@ -1747,7 +1747,7 @@ def get_secondary_energy(n, region, _industry_demand):
         + var["Secondary Energy|Hydrogen|Other"]
     )
 
-    assert isclose(
+    assert isclose( # FLEX may fail for LowFlex
         var["Secondary Energy|Hydrogen"],
         hydrogen_production[
             ~hydrogen_production.index.str.startswith("H2 pipeline")

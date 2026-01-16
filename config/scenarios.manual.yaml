@@ -361,6 +361,7 @@ HighFlex:
       activate: true
 
 ####### Definition of sensitivity scenarios #######
+# solving for 49cl 1H is not guranteed
 
 # LowFlex variations
 
@@ -536,7 +537,7 @@ LowFlex50HeatDecentral25:
         H2 Store: 0.5
 
 
-LowFlexHeatModelMargin0.1: 
+LowFlexHeatModelMargin0.1: # used as LowFlex for most runs except the 49cl 1H
 
   electricity:
     transmission_limit: v1.5

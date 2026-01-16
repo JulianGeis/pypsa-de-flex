@@ -284,7 +284,7 @@ def plot_flexibility_causes_scenario_comparison(
     """
 
     # Default hatching patterns for scenarios
-    patterns = ["", "///", "\\\\\\", "|||", "---", "+++", "xxx", "...", "ooo"]
+    patterns = ["///", "\\\\\\", "", "|||", "---", "+++", "xxx", "...", "ooo"]
 
     # Combine all scenarios and years
     all_results = []
@@ -487,7 +487,7 @@ def plot_flexibility_causes_scenario_comparison(
         bbox_to_anchor=(0.5, -0.05),
         ncol=min(8, len(tech_labels)),
         title="Technologies",
-        fontsize=9,
+        fontsize=11,
     )
 
     # Create legend for scenarios (top left of first subplot)
@@ -509,8 +509,8 @@ def plot_flexibility_causes_scenario_comparison(
         scenarios,
         loc="upper left",
         ncol=1,
-        title="Scenarios (bar order)",
-        fontsize=9,
+        title="Scenarios",
+        fontsize=12,
         framealpha=0.9,
     )
 
@@ -553,7 +553,7 @@ def plot_flexibility_provision_scenario_comparison(
     """
 
     # Default hatching patterns for scenarios
-    patterns = ["", "///", "\\\\\\", "|||", "---", "+++", "xxx", "...", "ooo"]
+    patterns = ["///", "\\\\\\", "", "|||", "---", "+++", "xxx", "...", "ooo"]
 
     # Combine all scenarios
     combined_data = {}
@@ -714,7 +714,7 @@ def plot_flexibility_provision_scenario_comparison(
         bbox_to_anchor=(0.5, -0.05),
         ncol=min(8, len(tech_labels)),
         title="Technologies",
-        fontsize=9,
+        fontsize=11,
     )
 
     # Create legend for scenarios (top left of first subplot)
@@ -736,8 +736,8 @@ def plot_flexibility_provision_scenario_comparison(
         scenarios,
         loc="upper left",
         ncol=1,
-        title="Scenarios (bar order)",
-        fontsize=9,
+        title="Scenarios",
+        fontsize=12,
         framealpha=0.9,
     )
 

@@ -794,7 +794,7 @@ rule export_ariadne_variables:
         exported_variables=RESULTS + "ariadne/exported_variables.xlsx",
         exported_variables_full=RESULTS + "ariadne/exported_variables_full.xlsx",
     resources:
-        mem_mb=16000,
+        mem_mb=32000,
     log:
         RESULTS + "logs/export_ariadne_variables.log",
     script:
@@ -955,7 +955,7 @@ rule plot_ariadne_report:
         heat_balances=directory(RESULTS + "ariadne/report/heat_balance_timeseries"),
         nodal_balances=directory(RESULTS + "ariadne/report/balance_timeseries_2045"),
     resources:
-        mem_mb=60000,
+        mem_mb=100000,
     log:
         RESULTS + "logs/plot_ariadne_report.log",
     script:
