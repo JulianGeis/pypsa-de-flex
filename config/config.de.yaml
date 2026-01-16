@@ -490,7 +490,7 @@ solving:
   mem_logging_frequency: 5 # in seconds
   options:
     assign_all_duals: true
-    load_shedding: true
+    load_shedding: false
     skip_iterations: true # settings for post-discretization: false
     min_iterations: 1 # settings for post-discretization: 1
     max_iterations: 1 # settings for post-discretization: 1
