@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20251209-flex-scenario-update
+  prefix: 20260119-flex-low-flex-testing
   name:
   # # main scenarios
   - LowFlex
@@ -13,6 +13,10 @@ run:
   - HighFlex
   # # sensitivity scenarios
   # # LowFlex variations
+  # - LowFlex75_excludeHeat_H2Store
+  # - LowFlex75_excludeHeat
+  # - LowFlex75_exclude_pminpu
+  # - LowFlex75_exclude_pminpu_onlyStores
   # - LowFlex75
   # - LowFlex50
   # - LowFlex50HeatDecentral25
@@ -804,45 +808,70 @@ scale_capacity:
 # Flexibility comparison settings
 flexibility_comparison:
   scenarios:
-  - LowFlex
-  - LowBattery
-  # - Base
+  # # main scenarios
+  # - LowFlex
+  # - LowBattery
+  - Base
   # - HighFlex
+  # # sensitivity scenarios
+  # # LowFlex variations
+  # - LowFlex75_excludeHeat_H2Store
+  # - LowFlex75_excludeHeat
+  # - LowFlex75_exclude_pminpu
+  # - LowFlex75_exclude_pminpu_onlyStores
   # - LowFlex75
-  - LowFlex50
+  # - LowFlex50
+  # - LowFlex50HeatDecentral25
   # - LowFlexHeatModelMargin0.1
   # - LowFlexHeatModelMargin0.2
   # - LowFlexHeatModelMargin0.3
   # - LowFlexHeatPMINPU50
   # - LowFlexHeatPMINPU25
   # - LowFlexHeatMinStore
+  # - LowFlexBEVDSMOFF
+  # # battery:
   # - LowBattery75
   # - LowBattery50
   # - LowBattery25
   # - LowBattery0
+  # # PtG / Electrolysis
   # - LowPtG75
   # - LowPtG50
   # - LowPtG25
+  # # PtX:
   # - LowPtX75
   # - LowPtX50
   # - LowPtX25
+  # # PtH:
   # - LowPtH75
   # - LowPtH50
   # - LowPtH25
+  # # H2 storage
   # - LowH2Store75
   # - LowH2Store50
   # - LowH2Store25
   # - LowH2Store0
+  # # Heat storage:
   # - LowHeatStore75
   # - LowHeatStore50
   # - LowHeatStore25
   # - LowHeatStore0
+  # # Transmission:
   # - LowTransmission25
   # - LowTransmission10
+  # # High flex variations:
   # - HighFlexIndustry
   # - HighFlexIronAir
   # - HighFlexDLR
-  # - HighFlexBEV
+  # - HighFlexBEV70
+  # - HighFlexBEV80
+  # - HighFlexBEV90
+  # # Ariadne scenarios
+  # - KN2045_Mix
+  # - KN2045_Elek
+  # - KN2045_H2
+  # - KN2045_NFniedrig
+  # - KN2045_NFhoch
 
 
 industry_dsm:

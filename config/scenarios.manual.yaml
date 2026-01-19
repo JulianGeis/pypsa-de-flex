@@ -282,7 +282,7 @@ LowFlex:
       all:
         H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -360,12 +360,17 @@ HighFlex:
     dynamic_line_rating:
       activate: true
 
+
+
 ####### Definition of sensitivity scenarios #######
 # solving for 49cl 1H is not guranteed
 
 # LowFlex variations
 
-LowFlex75:
+LowFlex75_excludeHeat_H2Store: 
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 75 % of Base scenario for battery discharger and home battery discharger
 
   electricity:
     transmission_limit: v1.5
@@ -379,41 +384,152 @@ LowFlex75:
     min_part_load_methanation: 1
 
   must_run:
-    2020:
-      DE:
-        H2 Electrolysis: 1
     2025:
-      DE:
-        H2 Electrolysis: 1
-    2030:
-      DE:
+      all:
         H2 Electrolysis: 1
     2035:
-      DE:
-        H2 Electrolysis: 1
-    2040:
-      DE:
+      all:
         H2 Electrolysis: 1
     2045:
-      DE:
-        H2 Electrolysis: 1
-    2050:
-      DE:
+      all:
         H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
         battery discharger: 0.75
         home battery discharger: 0.75
-        # rural air heat pump: 0.75
-        # rural ground heat pump: 0.75
-        # rural resistive heater: 0.75
-        # urban central air heat pump: 0.75
-        # urban central resistive heater: 0.75
-        # urban decentral air heat pump: 0.75
-        # urban decentral resistive heater: 0.75
+
+LowFlex75_excludeHeat: 
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 75 % of Base scenario for battery discharger and home battery discharger
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2025:
+      all:
+        H2 Electrolysis: 1
+    2035:
+      all:
+        H2 Electrolysis: 1
+    2045:
+      all:
+        H2 Electrolysis: 1
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        # urban central water pits discharger: 0.75
+        # urban central water tanks discharger: 0.75
+        # urban decentral water pits discharger: 0.75
+        # urban decentral water tanks discharger: 0.75
+        # rural water tanks charger: 0.75
+      Store:
+        H2 Store: 0.75
+
+LowFlex75_exclude_pminpu: 
+# transmission limit v1.5 and BEV DSM restricted
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks charger: 0.75
+      Store:
+        H2 Store: 0.75
+
+LowFlex75_exclude_pminpu_onlyStores: 
+# transmission limit v1.5 and BEV DSM restricted
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    only_de: false
+    component_limits:
+      Store:
+        battery: 0.75
+        home battery: 0.75
+        urban central water pits: 0.75
+        urban central water tanks: 0.75
+        urban decentral water pits: 0.75
+        urban decentral water tanks: 0.75
+        rural water tanks: 0.75
+        H2 Store: 0.75
+
+LowFlex75:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2025:
+      all:
+        H2 Electrolysis: 1
+    2035:
+      all:
+        H2 Electrolysis: 1
+    2045:
+      all:
+        H2 Electrolysis: 1
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    only_de: false
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
         urban central water pits discharger: 0.75
         urban central water tanks discharger: 0.75
         urban decentral water pits discharger: 0.75
@@ -423,6 +539,10 @@ LowFlex75:
         H2 Store: 0.75
 
 LowFlex50:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 50 % of Base scenario for H2 Store
 
   electricity:
     transmission_limit: v1.5
@@ -436,41 +556,22 @@ LowFlex50:
     min_part_load_methanation: 1
 
   must_run:
-    2020:
-      DE:
-        H2 Electrolysis: 1
     2025:
-      DE:
-        H2 Electrolysis: 1
-    2030:
-      DE:
+      all:
         H2 Electrolysis: 1
     2035:
-      DE:
-        H2 Electrolysis: 1
-    2040:
-      DE:
+      all:
         H2 Electrolysis: 1
     2045:
-      DE:
-        H2 Electrolysis: 1
-    2050:
-      DE:
+      all:
         H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
         battery discharger: 0.5
         home battery discharger: 0.5
-        # rural air heat pump: 0.5
-        # rural ground heat pump: 0.5
-        # rural resistive heater: 0.5
-        # urban central air heat pump: 0.5
-        # urban central resistive heater: 0.5
-        # urban decentral air heat pump: 0.5
-        # urban decentral resistive heater: 0.5
         urban central water pits discharger: 0.5
         urban central water tanks discharger: 0.5
         urban decentral water pits discharger: 0.5
@@ -493,41 +594,22 @@ LowFlex50HeatDecentral25:
     min_part_load_methanation: 1
 
   must_run:
-    2020:
-      DE:
-        H2 Electrolysis: 1
     2025:
-      DE:
-        H2 Electrolysis: 1
-    2030:
-      DE:
+      all:
         H2 Electrolysis: 1
     2035:
-      DE:
-        H2 Electrolysis: 1
-    2040:
-      DE:
+      all:
         H2 Electrolysis: 1
     2045:
-      DE:
-        H2 Electrolysis: 1
-    2050:
-      DE:
+      all:
         H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
         battery discharger: 0.5
         home battery discharger: 0.5
-        # rural air heat pump: 0.5
-        # rural ground heat pump: 0.5
-        # rural resistive heater: 0.5
-        # urban central air heat pump: 0.5
-        # urban central resistive heater: 0.5
-        # urban decentral air heat pump: 0.5
-        # urban decentral resistive heater: 0.5
         urban central water pits discharger: 0.5
         urban central water tanks discharger: 0.5
         urban decentral water pits discharger: 0.25
@@ -556,29 +638,17 @@ LowFlexHeatModelMargin0.1: # used as LowFlex for most runs except the 49cl 1H
     force_pth_profiles_decentral_rural_margin: 0.1
 
   must_run:
-    2020:
-      all:
-        H2 Electrolysis: 1
     2025:
-      all:
-        H2 Electrolysis: 1
-    2030:
       all:
         H2 Electrolysis: 1
     2035:
       all:
         H2 Electrolysis: 1
-    2040:
-      all:
-        H2 Electrolysis: 1
     2045:
       all:
         H2 Electrolysis: 1
-    2050:
-      all:
-        H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -612,29 +682,17 @@ LowFlexHeatModelMargin0.2:
     force_pth_profiles_decentral_rural_margin: 0.2
 
   must_run:
-    2020:
-      all:
-        H2 Electrolysis: 1
     2025:
-      all:
-        H2 Electrolysis: 1
-    2030:
       all:
         H2 Electrolysis: 1
     2035:
       all:
         H2 Electrolysis: 1
-    2040:
-      all:
-        H2 Electrolysis: 1
     2045:
       all:
         H2 Electrolysis: 1
-    2050:
-      all:
-        H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -647,6 +705,7 @@ LowFlexHeatModelMargin0.2:
         urban decentral water pits: 0.5
         urban central water tanks: 0.5
         urban central water pits: 0.5
+
 
 LowFlexHeatModelMargin0.3:
 
@@ -667,29 +726,17 @@ LowFlexHeatModelMargin0.3:
     force_pth_profiles_decentral_rural_margin: 0.3
 
   must_run:
-    2020:
-      all:
-        H2 Electrolysis: 1
     2025:
-      all:
-        H2 Electrolysis: 1
-    2030:
       all:
         H2 Electrolysis: 1
     2035:
       all:
         H2 Electrolysis: 1
-    2040:
-      all:
-        H2 Electrolysis: 1
     2045:
       all:
         H2 Electrolysis: 1
-    2050:
-      all:
-        H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -722,29 +769,17 @@ LowFlexHeatPMINPU50:
     force_pth_profiles_decentral_rural_margin: 0
 
   must_run:
-    2020:
-      all:
-        H2 Electrolysis: 1
     2025:
-      all:
-        H2 Electrolysis: 1
-    2030:
       all:
         H2 Electrolysis: 1
     2035:
       all:
         H2 Electrolysis: 1
-    2040:
-      all:
-        H2 Electrolysis: 1
     2045:
       all:
         H2 Electrolysis: 1
-    2050:
-      all:
-        H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -778,29 +813,17 @@ LowFlexHeatPMINPU25:
     force_pth_profiles_decentral_rural_margin: 0
 
   must_run:
-    2020:
-      all:
-        H2 Electrolysis: 1
     2025:
-      all:
-        H2 Electrolysis: 1
-    2030:
       all:
         H2 Electrolysis: 1
     2035:
       all:
         H2 Electrolysis: 1
-    2040:
-      all:
-        H2 Electrolysis: 1
     2045:
       all:
         H2 Electrolysis: 1
-    2050:
-      all:
-        H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -833,29 +856,17 @@ LowFlexHeatMinStore:
     force_pth_profiles_decentral_rural_margin: 0
 
   must_run:
-    2020:
-      all:
-        H2 Electrolysis: 1
     2025:
-      all:
-        H2 Electrolysis: 1
-    2030:
       all:
         H2 Electrolysis: 1
     2035:
       all:
         H2 Electrolysis: 1
-    2040:
-      all:
-        H2 Electrolysis: 1
     2045:
       all:
         H2 Electrolysis: 1
-    2050:
-      all:
-        H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -886,7 +897,7 @@ LowBattery75:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -898,7 +909,7 @@ LowBattery50:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -910,7 +921,7 @@ LowBattery25:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -922,7 +933,7 @@ LowBattery0:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -935,7 +946,7 @@ LowPtG75:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -947,7 +958,7 @@ LowPtG50:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -959,7 +970,7 @@ LowPtG25:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -971,7 +982,7 @@ LowPtX75:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -990,7 +1001,7 @@ LowPtX50:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -1009,7 +1020,7 @@ LowPtX25:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -1027,7 +1038,7 @@ LowPtH75:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -1044,7 +1055,7 @@ LowPtH50:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -1062,7 +1073,7 @@ LowPtH25:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -1080,7 +1091,7 @@ LowH2Store75:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Store:
@@ -1092,7 +1103,7 @@ LowH2Store50:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Store:
@@ -1103,7 +1114,7 @@ LowH2Store25:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Store:
@@ -1114,7 +1125,7 @@ LowH2Store0:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Store:
@@ -1127,7 +1138,7 @@ LowHeatStore75:
     transmission_limit: v1.5
 
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -1142,7 +1153,7 @@ LowHeatStore50:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -1156,7 +1167,7 @@ LowHeatStore25:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -1170,7 +1181,7 @@ LowHeatStore0:
   electricity:
     transmission_limit: v1.5
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     only_de: false
     component_limits:
       Link:
@@ -1317,7 +1328,7 @@ LowFlexHeat:
     constraints:
       limits_capacity_max:
         Link: # in GW
-          urban central water pits discharger:   # MediumFlex capa: 2020 (- GW); 2025 (10 GW); 2030 (- GW); 2035 (44 GW); 2040 (- GW); 2045 (54 GW)
+          urban central water pits discharger:   # Base capa: 2020 (- GW); 2025 (10 GW); 2030 (- GW); 2035 (44 GW); 2040 (- GW); 2045 (54 GW)
             DE:
               2020: 0
               2025: 0
@@ -1326,7 +1337,7 @@ LowFlexHeat:
               2040: 20
               2045: 25
               2050: 30
-          urban central water tanks discharger:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
+          urban central water tanks discharger:   # Base capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
             DE:
               2020: 0
               2025: 0
@@ -1335,7 +1346,7 @@ LowFlexHeat:
               2040: 0
               2045: 0
               2050: 0
-          urban decentral water pits discharger:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
+          urban decentral water pits discharger:   # Base capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
             DE:
               2020: 0
               2025: 0
@@ -1344,7 +1355,7 @@ LowFlexHeat:
               2040: 20
               2045: 25
               2050: 30
-          urban decentral water tanks discharger:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (11 GW); 2040 (- GW); 2045 (11 GW)
+          urban decentral water tanks discharger:   # Base capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (11 GW); 2040 (- GW); 2045 (11 GW)
             DE:
               2020: 0
               2025: 0
@@ -1353,7 +1364,7 @@ LowFlexHeat:
               2040: 0
               2045: 0
               2050: 0
-          rural water pits discharger:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
+          rural water pits discharger:   # Base capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
             DE:
               2020: 0
               2025: 0
@@ -1362,7 +1373,7 @@ LowFlexHeat:
               2040: 20
               2045: 25
               2050: 30
-          rural water tanks discharger:   # MediumFlex capa: 2020 (- GW); 2025 (6 GW); 2030 (- GW); 2035 (10 GW); 2040 (- GW); 2045 (10 GW)
+          rural water tanks discharger:   # Base capa: 2020 (- GW); 2025 (6 GW); 2030 (- GW); 2035 (10 GW); 2040 (- GW); 2045 (10 GW)
             DE:
               2020: 0
               2025: 0
@@ -1386,7 +1397,7 @@ LowFlexH2:
     constraints:
       limits_capacity_max:
         Store: # in GWh
-          H2 Store:  # MediumFlex capa: 2020 (- ); 2025 (5 GWh); 2030 (- ); 2035 (6 TWh); 2040 (- TWh); 2045 (20 TWh)
+          H2 Store:  # Base capa: 2020 (- ); 2025 (5 GWh); 2030 (- ); 2035 (6 TWh); 2040 (- TWh); 2045 (20 TWh)
             DE:
               2020: 0
               2025: 0
@@ -1410,7 +1421,7 @@ LowFlexDSM:
     constraints:
       limits_capacity_max:
         Link: # in GW
-          rural air heat pump:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
+          rural air heat pump:   # Base capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (0 GW); 2040 (- GW); 2045 (0 GW)
             DE:
               2020: 0
               2025: 0
@@ -1419,7 +1430,7 @@ LowFlexDSM:
               2040: 0
               2045: 0
               2050: 0
-          rural ground heat pump:   # MediumFlex capa: 2020 (- GW); 2025 (1 GW); 2030 (- GW); 2035 (6 GW); 2040 (- GW); 2045 (7 GW)
+          rural ground heat pump:   # Base capa: 2020 (- GW); 2025 (1 GW); 2030 (- GW); 2035 (6 GW); 2040 (- GW); 2045 (7 GW)
             DE:
               2020: 0
               2025: 0
@@ -1428,7 +1439,7 @@ LowFlexDSM:
               2040: 3
               2045: 5
               2050: 5
-          rural resistive heater:   # MediumFlex capa: 2020 (- GW); 2025 (1 GW); 2030 (- GW); 2035 (19 GW); 2040 (- GW); 2045 (18 GW)
+          rural resistive heater:   # Base capa: 2020 (- GW); 2025 (1 GW); 2030 (- GW); 2035 (19 GW); 2040 (- GW); 2045 (18 GW)
             DE:
               2020: 0
               2025: 0
@@ -1437,7 +1448,7 @@ LowFlexDSM:
               2040: 10
               2045: 10
               2050: 10
-          urban central air heat pump:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (1 GW); 2040 (- GW); 2045 (2 GW)
+          urban central air heat pump:   # Base capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (1 GW); 2040 (- GW); 2045 (2 GW)
             DE:
               2020: 0
               2025: 0
@@ -1446,7 +1457,7 @@ LowFlexDSM:
               2040: 1
               2045: 1
               2050: 1
-          urban central resistive heater:   # MediumFlex capa: 2020 (- GW); 2025 (5 GW); 2030 (- GW); 2035 (41 GW); 2040 (- GW); 2045 (43 GW)
+          urban central resistive heater:   # Base capa: 2020 (- GW); 2025 (5 GW); 2030 (- GW); 2035 (41 GW); 2040 (- GW); 2045 (43 GW)
             DE:
               2020: 0
               2025: 0
@@ -1455,7 +1466,7 @@ LowFlexDSM:
               2040: 15
               2045: 25
               2050: 25
-          urban decentral air heat pump:   # MediumFlex capa: 2020 (- GW); 2025 (1 GW); 2030 (- GW); 2035 (6 GW); 2040 (- GW); 2045 (10 GW)
+          urban decentral air heat pump:   # Base capa: 2020 (- GW); 2025 (1 GW); 2030 (- GW); 2035 (6 GW); 2040 (- GW); 2045 (10 GW)
             DE:
               2020: 0
               2025: 0
@@ -1464,7 +1475,7 @@ LowFlexDSM:
               2040: 3
               2045: 5
               2050: 5
-          urban decentral resistive heater:   # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (21 GW); 2040 (- GW); 2045 (34 GW)
+          urban decentral resistive heater:   # Base capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (21 GW); 2040 (- GW); 2045 (34 GW)
             DE:
               2020: 0
               2025: 0
@@ -1473,7 +1484,7 @@ LowFlexDSM:
               2040: 10
               2045: 15
               2050: 15
-          H2 Electrolysis:  # MediumFlex capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (23 GW); 2040 (- GW); 2045 (33 GW)
+          H2 Electrolysis:  # Base capa: 2020 (- GW); 2025 (0 GW); 2030 (- GW); 2035 (23 GW); 2040 (- GW); 2045 (33 GW)
             DE:
               2020: 0
               2025: 0
@@ -1534,7 +1545,7 @@ LowFlexHeatModel:
       all:
         H2 Electrolysis: 1
 
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the MediumFlex scenario
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     Link:
       battery discharger: 0.50
     Store:
