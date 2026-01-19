@@ -50,8 +50,8 @@ capa_groups = {
     "Backup": {
         "Gas": ["OCGT", "CCGT"],
         "Gas CHP": ["urban central gas CHP", "urban central gas CHP CC"],
-        "H2": ["H2 turbine", "H2 OCGT"],
-        "H2 CHP": ["H2 CCGT", "urban central H2 CHP", "H2 Fuel Cell"],
+        "H2": ["H2 turbine", "H2 OCGT", "H2 CCGT"],
+        "H2 CHP": ["urban central H2 CHP"],
         "Others": [
             "coal",
             "lignite",
@@ -64,6 +64,7 @@ capa_groups = {
             "waste CHP CC",
             "oil",
             "urban central oil CHP",
+            "H2 Fuel Cell",
         ],
     },
     "Storage Discharge": {
