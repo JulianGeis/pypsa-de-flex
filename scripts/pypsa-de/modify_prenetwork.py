@@ -1731,16 +1731,23 @@ def restrict_cross_border_flows(n, s_max_pu):
     n.lines.loc[cross_border_lines, "s_max_pu"] = s_max_pu
 
 
-def restrict_component_buildout(n, component_limits, capacities_csv, only_de=False):
+def restrict_component_buildout(n, component_limits, capacities_csv, where="only_de"):
     investment_year = snakemake.wildcards.planning_horizons
     capacities = pd.read_csv(capacities_csv, index_col=[0, 1, 2])
 
     # Filter to only DE buses if requested
-    if only_de:
+    if where == "only_de":
         buses = capacities.index.get_level_values(1)
         de_mask = buses.str.startswith('DE')
         capacities = capacities[de_mask]
         logger.info("Restricting component buildout to DE buses only")
+
+    elif where == "outside_de":
+        buses = capacities.index.get_level_values(1)
+        non_de_mask = ~buses.str.startswith('DE')
+        capacities = capacities[non_de_mask]    
+        logger.info("Restricting component buildout to all buses outside DE")    
+        
     else:
         logger.info("Restricting component buildout to all buses")
 
@@ -1753,20 +1760,13 @@ def restrict_component_buildout(n, component_limits, capacities_csv, only_de=Fal
         for carrier in component_limits[c.name]:
             # Check if carrier exists in capacities dataframe
             if carrier not in capacities[investment_year].index.get_level_values(2):
-                logger.warning(
+                logger.info(
                     f"Carrier {carrier} not found in capacities data for {c.name}. "
-                    f"Setting {attr}_nom_max to 0 for all extendable components with this carrier."
+                    f"Set all {carrier} components to non-extendable."
                 )
-                # Get all extendable components with this carrier and set limit to 0
-                components_to_restrict = c.df[
-                    (c.df.carrier == carrier) & (c.df[f"{attr}_nom_extendable"])
-                ].index
+                # Set components with this carrier to non-extendable
+                c.df.loc[c.df.carrier == carrier, f"{attr}_nom_extendable"] = False
 
-                for component_idx in components_to_restrict:
-                    c.df.at[component_idx, f"{attr}_nom_max"] = 0
-                    logger.info(
-                        f"Set {attr}_nom_max of {c.name} {carrier} at {c.df.at[component_idx, bus]} to 0 {units}"
-                    )
                 continue
 
             limits = component_limits[c.name][carrier] * capacities[investment_year].xs(
@@ -1784,21 +1784,22 @@ def restrict_component_buildout(n, component_limits, capacities_csv, only_de=Fal
                 extendable_components_at_bus = c.df.loc[extendable_components][
                     c.df.loc[extendable_components][bus] == limits_bus
                 ]
-
+                
                 # Calculate total already installed capacity at bus
                 total_installed = c.df[
                     (c.df[bus] == limits_bus) & (c.df.carrier == carrier)
                 ][f"{attr}_nom"].sum()
                 limit = limits.loc[limits_bus] - total_installed
-
-                if limit < 0:
+                
+                if limit <= 0: # might already set for values smaller 10 to avoid numerical issues
                     logger.warning(
                         f"Total installed capacity {total_installed:.2f} {units} for {c.name} {carrier} at bus {limits_bus} "
-                        f"exceeds the limit of {limits.loc[limits_bus]:.2f} {units}. "
-                        f"Setting {attr}_nom_max to 0"
+                        f"exceeds or meets the limit of {limits.loc[limits_bus]:.2f} {units}. "
+                        f"Setting all extendable components to non-extendable."
                     )
-                    limit = 0
-
+                    c.df.loc[extendable_components_at_bus.index, f"{attr}_nom_extendable"] = False
+                    continue
+                
                 if len(extendable_components_at_bus) == 1:
                     component_idx = extendable_components_at_bus.index[0]
                     c.df.at[component_idx, f"{attr}_nom_max"] = max(
@@ -1808,7 +1809,7 @@ def restrict_component_buildout(n, component_limits, capacities_csv, only_de=Fal
                         f"Restricting {attr}_nom_max of {c.name} {carrier} at bus {limits_bus} "
                         f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Base capacities)"
                     )
-
+                
                 elif len(extendable_components_at_bus) > 1:
                     # Limit latest component (sort by build year)
                     component_idxs = extendable_components_at_bus.sort_values(
@@ -1818,16 +1819,15 @@ def restrict_component_buildout(n, component_limits, capacities_csv, only_de=Fal
                     c.df.at[latest_component_idx, f"{attr}_nom_max"] = max(
                         limit, c.df.at[latest_component_idx, f"{attr}_nom"]
                     )
-
+                    
                     # Set older components to not extendable
-                    for idx in component_idxs[:-1]:
-                        c.df.at[idx, f"{attr}_nom_extendable"] = False
-
+                    c.df.loc[component_idxs[:-1], f"{attr}_nom_extendable"] = False
+                    
                     logger.info(
                         f"Restricting {attr}_nom_max of latest {c.name} {carrier} at bus {limits_bus} "
                         f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Base capacities)"
                     )
-
+                
                 else:
                     logger.warning(
                         f"No extendable {c.name} with carrier {carrier} found at bus {limits_bus} to restrict."
@@ -2003,11 +2003,11 @@ if __name__ == "__main__":
 
     restrict_components_config = snakemake.params.restrict_component_buildout
     if restrict_components_config is not None:
-        if 'component_limits' in restrict_components_config:
-            only_de = restrict_components_config.get('only_de', True)
+        if 'component_limits' in restrict_components_config: # ensures it works with the old and new format
+            where = restrict_components_config.get('where', 'only_de')
             component_limits = restrict_components_config['component_limits']
         else:
-            only_de = True
+            where = "only_de"
             component_limits = restrict_components_config
 
         if n.snapshot_weightings.generators.iloc[0] == 1.0:
@@ -2016,7 +2016,7 @@ if __name__ == "__main__":
             base_capacities_csv = snakemake.input.base_capacities_3H
 
         restrict_component_buildout(
-            n, component_limits, base_capacities_csv, only_de
+            n, component_limits, base_capacities_csv, where
         )
 
     if snakemake.params.force_pth_profiles_decentral_rural_p_min_pu:

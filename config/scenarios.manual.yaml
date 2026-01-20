@@ -283,7 +283,7 @@ LowFlex:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.50
@@ -307,7 +307,7 @@ LowBattery:
     v2g: false
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.5
@@ -367,6 +367,179 @@ HighFlex:
 
 # LowFlex variations
 
+
+LowFlex75_pminpu_0.9:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 0.9
+    min_part_load_methanolisation: 0.9
+    min_part_load_methanation: 0.9
+
+  must_run:
+    2025:
+      all:
+        H2 Electrolysis: 0.9
+    2035:
+      all:
+        H2 Electrolysis: 0.9
+    2045:
+      all:
+        H2 Electrolysis: 0.9
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks charger: 0.75
+      Store:
+        H2 Store: 0.75
+
+
+LowFlex75_pminpu_0.8:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 0.8
+    min_part_load_methanolisation: 0.8
+    min_part_load_methanation: 0.8
+
+  must_run:
+    2025:
+      all:
+        H2 Electrolysis: 0.8
+    2035:
+      all:
+        H2 Electrolysis: 0.8
+    2045:
+      all:
+        H2 Electrolysis: 0.8
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks charger: 0.75
+      Store:
+        H2 Store: 0.75
+
+LowFlex75_CapRestrictDEWide: 
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 75 % of Base scenario for battery discharger and home battery discharger
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2025:
+      all:
+        H2 Electrolysis: 1
+    2035:
+      all:
+        H2 Electrolysis: 1
+    2045:
+      all:
+        H2 Electrolysis: 1
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: outside_de
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks charger: 0.75
+      Store:
+        H2 Store: 0.75
+
+    solving:
+      constraints:
+        limits_capacity_max:
+          Link: # in GW
+            urban central water pits discharger:    # Base capa (49cl/1H): 2045 (60.78 GW)
+              DE:
+                2025: 6
+                2035: 24
+                2045: 30
+            urban central water tanks discharger:   # Base capa (49cl/1H): 2045 (0 GW)
+              DE:
+                2025: 0
+                2035: 0
+                2045: 0
+            urban decentral water pits discharger:   # Base capa (49cl/1H): 2045 (0 GW)
+              DE:
+                2025: 0
+                2035: 0
+                2045: 0
+            urban decentral water tanks discharger:   # Base capa (49cl/1H): 2045 (38.78 GW)
+              DE:
+                2025: 5
+                2035: 20
+                2045: 20
+            rural water tanks discharger:             # Base capa (49cl/1H): 2045 (43.35 GW)
+              DE:
+                2025: 10
+                2035: 22
+                2045: 22
+            battery discharger:                       # Base capa (49cl/1H): 2045 (40.04 GW)
+              DE:
+                2025: 0
+                2035: 15
+                2045: 20
+            home battery discharger:                  # Base capa (49cl/1H): 2045 (7.83 GW)
+              DE:
+                2025: 0
+                2035: 3.5
+                2045: 4
+          Store: # in GWh 
+            H2 Store:                                 # Base capa (49cl/1H): 2045 (22230 GWh = 22.23 TWh)
+              DE:
+                2025: 0
+                2035: 3500
+                2045: 10000
+
 LowFlex75_excludeHeat_H2Store: 
 # transmission limit v1.5 and BEV DSM restricted
 # p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
@@ -395,7 +568,7 @@ LowFlex75_excludeHeat_H2Store:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.75
@@ -430,7 +603,7 @@ LowFlex75_excludeHeat:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.75
@@ -457,7 +630,7 @@ LowFlex75_exclude_pminpu:
     v2g: false
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.75
@@ -484,7 +657,7 @@ LowFlex75_exclude_pminpu_onlyStores:
     v2g: false
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Store:
         battery: 0.75
@@ -525,7 +698,7 @@ LowFlex75:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.75
@@ -567,7 +740,7 @@ LowFlex50:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.5
@@ -605,7 +778,7 @@ LowFlex50HeatDecentral25:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.5
@@ -649,7 +822,7 @@ LowFlexHeatModelMargin0.1: # used as LowFlex for most runs except the 49cl 1H
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.5
@@ -693,7 +866,7 @@ LowFlexHeatModelMargin0.2:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.50
@@ -737,7 +910,7 @@ LowFlexHeatModelMargin0.3:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.50
@@ -780,7 +953,7 @@ LowFlexHeatPMINPU50:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.50
@@ -824,7 +997,7 @@ LowFlexHeatPMINPU25:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.50
@@ -867,7 +1040,7 @@ LowFlexHeatMinStore:
         H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.50
@@ -898,7 +1071,7 @@ LowBattery75:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.75
@@ -910,7 +1083,7 @@ LowBattery50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.5
@@ -922,7 +1095,7 @@ LowBattery25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0.25
@@ -934,7 +1107,7 @@ LowBattery0:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         battery discharger: 0
@@ -947,7 +1120,7 @@ LowPtG75:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         H2 Electrolysis: 0.75
@@ -959,7 +1132,7 @@ LowPtG50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         H2 Electrolysis: 0.50
@@ -971,7 +1144,7 @@ LowPtG25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         H2 Electrolysis: 0.25
@@ -983,7 +1156,7 @@ LowPtX75:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         rural air heat pump: 0.75
@@ -1002,7 +1175,7 @@ LowPtX50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         rural air heat pump: 0.50
@@ -1021,7 +1194,7 @@ LowPtX25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         rural air heat pump: 0.25
@@ -1039,7 +1212,7 @@ LowPtH75:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         rural air heat pump: 0.75
@@ -1056,7 +1229,7 @@ LowPtH50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         rural air heat pump: 0.50
@@ -1074,7 +1247,7 @@ LowPtH25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         rural air heat pump: 0.25
@@ -1092,7 +1265,7 @@ LowH2Store75:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Store:
         H2 Store: 0.75
@@ -1104,7 +1277,7 @@ LowH2Store50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Store:
         H2 Store: 0.50
@@ -1115,7 +1288,7 @@ LowH2Store25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Store:
         H2 Store: 0.25
@@ -1126,7 +1299,7 @@ LowH2Store0:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Store:
         H2 Store: 0
@@ -1139,7 +1312,7 @@ LowHeatStore75:
 
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         urban central water pits discharger: 0.75
@@ -1154,7 +1327,7 @@ LowHeatStore50:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         urban central water pits discharger: 0.50
@@ -1168,7 +1341,7 @@ LowHeatStore25:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         urban central water pits discharger: 0.25
@@ -1182,7 +1355,7 @@ LowHeatStore0:
     transmission_limit: v1.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    only_de: false
+    where: whole_system
     component_limits:
       Link:
         urban central water pits discharger: 0

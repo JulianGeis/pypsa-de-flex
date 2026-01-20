@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260119-flex-low-flex-testing
+  prefix: 20260120-flex-low-flex-testing
   name:
   # # main scenarios
   - LowFlex
@@ -13,6 +13,9 @@ run:
   - HighFlex
   # # sensitivity scenarios
   # # LowFlex variations
+  # - LowFlex75_pminpu_0.9
+  # - LowFlex75_pminpu_0.8
+  # - LowFlex75_CapRestrictDEWide
   # - LowFlex75_excludeHeat_H2Store
   # - LowFlex75_excludeHeat
   # - LowFlex75_exclude_pminpu
@@ -815,6 +818,9 @@ flexibility_comparison:
   # - HighFlex
   # # sensitivity scenarios
   # # LowFlex variations
+  # - LowFlex75_pminpu_0.9
+  # - LowFlex75_pminpu_0.8
+  # - LowFlex75_CapRestrictDEWide
   # - LowFlex75_excludeHeat_H2Store
   # - LowFlex75_excludeHeat
   # - LowFlex75_exclude_pminpu
