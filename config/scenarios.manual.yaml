@@ -367,6 +367,131 @@ HighFlex:
 
 # LowFlex variations
 
+LowFlex75_pminpu_FT_electrolysis0.9:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 0.9
+    # min_part_load_methanolisation: 0.9
+    # min_part_load_methanation: 0.9
+
+  must_run:
+    2025:
+      all:
+        H2 Electrolysis: 0.9
+    2035:
+      all:
+        H2 Electrolysis: 0.9
+    2045:
+      all:
+        H2 Electrolysis: 0.9
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks charger: 0.75
+      Store:
+        H2 Store: 0.75
+
+LowFlex75_pminpu_not_electrolysis0.9:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 0.9
+    min_part_load_methanolisation: 0.9
+    min_part_load_methanation: 0.9
+
+  # must_run:
+  #   2025:
+  #     all:
+  #       H2 Electrolysis: 0.9
+  #   2035:
+  #     all:
+  #       H2 Electrolysis: 0.9
+  #   2045:
+  #     all:
+  #       H2 Electrolysis: 0.9
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks charger: 0.75
+      Store:
+        H2 Store: 0.75
+
+LowFlex75_pminpu_only_electrolysis0.9:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    # min_part_load_fischer_tropsch: 1
+    # min_part_load_methanolisation: 1
+    # min_part_load_methanation: 1
+
+  must_run:
+    2025:
+      all:
+        H2 Electrolysis: 0.9
+    2035:
+      all:
+        H2 Electrolysis: 0.9
+    2045:
+      all:
+        H2 Electrolysis: 0.9
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks charger: 0.75
+      Store:
+        H2 Store: 0.75
 
 LowFlex75_pminpu_0.9:
 # transmission limit v1.5 and BEV DSM restricted
