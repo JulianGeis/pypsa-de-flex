@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260120-flex-low-flex-testing
+  prefix: 20260126-flex-when-restrict-components
   name:
   # # main scenarios
   - LowFlex

@@ -1731,8 +1731,16 @@ def restrict_cross_border_flows(n, s_max_pu):
     n.lines.loc[cross_border_lines, "s_max_pu"] = s_max_pu
 
 
-def restrict_component_buildout(n, component_limits, capacities_csv, where="only_de"):
+def restrict_component_buildout(n, component_limits, capacities_csv, where="only_de", when=None):
     investment_year = snakemake.wildcards.planning_horizons
+
+    # Check if restrictions should apply this year
+    if when is not None and int(investment_year) not in when:
+        logger.info(f"Skipping component buildout restrictions for year {investment_year} (not in {when})")
+        return
+    
+    logger.info(f"Applying component buildout restrictions for year {investment_year}")
+
     capacities = pd.read_csv(capacities_csv, index_col=[0, 1, 2])
 
     # Filter to only DE buses if requested
@@ -1832,6 +1840,48 @@ def restrict_component_buildout(n, component_limits, capacities_csv, where="only
                     logger.warning(
                         f"No extendable {c.name} with carrier {carrier} found at bus {limits_bus} to restrict."
                     )
+
+    synchronize_TES_extendability(n)
+
+
+def synchronize_TES_extendability(n: pypsa.Network) -> None:
+    """
+    Ensure that TES chargers and their corresponding stores have consistent
+    extendability settings. If either the charger or store is non-extendable,
+    set both to non-extendable. Otherwise the restrict_component_buildout can 
+    run into errors with function "add_TES_energy_to_power_ratio_constraints".
+    """
+    
+    # Find all TES chargers and stores
+    charger_mask = n.links.index.str.contains("water tanks charger|water pits charger")
+    store_mask = n.stores.index.str.contains("water tanks|water pits")
+    
+    chargers = n.links.index[charger_mask]
+    stores = n.stores.index[store_mask]
+    
+    for charger in chargers:
+        # Get corresponding store name
+        store = charger.replace(" charger", "")
+        
+        if store not in stores:
+            # Only print if the charger (which exists) is extendable
+            charger_extendable = n.links.at[charger, "p_nom_extendable"]
+            if charger_extendable:
+                logger.info(f"Charger {charger} has no matching store {store}")
+            continue
+        
+        charger_extendable = n.links.at[charger, "p_nom_extendable"]
+        store_extendable = n.stores.at[store, "e_nom_extendable"]
+        
+        # Only synchronize and print if there's a mismatch (one True, one False)
+        if charger_extendable != store_extendable:
+            # At least one is extendable but they don't match
+            n.links.at[charger, "p_nom_extendable"] = False
+            n.stores.at[store, "e_nom_extendable"] = False
+            logger.info(
+                f"Synchronized extendability for TES pair: {store} "
+                f"(charger: {charger_extendable} -> False, store: {store_extendable} -> False)"
+            )
 
 
 def force_pth_profiles_decentral_rural(n):
@@ -2005,9 +2055,11 @@ if __name__ == "__main__":
     if restrict_components_config is not None:
         if 'component_limits' in restrict_components_config: # ensures it works with the old and new format
             where = restrict_components_config.get('where', 'only_de')
+            when = restrict_components_config.get('when', [2035, 2045])
             component_limits = restrict_components_config['component_limits']
         else:
             where = "only_de"
+            when = [2035, 2045]
             component_limits = restrict_components_config
 
         if n.snapshot_weightings.generators.iloc[0] == 1.0:
