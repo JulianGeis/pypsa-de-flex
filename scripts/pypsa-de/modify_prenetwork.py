@@ -1846,42 +1846,85 @@ def restrict_component_buildout(n, component_limits, capacities_csv, where="only
 
 def synchronize_TES_extendability(n: pypsa.Network) -> None:
     """
-    Ensure that TES chargers and their corresponding stores have consistent
-    extendability settings. If either the charger or store is non-extendable,
-    set both to non-extendable. Otherwise the restrict_component_buildout can 
-    run into errors with function "add_TES_energy_to_power_ratio_constraints".
+    Ensure that TES components have consistent extendability settings.
+    Synchronizes:
+    1. Chargers with their corresponding stores
+    2. Chargers with their corresponding dischargers
+    
+    If any component in a set is non-extendable, all are set to non-extendable.
+    This prevents errors in add_TES_energy_to_power_ratio_constraints and 
+    add_TES_charger_ratio_constraints.
     """
     
-    # Find all TES chargers and stores
-    charger_mask = n.links.index.str.contains("water tanks charger|water pits charger")
-    store_mask = n.stores.index.str.contains("water tanks|water pits")
-    
+    # Find all TES chargers (NOT dischargers!)
+    charger_mask = (
+        (n.links.index.str.contains("water tanks charger") |
+         n.links.index.str.contains("water pits charger") |
+         n.links.index.str.contains("aquifer thermal energy storage charger")) &
+        ~n.links.index.str.contains("discharger")
+    )
     chargers = n.links.index[charger_mask]
+    
+    # Find all TES stores
+    store_mask = (
+        (n.stores.index.str.contains("water tanks") |
+         n.stores.index.str.contains("water pits") |
+         n.stores.index.str.contains("aquifer thermal energy storage"))
+    )
     stores = n.stores.index[store_mask]
     
+    # Find all TES dischargers
+    discharger_mask = (
+        n.links.index.str.contains("water tanks discharger") |
+        n.links.index.str.contains("water pits discharger") |
+        n.links.index.str.contains("aquifer thermal energy storage discharger")
+    )
+    dischargers = n.links.index[discharger_mask]
+    
     for charger in chargers:
-        # Get corresponding store name
+        # Get corresponding names
         store = charger.replace(" charger", "")
+        discharger = charger.replace(" charger", " discharger")
         
-        if store not in stores:
-            # Only print if the charger (which exists) is extendable
-            charger_extendable = n.links.at[charger, "p_nom_extendable"]
-            if charger_extendable:
-                logger.info(f"Charger {charger} has no matching store {store}")
-            continue
-        
+        # Check charger extendability
         charger_extendable = n.links.at[charger, "p_nom_extendable"]
-        store_extendable = n.stores.at[store, "e_nom_extendable"]
         
-        # Only synchronize and print if there's a mismatch (one True, one False)
-        if charger_extendable != store_extendable:
-            # At least one is extendable but they don't match
+        # Initialize tracking
+        store_extendable = None
+        discharger_extendable = None
+        extendability_status = [charger_extendable]
+        
+        # Check if store exists
+        if store in stores:
+            store_extendable = n.stores.at[store, "e_nom_extendable"]
+            extendability_status.append(store_extendable)
+        elif charger_extendable:
+            logger.info(f"Charger {charger} has no matching store {store}")
+        
+        # Check if discharger exists
+        if discharger in dischargers:
+            discharger_extendable = n.links.at[discharger, "p_nom_extendable"]
+            extendability_status.append(discharger_extendable)
+        elif charger_extendable:
+            logger.info(f"Charger {charger} has no matching discharger {discharger}")
+        
+        # If there's any mismatch in extendability, set all to non-extendable
+        if len(set(extendability_status)) > 1:
+            # Set all to non-extendable
             n.links.at[charger, "p_nom_extendable"] = False
-            n.stores.at[store, "e_nom_extendable"] = False
-            logger.info(
-                f"Synchronized extendability for TES pair: {store} "
-                f"(charger: {charger_extendable} -> False, store: {store_extendable} -> False)"
-            )
+            if store in stores:
+                n.stores.at[store, "e_nom_extendable"] = False
+            if discharger in dischargers:
+                n.links.at[discharger, "p_nom_extendable"] = False
+            
+            # One-line log message
+            parts = [f"charger={charger_extendable}"]
+            if store_extendable is not None:
+                parts.append(f"store={store_extendable}")
+            if discharger_extendable is not None:
+                parts.append(f"discharger={discharger_extendable}")
+            
+            logger.info(f"Synchronized TES {store}: {', '.join(parts)} -> all False")
 
 
 def force_pth_profiles_decentral_rural(n):

@@ -405,7 +405,7 @@ LowFlex75_pminpu_FT_electrolysis0.9:
         urban central water tanks discharger: 0.75
         urban decentral water pits discharger: 0.75
         urban decentral water tanks discharger: 0.75
-        rural water tanks charger: 0.75
+        rural water tanks discharger: 0.75
       Store:
         H2 Store: 0.75
 
@@ -445,7 +445,7 @@ LowFlex75_pminpu_not_electrolysis0.9:
         urban central water tanks discharger: 0.75
         urban decentral water pits discharger: 0.75
         urban decentral water tanks discharger: 0.75
-        rural water tanks charger: 0.75
+        rural water tanks discharger: 0.75
       Store:
         H2 Store: 0.75
 
@@ -485,7 +485,7 @@ LowFlex75_pminpu_only_electrolysis0.9:
         urban central water tanks discharger: 0.75
         urban decentral water pits discharger: 0.75
         urban decentral water tanks discharger: 0.75
-        rural water tanks charger: 0.75
+        rural water tanks discharger: 0.75
       Store:
         H2 Store: 0.75
 
@@ -525,7 +525,7 @@ LowFlex75_pminpu_0.9:
         urban central water tanks discharger: 0.75
         urban decentral water pits discharger: 0.75
         urban decentral water tanks discharger: 0.75
-        rural water tanks charger: 0.75
+        rural water tanks discharger: 0.75
       Store:
         H2 Store: 0.75
 
@@ -566,7 +566,7 @@ LowFlex75_pminpu_0.8:
         urban central water tanks discharger: 0.75
         urban decentral water pits discharger: 0.75
         urban decentral water tanks discharger: 0.75
-        rural water tanks charger: 0.75
+        rural water tanks discharger: 0.75
       Store:
         H2 Store: 0.75
 
@@ -605,7 +605,7 @@ LowFlex75_CapRestrictDEWide:
         urban central water tanks discharger: 0.75
         urban decentral water pits discharger: 0.75
         urban decentral water tanks discharger: 0.75
-        rural water tanks charger: 0.75
+        rural water tanks discharger: 0.75
       Store:
         H2 Store: 0.75
 
@@ -723,7 +723,7 @@ LowFlex75_excludeHeat:
         # urban central water tanks discharger: 0.75
         # urban decentral water pits discharger: 0.75
         # urban decentral water tanks discharger: 0.75
-        # rural water tanks charger: 0.75
+        # rural water tanks discharger: 0.75
       Store:
         H2 Store: 0.75
 
@@ -751,7 +751,7 @@ LowFlex75_exclude_pminpu:
         urban central water tanks discharger: 0.75
         urban decentral water pits discharger: 0.75
         urban decentral water tanks discharger: 0.75
-        rural water tanks charger: 0.75
+        rural water tanks discharger: 0.75
       Store:
         H2 Store: 0.75
 
@@ -818,7 +818,7 @@ LowFlex75:
         urban central water tanks discharger: 0.75
         urban decentral water pits discharger: 0.75
         urban decentral water tanks discharger: 0.75
-        rural water tanks charger: 0.75
+        rural water tanks discharger: 0.75
       Store:
         H2 Store: 0.75
 
@@ -858,7 +858,7 @@ LowFlex50:
         urban central water tanks discharger: 0.5
         urban decentral water pits discharger: 0.5
         urban decentral water tanks discharger: 0.5
-        rural water tanks charger: 0.5
+        rural water tanks discharger: 0.5
       Store:
         H2 Store: 0.5
 
@@ -894,7 +894,7 @@ LowFlex50HeatDecentral25:
         urban central water tanks discharger: 0.5
         urban decentral water pits discharger: 0.25
         urban decentral water tanks discharger: 0.25
-        rural water tanks charger: 0.25
+        rural water tanks discharger: 0.25
       Store:
         H2 Store: 0.5
 
