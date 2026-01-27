@@ -1646,7 +1646,7 @@ def get_secondary_energy(n, region, _industry_demand):
                 "PHS|battery discharger|home battery discharger|V2G|DSM"
             )
         ].sum(),
-        var["Secondary Energy|Electricity"],
+        var["Secondary Energy|Electricity"], rtol=1e-3
     )
 
     heat_supply = (

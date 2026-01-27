@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260126-flex-when-restrict-components
+  prefix: 20260127-flex-more-low-flex-testing
   name:
   # # main scenarios
   - LowFlex
@@ -12,7 +12,9 @@ run:
   - Base
   - HighFlex
   # # sensitivity scenarios
-  # # LowFlex variations
+  # - LowFlex75_pminpu_FT_electrolysis0.9
+  # - LowFlex75_pminpu_not_electrolysis0.9
+  # - LowFlex75_pminpu_only_electrolysis0.9
   # - LowFlex75_pminpu_0.9
   # - LowFlex75_pminpu_0.8
   # - LowFlex75_CapRestrictDEWide
@@ -22,8 +24,11 @@ run:
   # - LowFlex75_exclude_pminpu_onlyStores
   # - LowFlex75
   # - LowFlex50
+  # - LowFlex50_pminpu0.9
+  # - LowFlex50_pminpu0.8
   # - LowFlex50HeatDecentral25
   # - LowFlexHeatModelMargin0.1
+  # - LowFlexHeatModelMargin0.1pminpu0.9
   # - LowFlexHeatModelMargin0.2
   # - LowFlexHeatModelMargin0.3
   # - LowFlexHeatPMINPU50
@@ -817,7 +822,9 @@ flexibility_comparison:
   - Base
   # - HighFlex
   # # sensitivity scenarios
-  # # LowFlex variations
+  # - LowFlex75_pminpu_FT_electrolysis0.9
+  # - LowFlex75_pminpu_not_electrolysis0.9
+  # - LowFlex75_pminpu_only_electrolysis0.9
   # - LowFlex75_pminpu_0.9
   # - LowFlex75_pminpu_0.8
   # - LowFlex75_CapRestrictDEWide
@@ -827,8 +834,11 @@ flexibility_comparison:
   # - LowFlex75_exclude_pminpu_onlyStores
   # - LowFlex75
   # - LowFlex50
+  # - LowFlex50_pminpu0.9
+  # - LowFlex50_pminpu0.8
   # - LowFlex50HeatDecentral25
   # - LowFlexHeatModelMargin0.1
+  # - LowFlexHeatModelMargin0.1pminpu0.9
   # - LowFlexHeatModelMargin0.2
   # - LowFlexHeatModelMargin0.3
   # - LowFlexHeatPMINPU50

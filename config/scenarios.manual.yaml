@@ -862,6 +862,86 @@ LowFlex50:
       Store:
         H2 Store: 0.5
 
+LowFlex50_pminpu0.9:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 50 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 0.9
+    min_part_load_methanolisation: 0.9
+    min_part_load_methanation: 0.9
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 0.9
+    2045:
+      all:
+        H2 Electrolysis: 0.9
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        battery discharger: 0.5
+        home battery discharger: 0.5
+        urban central water pits discharger: 0.5
+        urban central water tanks discharger: 0.5
+        urban decentral water pits discharger: 0.5
+        urban decentral water tanks discharger: 0.5
+        rural water tanks discharger: 0.5
+      Store:
+        H2 Store: 0.5
+
+LowFlex50_pminpu0.8:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 50 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 0.8
+    min_part_load_methanolisation: 0.8
+    min_part_load_methanation: 0.8
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 0.8
+    2045:
+      all:
+        H2 Electrolysis: 0.8
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        battery discharger: 0.5
+        home battery discharger: 0.5
+        urban central water pits discharger: 0.5
+        urban central water tanks discharger: 0.5
+        urban decentral water pits discharger: 0.5
+        urban decentral water tanks discharger: 0.5
+        rural water tanks discharger: 0.5
+      Store:
+        H2 Store: 0.5
+
 LowFlex50HeatDecentral25:
 
   electricity:
@@ -924,6 +1004,47 @@ LowFlexHeatModelMargin0.1: # used as LowFlex for most runs except the 49cl 1H
     2045:
       all:
         H2 Electrolysis: 1
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        battery discharger: 0.5
+        home battery discharger: 0.5
+      Store:
+        H2 Store: 0.5
+        rural water tanks: 0.5
+        urban decentral water tanks: 0.5
+        urban decentral water pits: 0.5
+        urban central water tanks: 0.5
+        urban central water pits: 0.5
+
+LowFlexHeatModelMargin0.1pminpu0.9: 
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    force_pth_profiles_decentral_rural_p_min_pu: false
+    min_part_load_fischer_tropsch: 0.9
+    min_part_load_methanolisation: 0.9
+    min_part_load_methanation: 0.9
+
+  solving:
+    force_pth_profiles_decentral_rural: true
+    force_pth_profiles_decentral_rural_margin: 0.1
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 0.9
+    2045:
+      all:
+        H2 Electrolysis: 0.9
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     where: whole_system
