@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260127-flex-more-low-flex-testing
+  prefix: 20260202-flex
   name:
   # # main scenarios
   - LowFlex
