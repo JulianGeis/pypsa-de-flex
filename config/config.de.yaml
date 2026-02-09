@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260202-flex
+  prefix: 20260209-flex-add-plots
   name:
   # # main scenarios
   - LowFlex
@@ -813,14 +813,14 @@ scale_capacity:
 
 ### Flexibility options
 
-# Flexibility comparison settings
-flexibility_comparison:
+# Scenario comparison settings
+system_comparison:
   scenarios:
   # # main scenarios
-  # - LowFlex
-  # - LowBattery
+  - LowFlex
+  - LowBattery
   - Base
-  # - HighFlex
+  - HighFlex
   # # sensitivity scenarios
   # - LowFlex75_pminpu_FT_electrolysis0.9
   # - LowFlex75_pminpu_not_electrolysis0.9

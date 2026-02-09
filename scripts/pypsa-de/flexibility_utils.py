@@ -1,5 +1,6 @@
 from pathlib import Path
 from numpy import isclose
+import matplotlib.pyplot as plt
 
 
 tech_colors = {
@@ -217,6 +218,7 @@ def find_project_root():
 
 
 # Scenario abbreviations dictionary
+# Scenario abbreviations dictionary
 scenario_abbrev = {
     "LowFlex": "LF",
     "LowBattery": "LB",
@@ -231,15 +233,68 @@ scenario_abbrev = {
     "HigFlex": "HigF",
     "LowTransmission110": "LT10",
     "LowTransmission125": "LT25",
+    "LowTransmission25": "LT25",
+    "LowTransmission10": "LT10",
     "LowPtX75": "LX75",
     "LowPtX50": "LX50",
     "LowPtX25": "LX25",
     "LowH2Store75": "LH75",
     "LowH2Store50": "LH50",
     "LowH2Store25": "LH25",
+    "LowH2Store0": "LH0",
     "LowHeatStore75": "HS75",
     "LowHeatStore50": "HS50",
     "LowHeatStore25": "HS25",
+    "LowHeatStore0": "HS0",
+    # LowFlex variations with pminpu
+    "LowFlex75_pminpu_FT_electrolysis0.9": "LF75_FTE9",
+    "LowFlex75_pminpu_not_electrolysis0.9": "LF75_NE9",
+    "LowFlex75_pminpu_only_electrolysis0.9": "LF75_OE9",
+    "LowFlex75_pminpu_0.9": "LF75_P9",
+    "LowFlex75_pminpu_0.8": "LF75_P8",
+    "LowFlex75_CapRestrictDEWide": "LF75_CR",
+    "LowFlex75_excludeHeat_H2Store": "LF75_XHH",
+    "LowFlex75_excludeHeat": "LF75_XH",
+    "LowFlex75_exclude_pminpu": "LF75_XP",
+    "LowFlex75_exclude_pminpu_onlyStores": "LF75_XPS",
+    "LowFlex50_pminpu0.9": "LF50_P9",
+    "LowFlex50_pminpu0.8": "LF50_P8",
+    "LowFlex50HeatDecentral25": "LF50_HD25",
+    # Heat model variations
+    "LowFlexHeatModelMargin0.1": "LFHM01",
+    "LowFlexHeatModelMargin0.1pminpu0.9": "LFHM01P9",
+    "LowFlexHeatModelMargin0.2": "LFHM02",
+    "LowFlexHeatModelMargin0.3": "LFHM03",
+    "LowFlexHeatPMINPU50": "LFHP50",
+    "LowFlexHeatPMINPU25": "LFHP25",
+    "LowFlexHeatMinStore": "LFHMS",
+    "LowFlexBEVDSMOFF": "LFBEV_OFF",
+    # Battery variations
+    "LowBattery75": "LB75",
+    "LowBattery50": "LB50",
+    "LowBattery25": "LB25",
+    "LowBattery0": "LB0",
+    # PtG / Electrolysis
+    "LowPtG75": "LG75",
+    "LowPtG50": "LG50",
+    "LowPtG25": "LG25",
+    # PtH
+    "LowPtH75": "LPH75",
+    "LowPtH50": "LPH50",
+    "LowPtH25": "LPH25",
+    # High flex variations
+    "HighFlexIndustry": "HF_IND",
+    "HighFlexIronAir": "HF_IA",
+    "HighFlexDLR": "HF_DLR",
+    "HighFlexBEV70": "HF_B70",
+    "HighFlexBEV80": "HF_B80",
+    "HighFlexBEV90": "HF_B90",
+    # Ariadne scenarios
+    "KN2045_Mix": "KN_MIX",
+    "KN2045_Elek": "KN_EL",
+    "KN2045_H2": "KN_H2",
+    "KN2045_NFniedrig": "KN_NFL",
+    "KN2045_NFhoch": "KN_NFH",
 }
 
 
@@ -257,6 +312,168 @@ def aggregate_small_contributors(df, threshold=0.01):
 
     return result
 
+def df_to_png(df, filename="table.png"):
+
+    if df.empty:
+        return
+
+    fig, ax = plt.subplots(figsize=(10, 0.5 + 0.25*len(df)))
+    ax.axis('off')
+    tbl = ax.table(cellText=df.values,
+                   colLabels=df.columns,
+                   rowLabels=df.index,
+                   loc='center')
+    tbl.auto_set_font_size(False)
+    tbl.set_fontsize(10)
+    fig.savefig(filename, bbox_inches='tight')
+    plt.close()
+
+
+# definitions
+
+resistive_heater = [
+    "urban central resistive heater",
+    "rural resistive heater",
+    "urban decentral resistive heater",
+]
+gas_boiler = [
+    "urban central gas boiler",
+    "rural gas boiler",
+    "urban decentral gas boiler",
+]
+heat_pump = [
+    "urban central air heat pump",
+    "rural air heat pump",
+    "rural ground heat pump",
+    "urban decentral air heat pump",
+]
+water_tanks_charger = [
+    "urban central water tanks charger",
+    "rural water tanks charger",
+    "urban decentral water tanks charger",
+]
+water_tanks_discharger = [
+    "urban central water tanks discharger",
+    "rural water tanks discharger",
+    "urban decentral water tanks discharger",
+]
+solar_thermal = [
+    "urban decentral solar thermal",
+    "urban central solar thermal",
+    "rural solar thermal",
+]
+
+solar = ["solar", "solar-hsat"]
+offwind = ["offwind-ac", "offwind-dc"]
+h2_ocgt = ["H2 OCGT", "H2 retrofit OCGT"]
+
+c1_groups = [resistive_heater, gas_boiler, heat_pump, solar, offwind, h2_ocgt]
+
+c1_groups_name = [
+    "resistive heater",
+    "gas boiler",
+    "heat pump",
+    "solar",
+    "offwind",
+    "H2 OCGT",
+]
+
+scenario_colors = {
+    # Main scenarios
+    'LowFlex': 'navy',    
+    'LowBattery': 'teal', 
+    'Base': 'darkorange',        
+    'HighFlex': 'purple',
+    
+    # LowFlex variations
+    'LowFlex75_pminpu_FT_electrolysis0.9': '#1e3a8a',
+    'LowFlex75_pminpu_not_electrolysis0.9': '#1e40af',
+    'LowFlex75_pminpu_only_electrolysis0.9': '#1e50c7',
+    'LowFlex75_pminpu_0.9': '#2563eb',
+    'LowFlex75_pminpu_0.8': '#3b82f6',
+    'LowFlex75_CapRestrictDEWide': '#60a5fa',
+    'LowFlex75_excludeHeat_H2Store': '#93c5fd',
+    'LowFlex75_excludeHeat': '#bfdbfe',
+    'LowFlex75_exclude_pminpu': '#dbeafe',
+    'LowFlex75_exclude_pminpu_onlyStores': '#eff6ff',
+    'LowFlex75': '#1e293b',
+    'LowFlex50': '#334155',
+    'LowFlex50_pminpu0.9': '#475569',
+    'LowFlex50_pminpu0.8': '#64748b',
+    'LowFlex50HeatDecentral25': '#94a3b8',
+    
+    # Heat variations
+    'LowFlexHeatModelMargin0.1': '#be123c',
+    'LowFlexHeatModelMargin0.1pminpu0.9': '#e11d48',
+    'LowFlexHeatModelMargin0.2': '#f43f5e',
+    'LowFlexHeatModelMargin0.3': '#fb7185',
+    'LowFlexHeatPMINPU50': '#fda4af',
+    'LowFlexHeatPMINPU25': '#fecdd3',
+    'LowFlexHeatMinStore': '#ffe4e6',
+    'LowFlexBEVDSMOFF': '#881337',
+    
+    # Battery variations
+    'LowBattery75': '#0d9488',
+    'LowBattery50': '#14b8a6',
+    'LowBattery25': '#2dd4bf',
+    'LowBattery0': '#5eead4',
+    
+    # PtG / Electrolysis
+    'LowPtG75': '#15803d',
+    'LowPtG50': '#16a34a',
+    'LowPtG25': '#22c55e',
+    
+    # PtX
+    'LowPtX75': '#ca8a04',
+    'LowPtX50': '#eab308',
+    'LowPtX25': '#facc15',
+    
+    # PtH
+    'LowPtH75': '#c2410c',
+    'LowPtH50': '#ea580c',
+    'LowPtH25': '#fb923c',
+    
+    # H2 storage
+    'LowH2Store75': '#7c2d12',
+    'LowH2Store50': '#9a3412',
+    'LowH2Store25': '#c2410c',
+    'LowH2Store0': '#ea580c',
+    
+    # Heat storage
+    'LowHeatStore75': '#991b1b',
+    'LowHeatStore50': '#dc2626',
+    'LowHeatStore25': '#ef4444',
+    'LowHeatStore0': '#f87171',
+    
+    # Transmission
+    'LowTransmission25': '#4338ca',
+    'LowTransmission10': '#6366f1',
+    
+    # High flex variations
+    'HighFlexIndustry': '#6b21a8',
+    'HighFlexIronAir': '#7c3aed',
+    'HighFlexDLR': '#8b5cf6',
+    'HighFlexBEV70': '#a78bfa',
+    'HighFlexBEV80': '#c4b5fd',
+    'HighFlexBEV90': '#ddd6fe',
+    
+    # Ariadne scenarios
+    'KN2045_Mix': '#065f46',
+    'KN2045_Elek': '#059669',
+    'KN2045_H2': '#10b981',
+    'KN2045_NFniedrig': '#34d399',
+    'KN2045_NFhoch': '#6ee7b7',
+}
+
+sector_colors = {
+    'Electricity': '#110d63',
+    'Heat': '#d15959',
+    'H2': '#bf13a0',
+    'Fuels': '#1abc9c',
+    'Gas': '#e0986c',
+    'Biomass': '#baa741',
+    'Other': 'lightgrey'
+    }
 
 # def collapse_small_columns(df, threshold=0.01, others_name="other"):
 #     """

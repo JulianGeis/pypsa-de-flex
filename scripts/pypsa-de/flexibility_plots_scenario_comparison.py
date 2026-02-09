@@ -447,15 +447,15 @@ def plot_flexibility_causes_scenario_comparison(
                 )
 
         # Formatting
-        axes[i].set_title(f"{title_map[gran]} Flexibility Needs", fontsize=14)
-        axes[i].set_xlabel("Year", fontsize=12)
+        axes[i].set_title(f"{title_map[gran]} Flexibility Needs", fontsize=16)
+        axes[i].set_xlabel("Year", fontsize=14)
         axes[i].set_xticks(x)
-        axes[i].set_xticklabels(years, rotation=0, fontsize=10)
+        axes[i].set_xticklabels(years, rotation=0, fontsize=12)
         axes[i].grid(True, alpha=0.3, axis="y")
         axes[i].axhline(y=0, color="black", linestyle="-", linewidth=0.8, alpha=0.5)
 
         if i == 0:
-            axes[i].set_ylabel("Flexibility Contribution (TWh/a)", fontsize=12)
+            axes[i].set_ylabel("Flexibility Contribution (TWh/a)", fontsize=14)
 
     # Set y-axis limits with margin (15% on each side)
     y_min, y_max = min(all_y_values), max(all_y_values)
@@ -488,7 +488,7 @@ def plot_flexibility_causes_scenario_comparison(
         bbox_to_anchor=(0.5, -0.05),
         ncol=min(8, len(tech_labels)),
         title="Technologies",
-        fontsize=11,
+        fontsize=14,
     )
 
     # Create legend for scenarios (top left of first subplot)
@@ -511,13 +511,13 @@ def plot_flexibility_causes_scenario_comparison(
         loc="upper left",
         ncol=1,
         title="Scenarios",
-        fontsize=12,
+        fontsize=14,
         framealpha=0.9,
     )
 
-    plt.suptitle(
-        "Flexibility Causes by Granularity - Scenario Comparison", fontsize=16, y=0.98
-    )
+    # plt.suptitle(
+    #     "Flexibility Causes by Granularity - Scenario Comparison", fontsize=16, y=0.98
+    # )
     plt.tight_layout()
     plt.subplots_adjust(bottom=0.12)
 
@@ -674,15 +674,15 @@ def plot_flexibility_provision_scenario_comparison(
                 )
 
         # Formatting
-        axes[i].set_title(f"{title_map[gran]} Flexibility Provision", fontsize=14)
-        axes[i].set_xlabel("Year", fontsize=12)
+        axes[i].set_title(f"{title_map[gran]} Flexibility Provision", fontsize=16)
+        axes[i].set_xlabel("Year", fontsize=14)
         axes[i].set_xticks(x)
-        axes[i].set_xticklabels(years, rotation=0, fontsize=10)
+        axes[i].set_xticklabels(years, rotation=0, fontsize=12)
         axes[i].grid(True, alpha=0.3, axis="y")
         axes[i].axhline(y=0, color="black", linestyle="-", linewidth=0.8, alpha=0.5)
 
         if i == 0:
-            axes[i].set_ylabel("Flexibility Contribution (TWh/a)", fontsize=12)
+            axes[i].set_ylabel("Flexibility Contribution (TWh/a)", fontsize=14)
 
     # Set y-axis limits with margin
     y_min, y_max = min(all_y_values), max(all_y_values)
@@ -715,7 +715,7 @@ def plot_flexibility_provision_scenario_comparison(
         bbox_to_anchor=(0.5, -0.05),
         ncol=min(8, len(tech_labels)),
         title="Technologies",
-        fontsize=11,
+        fontsize=14,
     )
 
     # Create legend for scenarios (top left of first subplot)
@@ -738,15 +738,15 @@ def plot_flexibility_provision_scenario_comparison(
         loc="upper left",
         ncol=1,
         title="Scenarios",
-        fontsize=12,
+        fontsize=14,
         framealpha=0.9,
     )
 
-    plt.suptitle(
-        "Flexibility Provision by Granularity - Scenario Comparison",
-        fontsize=16,
-        y=0.98,
-    )
+    # plt.suptitle(
+    #     "Flexibility Provision by Granularity - Scenario Comparison",
+    #     fontsize=16,
+    #     y=0.98,
+    # )
     plt.tight_layout()
     plt.subplots_adjust(bottom=0.12)
 
