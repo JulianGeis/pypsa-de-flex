@@ -1732,10 +1732,18 @@ def restrict_cross_border_flows(n, s_max_pu):
 
 
 def restrict_component_buildout(n, component_limits, capacities_csv, where="only_de", when=None):
+    """
+    Limit the maximum buildout of energy system components based on predefined capacity limits.
+    
+    Sets p_nom_max/e_nom_max constraints on extendable components to enforce regional capacity 
+    restrictions (e.g., limiting solar/wind expansion). Optionally filters by region (DE only, 
+    outside DE, or all) and planning year.
+    """
+    
     investment_year = snakemake.wildcards.planning_horizons
 
     # Check if restrictions should apply this year
-    if when is not None and int(investment_year) not in when:
+    if (when is not None) and (int(investment_year) not in when):
         logger.info(f"Skipping component buildout restrictions for year {investment_year} (not in {when})")
         return
     
@@ -1987,8 +1995,8 @@ if __name__ == "__main__":
             opts="",
             ll="vopt",
             sector_opts="none",
-            planning_horizons="2045",
-            run="Base",
+            planning_horizons="2025",
+            run="LowFlex",
         )
 
     configure_logging(snakemake)
@@ -2111,7 +2119,7 @@ if __name__ == "__main__":
             base_capacities_csv = snakemake.input.base_capacities_3H
 
         restrict_component_buildout(
-            n, component_limits, base_capacities_csv, where
+            n, component_limits, base_capacities_csv, where, when
         )
 
     if snakemake.params.force_pth_profiles_decentral_rural_p_min_pu:
