@@ -19,6 +19,7 @@ tech_colors = {
     "coal": "black",
     "coal (+CHP)": "black",
     "oil": "#c9c9c9",
+    "Oil": "black",
     "uranium": "#ff8c00",
     "none": "",
     "co2": "#f29dae",
@@ -53,6 +54,7 @@ tech_colors = {
     "solid biomass for industry CC": "#47411c",
     "land transport oil": "#afafaf",
     "BEV charger": "#baf238",
+    "BEV charging": "#baf238",
     "industry methanol": "#468c8b",
     "shipping oil": "#808080",
     "OCGT": "#e0986c",
@@ -129,8 +131,8 @@ tech_colors = {
     "CCGT": "purple",
     "gas (+CHP)": "purple",
     "nuclear": "lime",
-    "renewable oil": "",
-    "renewable gas": "",
+    "renewable oil": "darkviolet",
+    "renewable gas": "gold",
     "Other": "gray",
     "H2 OCGT": "#3b4cc0",
     "H2 pipeline (Kernnetz)": "#6788ee",
@@ -154,28 +156,45 @@ tech_colors = {
     "Import/Export": "dimgrey",
     "Sonstige": "gainsboro",
     "industry DSM": "navy",
+    "Industry DSM": "navy",
     "industry DSM ramp down": "mediumslateblue",
     "industry DSM compensate": "cornflowerblue",
     "Onshore wind": "#235ebc",
     "Offshore wind": "#6788ee",
     "Solar": "#ffea80",
-    "Gas": "navajowhite",
-    "Gas CHP": "navajowhite",
+    "Gas": "#e0986c",
+    "Gas CHP": "#e0986c",
     "Pumped storage": "#51dbcc",
     "Battery": "palegreen",
     "Power-to-heat": "crimson",
+    "Power-to-heat (central)": "crimson",
+    "Power-to-heat (decentral)": "crimson",
     "Electrolysis": "#ff29d9",
     "Iron-air battery": "#c9954d",
     "Others": "grey",
     "V2G": "tomato",
+    "Vehicle-to-grid": "tomato",
     "iron-air battery": "#f5e6b3",
     "iron-air battery storage": "#daa520",
     "iron-air battery charger": "#c9954d",
     "iron-air battery discharger": "#8b6f47",
     "electricity distribution grid losses": "#97ad8c",
     "agriculture machinery electricity": "#6b3161",
+    "eFuels": "seagreen",
+    "Renewable Gas": "gold",
+    "Renewable Oil": "darkviolet",
+    "Methanol": "#FF7B00",
 }
 
+sector_colors = {
+    'Electricity': '#110d63',
+    'Heat': '#d15959',
+    'H2': '#bf13a0',
+    'Fuels': '#1abc9c',
+    'Gas': '#e0986c',
+    'Biomass': '#baa741',
+    'Other': 'lightgrey'
+    }
 
 year_colors_gradient = {
     2020: "#e4c1f9",  # Pale Lavender
@@ -465,15 +484,6 @@ scenario_colors = {
     'KN2045_NFhoch': '#6ee7b7',
 }
 
-sector_colors = {
-    'Electricity': '#110d63',
-    'Heat': '#d15959',
-    'H2': '#bf13a0',
-    'Fuels': '#1abc9c',
-    'Gas': '#e0986c',
-    'Biomass': '#baa741',
-    'Other': 'lightgrey'
-    }
 
 # def collapse_small_columns(df, threshold=0.01, others_name="other"):
 #     """

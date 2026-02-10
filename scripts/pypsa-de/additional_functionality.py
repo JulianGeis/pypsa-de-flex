@@ -980,20 +980,25 @@ def additional_functionality(n, snapshots, snakemake):
 
     add_power_limits(n, investment_year, constraints["limits_power_max"])
 
-    if snakemake.wildcards.clusters != "1":
+    if (snakemake.wildcards.clusters != "1") & ("h2_import" in constraints["limits_volume_max"]):
         h2_import_limits(n, investment_year, constraints["limits_volume_max"])
 
         electricity_import_limits(n, investment_year, constraints["limits_volume_max"])
 
-    if investment_year >= 2025:
-        h2_production_limits(
-            n,
-            investment_year,
-            constraints["limits_volume_min"],
-            constraints["limits_volume_max"],
-        )
+    limits_volume_max = constraints.get("limits_volume_max", None)
+    limits_volume_min = constraints.get("limits_volume_min", None)
+    
+    if limits_volume_max is not None and limits_volume_min is not None:
+        if (investment_year >= 2025) & ("electrolysis" in constraints["limits_volume_max"]) & ("electrolysis" in constraints["limits_volume_min"]):
+            h2_production_limits(
+                n,
+                investment_year,
+                constraints["limits_volume_min"],
+                constraints["limits_volume_max"],
+            )
 
-    add_h2_derivate_limit(n, investment_year, constraints["limits_volume_max"])
+        if "h2_derivate_import" in constraints["limits_volume_max"]:
+            add_h2_derivate_limit(n, investment_year, constraints["limits_volume_max"])
 
     # force_boiler_profiles_existing_per_load(n)
     force_boiler_profiles_existing_per_boiler(n)

@@ -12,7 +12,7 @@ from functools import reduce
 import numpy as np
 import pandas as pd
 import pypsa
-from numpy import isclose
+from numpy import isclose, var
 from pypsa.statistics import get_transmission_carriers
 
 from scripts._helpers import configure_logging, mock_snakemake
@@ -4471,16 +4471,14 @@ def get_policy(n, investment_year):
 def get_economy(n, region):
     var = pd.Series()
 
-    def get_tsc(n, country):
+    def get_tsc(n, region, return_full=False):
         pypsa.options.set_option("params.statistics.drop_zero", False)
         capex = n.statistics.capex(
             groupby=pypsa.statistics.groupers["name", "carrier"], nice_names=False
         )
-
         opex = n.statistics.opex(
             groupby=pypsa.statistics.groupers["name", "carrier"], nice_names=False
         )
-
         # filter inter country transmission lines and links
         inter_country_lines = n.lines.bus0.map(n.buses.country) != n.lines.bus1.map(
             n.buses.country
@@ -4488,31 +4486,20 @@ def get_economy(n, region):
         inter_country_links = n.links.bus0.map(n.buses.country) != n.links.bus1.map(
             n.buses.country
         )
-        #
         transmission_carriers = get_transmission_carriers(n).get_level_values("carrier")
-        transmission_lines = (
-            n.lines.carrier.isin(transmission_carriers) & n.lines.active
-        )
-        transmission_links = (
-            n.links.carrier.isin(transmission_carriers) & n.links.active
-        )
-        #
+        transmission_lines = n.lines.carrier.isin(transmission_carriers) & n.lines.active
+        transmission_links = n.links.carrier.isin(transmission_carriers) & n.links.active
         country_transmission_lines = (
-            (n.lines.bus0.str.contains(country)) & ~(n.lines.bus1.str.contains(country))
-        ) | (
-            ~(n.lines.bus0.str.contains(country)) & (n.lines.bus1.str.contains(country))
-        )
-        country_tranmission_links = (
-            (n.links.bus0.str.contains(country)) & ~(n.links.bus1.str.contains(country))
-        ) | (
-            ~(n.links.bus0.str.contains(country)) & (n.links.bus1.str.contains(country))
-        )
-        #
+            (n.lines.bus0.str.contains(region)) & ~(n.lines.bus1.str.contains(region))
+        ) | (~(n.lines.bus0.str.contains(region)) & (n.lines.bus1.str.contains(region)))
+        country_transmission_links = (
+            (n.links.bus0.str.contains(region)) & ~(n.links.bus1.str.contains(region))
+        ) | (~(n.links.bus0.str.contains(region)) & (n.links.bus1.str.contains(region)))
         inter_country_transmission_lines = (
             inter_country_lines & transmission_lines & country_transmission_lines
         )
         inter_country_transmission_links = (
-            inter_country_links & transmission_links & country_tranmission_links
+            inter_country_links & transmission_links & country_transmission_links
         )
         inter_country_transmission_lines_i = inter_country_transmission_lines[
             inter_country_transmission_lines
@@ -4523,17 +4510,13 @@ def get_economy(n, region):
         inter_country_transmission_i = inter_country_transmission_lines_i.union(
             inter_country_transmission_links_i
         )
-
-        #
         tsc = pd.concat([capex, opex], axis=1, keys=["capex", "opex"])
         tsc = tsc.reset_index().set_index("name")
         tsc.loc[inter_country_transmission_i, ["capex", "opex"]] = (
             tsc.loc[inter_country_transmission_i, ["capex", "opex"]] / 2
         )
         tsc.rename(
-            index={
-                index: index + " " + country for index in inter_country_transmission_i
-            },
+            index={index: index + " " + region for index in inter_country_transmission_i},
             inplace=True,
         )
         # rename inter region links and lines
@@ -4555,15 +4538,13 @@ def get_economy(n, region):
             index={index: index + " " + region for index in to_rename_lines},
             inplace=True,
         )
+        tsc = tsc.filter(like=region, axis=0)
+        tsc_sum = tsc.drop("component", axis=1).groupby("carrier").sum()
 
-        tsc = (
-            tsc.filter(like=country, axis=0)
-            .drop("component", axis=1)
-            .groupby("carrier")
-            .sum()
-        )
+        if return_full:
+            return tsc_sum, tsc
+        return tsc_sum
 
-        return tsc
 
     def get_trade_cost(n, region, carriers):
         """
@@ -4572,13 +4553,132 @@ def get_economy(n, region):
         """
         export_revenue, import_cost = get_export_import(n, region, carriers, unit="€")
         return import_cost - export_revenue
+    
+    # Define sector mapping
+    bus_carrier_to_sector = {
+        "Electricity": [
+            "AC", 
+            "low voltage",
+            "battery",
+            "iron-air battery", 
+            "EV battery",
+            "home battery",
+            "DSM"
+        ],
+        "Heat": [
+            "urban central heat",
+            "urban central water tanks",
+            "urban central water pits",
+            "rural heat",
+            "rural water tanks",
+            "urban decentral heat",
+            "urban decentral water tanks"
+        ],
+        "H2": [
+            "H2"
+        ],
+        "Gas": [
+            "gas",
+            "gas primary",
+            "biogas",
+            "gas for industry",
+            "renewable gas"
+        ],
+        "Coal": [
+            "lignite",
+            "coal",
+            "coal for industry"
+        ],
+        "Fuels": [
+            "oil",
+            "oil primary",
+            "land transport oil",
+            "shipping oil",
+            "kerosene for aviation",
+            "agriculture machinery oil",
+            "renewable oil",
+            "naphtha for industry",
+            "methanol",
+            "industry methanol",
+            "shipping methanol",
+        ],
+        "Biomass": [
+            "solid biomass",
+            "solid biomass for industry"
+        ],
+        "CO2": [
+            "co2",
+            "co2 stored",
+            "co2 sequestered",
+            "process emissions"
+        ]
+    }
+
+    # Function to get bus for each component
+    def get_component_bus(row, n):
+        """Get the bus for a component based on its type."""
+        name = row.name
+        component = row['component']
+        
+        if component == 'Generator':
+            return n.generators.loc[name, 'bus'] if name in n.generators.index else None
+        elif component == 'Store':
+            return n.stores.loc[name, 'bus'] if name in n.stores.index else None
+        elif component == 'StorageUnit':
+            return n.storage_units.loc[name, 'bus'] if name in n.storage_units.index else None
+        elif component == 'Link':
+            # For links, use bus1 (output bus) - adjust if needed
+            return n.links.loc[name, 'bus1'] if name in n.links.index else n.links[n.links.carrier == row.carrier].bus1.head(1).values[0]
+        elif component == 'Load':
+            return n.loads.loc[name, 'bus'] if name in n.loads.index else None
+        elif component == 'Line':
+                return "DE0 0"
+        else:
+            return None
+
+    # Map bus to sector
+    def map_bus_to_sector(bus_name, n, bus_carrier_to_sector):
+        """Map a bus to its sector based on carrier."""
+        if pd.isna(bus_name):
+            return "Other"
+        
+        # Get bus carrier
+        if bus_name in n.buses.index:
+            bus_carrier = n.buses.loc[bus_name, 'carrier']
+        else:
+            return "Other"
+        
+        # Find matching sector
+        for sector, carriers in bus_carrier_to_sector.items():
+            if bus_carrier in carriers:
+                return sector
+        
+        return "Other"
 
     var["Total Energy System Cost|Trade|Electricity"] = (
         get_trade_cost(n, region, ["AC"]) + get_trade_cost(n, region, ["DC"])
     ) / 1e9
+
     var["Total Energy System Cost|Trade|Efuels"] = (
         get_trade_cost(n, region, ["renewable oil", "renewable gas", "methanol"]) / 1e9
     )
+
+    var["Total Energy System Cost|Trade|Efuels|Renewable Oil"] = (
+        get_trade_cost(n, region, ["renewable oil"]) / 1e9
+    )
+    var["Total Energy System Cost|Trade|Efuels|Renewable Gas"] = (
+        get_trade_cost(n, region, ["renewable gas"]) / 1e9
+    )
+    var["Total Energy System Cost|Trade|Efuels|Methanol"] = (
+        get_trade_cost(n, region, ["methanol"]) / 1e9
+    )   
+    assert abs(
+        var["Total Energy System Cost|Trade|Efuels"] - (
+            var["Total Energy System Cost|Trade|Efuels|Renewable Oil"]
+            + var["Total Energy System Cost|Trade|Efuels|Renewable Gas"]            
+            + var["Total Energy System Cost|Trade|Efuels|Methanol"]
+        )    ) < 1e-4
+    
     var["Total Energy System Cost|Trade|Hydrogen"] = (
         get_trade_cost(
             n,
@@ -4587,22 +4687,85 @@ def get_economy(n, region):
         )
         / 1e9
     )
-    var["Total Energy System Cost|Trade"] = (
-        var["Total Energy System Cost|Trade|Electricity"]
-        + var["Total Energy System Cost|Trade|Efuels"]
-        + var["Total Energy System Cost|Trade|Hydrogen"]
-    )
-    # Total Energy System Cost in billion EUR2020/yr
-    var["Total Energy System Cost|Non Trade"] = get_tsc(n, region).sum().sum() / 1e9
-
-    var["Total Energy System Cost"] = (
-        var["Total Energy System Cost|Non Trade"]
-        + var["Total Energy System Cost|Trade"]
-    )
 
     var["Total Energy System Cost|EU"] = (
         n.statistics.capex().sum() + n.statistics.opex().sum()
     ) / 1e9
+          
+    # Total Energy System Cost in billion EUR2020/yr
+    tsc_sum, tsc = get_tsc(n, region, return_full=True)
+
+    biomass_import_ind = tsc[tsc.index.str.contains("biomass transported")].index
+    var["Total Energy System Cost|Trade|Biomass"] = tsc.loc[biomass_import_ind, "opex"].sum().sum() / 1e9
+    tsc.loc[biomass_import_ind, "opex"] = 0
+
+    gas_import_ind = tsc[tsc.carrier == "gas primary"].index
+    var["Total Energy System Cost|Trade|Gas"] = tsc.loc[gas_import_ind, "opex"].sum().sum() / 1e9
+    tsc.loc[gas_import_ind, "opex"] = 0
+
+    oil_import_ind = tsc[tsc.carrier == "oil primary"].index
+    var["Total Energy System Cost|Trade|Oil"] = tsc.loc[oil_import_ind, "opex"].sum().sum() / 1e9
+    tsc.loc[oil_import_ind, "opex"] = 0
+
+    # coal imports
+    lignite_ind = n.links[(n.links.carrier=="lignite") & (n.links.bus1.str.contains("DE"))].index
+    lignite_cost = (n.links_t.p0[lignite_ind].sum(axis=1) * n.buses_t.marginal_price["EU lignite"]).sum() / 1e9
+
+    coal_ind = n.links[(n.links.carrier=="coal") & (n.links.bus1.str.contains("DE"))].index
+    coal_cost = (n.links_t.p0[coal_ind].sum(axis=1) * n.buses_t.marginal_price["EU coal"]).sum() / 1e9
+
+    var["Total Energy System Cost|Trade|Coal"] = lignite_cost + coal_cost
+
+    var["Total Energy System Cost"] = (
+        tsc_sum.sum().sum() / 1e9 
+        + var["Total Energy System Cost|Trade|Electricity"] 
+        + var["Total Energy System Cost|Trade|Efuels"]
+        + var["Total Energy System Cost|Trade|Hydrogen"]
+        + var["Total Energy System Cost|Trade|Coal"]
+    )
+
+    var["Total Energy System Cost|Trade"] = (
+        var["Total Energy System Cost|Trade|Electricity"]
+        + var["Total Energy System Cost|Trade|Efuels"]
+        + var["Total Energy System Cost|Trade|Hydrogen"]
+        + var["Total Energy System Cost|Trade|Biomass"]
+        + var["Total Energy System Cost|Trade|Gas"]
+        + var["Total Energy System Cost|Trade|Oil"]
+        + var["Total Energy System Cost|Trade|Coal"]
+    )
+
+    var["Total Energy System Cost|Trade|Fuels"] = var["Total Energy System Cost|Trade|Efuels"] + var["Total Energy System Cost|Trade|Oil"]
+
+    var["Total Energy System Cost|Non Trade"] = tsc[["capex", "opex"]].sum().sum() / 1e9
+
+    assert abs(
+        var["Total Energy System Cost"]
+        - (
+            var["Total Energy System Cost|Non Trade"]
+            + var["Total Energy System Cost|Trade"]
+        )
+    ) < 1e-6
+
+    # CAPEX & OPEX breakdown
+    df = tsc 
+    # Apply mappings
+    df['bus'] = df.apply(lambda row: get_component_bus(row, n), axis=1)
+    df['sector'] = df['bus'].apply(lambda x: map_bus_to_sector(x, n, bus_carrier_to_sector))
+
+    # Sum by sector
+    sector_costs = df.groupby('sector')[['capex', 'opex']].sum()
+
+    for sector in ["Electricity", "Heat" ,"H2", "Fuels", "Gas", "Biomass"]:
+        var["Total Energy System Cost|CAPEX|"+sector] = sector_costs.loc[sector, "capex"] / 1e9
+        var["Total Energy System Cost|OPEX|"+sector] = sector_costs.loc[sector, "opex"] / 1e9
+
+    other = [s for s in sector_costs.index if s not in ['Electricity', 'Heat' ,'H2', "Fuels", "Gas", "Biomass"]]
+    var["Total Energy System Cost|CAPEX|Other"] = sector_costs.loc[other, "capex"].sum() / 1e9
+    var["Total Energy System Cost|OPEX|Other"] = sector_costs.loc[other, "opex"].sum() / 1e9
+
+    var["Total Energy System Cost|Trade|Other"] = (
+        + var["Total Energy System Cost|Trade|Coal"]
+    )
 
     return var
 
@@ -4892,6 +5055,41 @@ def get_trade(n, region):
             round(biomass_imports / local_biomass_usage, 3)
         }"""
     )
+
+    # Efuels Trade
+    exports_efuels, imports_efuels = get_export_import(
+        n, region, ["renewable oil", "renewable gas", "methanol"]
+    )
+    var["Trade|Secondary Energy|Efuels|Volume"] = exports_efuels - imports_efuels
+
+    # MeoH Trade
+    exports_meoh, imports_meoh = get_export_import(
+        n, "DE", ["methanol"]
+    )
+    var["Trade|Secondary Energy|Efuels|Methanol|Volume"] = exports_meoh - imports_meoh
+
+    # Renewable oil Trade
+    exports_oil_renew, imports_oil_renew = get_export_import(
+        n, "DE", ["renewable oil"]
+    )
+    var["Trade|Secondary Energy|Efuels|Renewable Oil|Volume"] = (
+        exports_oil_renew - imports_oil_renew
+    )   
+
+    # Renewable Gas Trade
+    exports_gas_renew, imports_gas_renew = get_export_import(
+        n, "DE", ["renewable gas"]
+    )       
+    var["Trade|Secondary Energy|Efuels|Renewable Gas|Volume"] = (
+        exports_gas_renew - imports_gas_renew
+    )
+
+
+    assert isclose(var["Trade|Secondary Energy|Efuels|Volume"], (
+        var["Trade|Secondary Energy|Efuels|Methanol|Volume"]
+        + var["Trade|Secondary Energy|Efuels|Renewable Oil|Volume"]
+        + var["Trade|Secondary Energy|Efuels|Renewable Gas|Volume"]
+    )), "Efuels volume does not match sum of Methanol, Renewable Oil, and Renewable Gas"
 
     return var * MWh2TWh
 

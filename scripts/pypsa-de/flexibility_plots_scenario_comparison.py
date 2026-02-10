@@ -71,19 +71,24 @@ capa_groups = {
         "Pumped storage": ["PHS"],
         "Battery": ["battery discharger", "home battery discharger"],
         "Iron-air battery": ["iron-air battery discharger"],
+        "Vehicle-to-grid": ["V2G"],
     },
     "Demand-Side Flex": {
-        "Power-to-heat": [
+        "Power-to-heat (central)": [
+            "urban central air heat pump",
+            "urban central resistive heater",
+        ],
+        "Power-to-heat (decentral)": [
             "rural air heat pump",
             "rural ground heat pump",
             "rural resistive heater",
-            "urban central air heat pump",
-            "urban central resistive heater",
             "urban decentral air heat pump",
             "urban decentral resistive heater",
         ],
         "Electrolysis": ["H2 Electrolysis"],
-        "Fischer-Tropsch": ["Fischer-Tropsch"],
+        "BEV charging": ["BEV charger"],
+        "Industry DSM": ["industry DSM ramp down"],
+        # "Fischer-Tropsch": ["Fischer-Tropsch"],
     },
 }
 
@@ -894,15 +899,25 @@ def plot_opex_stacked(
     plt.close()
 
 
-def get_capacities(networks, scenarios, years):
-    """Extract and group capacities for all scenarios and years"""
+def get_capacities(networks, scenarios, years, max_usage=None):
+    """Extract and group capacities for all scenarios and years
+    
+    Parameters
+    ----------
+    max_usage : list, optional
+        List of carrier names for which to use maximum usage instead of capacity
+    """
+    if max_usage is None:
+        max_usage = []
+    
     kwargs = {"groupby": ["bus", "carrier"], "at_port": True, "nice_names": False}
-
     all_data = {}
-
+    
     for scenario in scenarios:
         for year in years:
             n = networks[scenario][year]
+            
+            # Get capacities
             caps = (
                 n.statistics.optimal_capacity(
                     bus_carrier=["AC", "low voltage"], **kwargs
@@ -912,22 +927,56 @@ def get_capacities(networks, scenarios, years):
                 .sum()
                 .drop(["AC", "DC", "electricity distribution grid"], errors="ignore")
             )
-
+            
+            # Get maximum usage for specified carriers
+            if max_usage:
+                ct = "DE"
+                buses = n.buses.index[(n.buses.index.str[:2] == ct)].drop("DE", errors="ignore")
+                balance = (
+                    n.statistics.energy_balance(
+                        aggregate_time=False,
+                        nice_names=False,
+                        groupby=["bus", "carrier", "bus_carrier"],
+                    )
+                    .loc[:, buses, :, :]
+                    .droplevel(["component", "bus"])
+                )
+                carriers = ["AC", "low voltage"]
+                mask = balance.index.get_level_values("bus_carrier").isin(carriers)
+                nb = balance[mask].groupby("carrier").sum().T
+                
+                # Replace capacities with max usage for specified carriers
+                for carrier in max_usage:
+                    if carrier in nb.columns:
+                        max_val = nb[carrier].abs().max()  # in MW, matches caps units
+                        if carrier in caps.index:
+                            caps.loc[carrier] = max_val
+            
             # Group by technology
             grouped = {}
             for group_name, techs in capa_groups.items():
                 grouped[group_name] = {}
-                for tech_name, carriers in techs.items():
-                    val = caps[caps.index.isin(carriers)].sum()
+                for tech_name, carrier_list in techs.items():
+                    val = caps[caps.index.isin(carrier_list)].sum()
                     grouped[group_name][tech_name] = abs(val) / 1000  # Convert to GW
-
+            
             all_data[(scenario, year)] = grouped
-
+    
     return all_data
 
 
-def plot_capacity_comparison(data, scenarios, years, tech_colors):
-    """Create stacked bar chart comparing scenarios across years"""
+
+def plot_capacity_comparison(data, scenarios, years, tech_colors, max_usage=None):
+    """Create stacked bar chart comparing scenarios across years
+    
+    Parameters
+    ----------
+    max_usage : list, optional
+        List of technology names where max usage is plotted instead of capacity
+    """
+    if max_usage is None:
+        max_usage = []
+    
     fig, axes = plt.subplots(
         len(years),
         4,
@@ -936,77 +985,80 @@ def plot_capacity_comparison(data, scenarios, years, tech_colors):
     )
     if len(years) == 1:
         axes = axes.reshape(1, -1)
-
+    
     group_names = list(capa_groups.keys())
     x = np.arange(len(scenarios))
     width = 0.6
-
+    
     for year_idx, year in enumerate(years):
         for group_idx, group_name in enumerate(group_names):
             ax = axes[year_idx, group_idx]
-
             tech_names = list(capa_groups[group_name].keys())
             bottoms = np.zeros(len(scenarios))
-
+            
             for tech_name in tech_names:
                 values = [
                     data[(sc, year)][group_name].get(tech_name, 0) for sc in scenarios
                 ]
-
                 color = tech_colors.get(tech_name, "#CCCCCC")
-                hatch = "///" if "CHP" in tech_name else None
-
+                hatch = None
+                if "CHP" in tech_name:
+                    hatch = "//"
+                elif "decentral" in tech_name:
+                    hatch = "\\\\"
+                
+                # Add asterisk to label if it's in max_usage list
+                label = tech_name + "*" if tech_name in max_usage else tech_name
+                
                 bars = ax.bar(
                     x,
                     values,
                     width,
                     bottom=bottoms,
                     color=color,
-                    label=tech_name,
+                    label=label,
                     hatch=hatch,
                     edgecolor="white" if hatch else None,
                     linewidth=0.5,
                 )
-
+                
                 # Add value labels
                 for i, (bar, val) in enumerate(zip(bars, values)):
                     if val > 1:
                         ax.text(
                             bar.get_x() + bar.get_width() / 2,
                             bottoms[i] + val / 2,
-                            f"{int(val)}",
+                            f"{round(val)}",
                             ha="center",
                             va="center",
                             fontsize=9,
                             color="white",
                             weight="bold",
                         )
-
                 bottoms += values
-
+            
             # Add total on top
             for i, total in enumerate(bottoms):
                 if total > 0:
                     ax.text(
                         i,
                         total + max(bottoms) * 0.02,
-                        f"{int(total)}",
+                        f"{round(total)}",
                         ha="center",
                         va="bottom",
                         fontsize=10,
                         weight="bold",
                     )
-
+            
             # Formatting
             ax.set_xticks(x)
             ax.set_xticklabels([scenario_abbrev.get(sc, sc[:4]) for sc in scenarios])
             ax.set_ylabel("Installed capacity (GW)", fontsize=10)
             ax.set_ylim(0, max(bottoms) * 1.15)
             ax.grid(axis="y", alpha=0.3)
-
+            
             if year_idx == 0:
                 ax.set_title(group_name, fontsize=12, weight="bold")
-
             if group_idx == len(group_names) - 1:
                 ax.text(
                     1.05,
@@ -1018,12 +1070,12 @@ def plot_capacity_comparison(data, scenarios, years, tech_colors):
                     fontsize=14,
                     weight="bold",
                 )
-
             ax.set_xlabel("Scenario", fontsize=10)
-
+            
             # Add legend below (only for bottom row)
             if year_idx == len(years) - 1:
                 handles, labels = ax.get_legend_handles_labels()
+                
                 ax.legend(
                     handles,
                     labels,
@@ -1033,7 +1085,19 @@ def plot_capacity_comparison(data, scenarios, years, tech_colors):
                     fontsize=9,
                     frameon=False,
                 )
-
+                
+                # Add asterisk note only in the bottom-right subplot
+                if group_idx == len(group_names) - 1 and max_usage:
+                    ax.text(
+                        0.1,
+                        -0.65,
+                        "* Maximum capacity usage instead of installed capacity",
+                        transform=ax.transAxes,
+                        ha="center",
+                        fontsize=10,
+                        style="italic",
+                    )
+    
     plt.tight_layout()
     return fig
 
@@ -1232,8 +1296,14 @@ if __name__ == "__main__":
 
     # Capacity comparison
     logger.info("Plotting capacity comparison for DE")
-    data = get_capacities(networks, scenarios, planning_horizons)
-    fig = plot_capacity_comparison(data, scenarios, planning_horizons, tech_colors)
+    data = get_capacities(networks, scenarios, planning_horizons, max_usage=["BEV charger", "V2G"])
+    fig = plot_capacity_comparison(
+        data, 
+        scenarios, 
+        planning_horizons, 
+        tech_colors,
+        max_usage=["Vehicle-to-grid", "BEV charging"]
+    )
     # fig.savefig("capacity_comparison.pdf", dpi=300, bbox_inches='tight')
     fig.savefig(output_dir / "capacity_comparison.png", dpi=300, bbox_inches="tight")
 

@@ -598,25 +598,38 @@ def plot_price_duration_curves(
         plt.show()
 
 
-def plot_trade_variables(variables, scenarios, years, tech_colors, output_dir=None):
+def bar_plot_variables(variables, 
+                         scenarios, 
+                         years,
+                         tech_colors, 
+                         plot_vars=None,
+                         sign_flip_vars=["Electricity", "Hydrogen", "eFuels"],
+                         title=None, 
+                         ylabel="TWh/a",
+                         output_dir=None):
     """Plot multiple trade variables across scenarios for each year in one plot."""
     
-    # Define the variables to plot
-    trade_vars = {
-        "Electricity": "Trade|Secondary Energy|Electricity|Volume",
-        "Hydrogen": "Trade|Secondary Energy|Hydrogen|Volume", 
-        "Biomass": "Trade|Primary Energy|Biomass|Net Imports"
-    }
+    
+    # Define the default variables to plot
+    if plot_vars is None:
+        plot_vars = {
+            "Electricity": "Trade|Secondary Energy|Electricity|Volume",
+            "Gas": "Primary Energy|Gas",
+            "Oil": "Primary Energy|Oil",
+            "Hydrogen": "Trade|Secondary Energy|Hydrogen|Volume", 
+            "eFuels": "Trade|Secondary Energy|Efuels|Volume",
+            "Biomass": "Trade|Primary Energy|Biomass|Net Imports",
+        }
     
     for year in years:
-        fig, ax = plt.subplots(figsize=(8, 5))
+        fig, ax = plt.subplots(figsize=(10, 5))
         
         # Prepare data
-        data = {var_name: [] for var_name in trade_vars.keys()}
+        data = {var_name: [] for var_name in plot_vars.keys()}
         
         for scenario in scenarios:
             df = variables[scenario]
-            for var_name, var_path in trade_vars.items():
+            for var_name, var_path in plot_vars.items():
                 try:
                     # Extract scalar value properly
                     value = df.loc[var_path, year]
@@ -625,31 +638,33 @@ def plot_trade_variables(variables, scenarios, years, tech_colors, output_dir=No
                         value = value.values[0]
                     # Convert to float to ensure it's a scalar
                     value = float(value)
-                    
                     # Multiply by -1 for Electricity and Hydrogen
-                    if var_name in ["Electricity", "Hydrogen"]:
+                    if var_name in sign_flip_vars:
                         value = value * -1
-                        
                 except (KeyError, IndexError):
                     value = 0.0
+                
                 data[var_name].append(value)
         
         # Set up bar positions
         x = np.arange(len(scenarios))
-        width = 0.25  # Width of each bar
-        multiplier = 0
+        n_vars = len(plot_vars)
+        width = 0.15  # Width of each bar
+        
+        # Calculate offset to center the group of bars
+        total_width = width * n_vars
+        start_offset = -total_width / 2 + width / 2
         
         # Plot bars for each variable
-        for var_name in trade_vars.keys():
-            offset = width * multiplier
+        for i, var_name in enumerate(plot_vars.keys()):
+            offset = start_offset + width * i
             color = tech_colors.get(var_name if var_name != "Hydrogen" else "H2", "gray")
-            
             bars = ax.bar(x + offset, data[var_name], width, 
-                         label=var_name,
-                         color=color,
-                         edgecolor='black', 
-                         linewidth=1.2,
-                         alpha=0.85)
+                          label=var_name,
+                          color=color,
+                          edgecolor='black', 
+                          linewidth=1.2,
+                          alpha=0.85)
             
             # Add value labels on bars
             for bar in bars:
@@ -661,27 +676,24 @@ def plot_trade_variables(variables, scenarios, years, tech_colors, output_dir=No
                     else:
                         va = 'top'
                         y_pos = height
-                    
                     ax.text(bar.get_x() + bar.get_width() / 2., y_pos,
                            f'{height:.1f}',
                            ha='center', va=va, fontsize=8, fontweight='bold')
-            
-            multiplier += 1
         
         # Customize plot
-        ax.set_xticks(x + width)
+        ax.set_xticks(x)
         ax.set_xticklabels(scenarios, fontsize=11, fontweight='bold')
-        ax.set_ylabel("TWh/a", fontsize=12)
-        # ax.set_title(f"Trade Volume - {year}", fontsize=13, fontweight='bold')
-        
+        ax.set_ylabel(ylabel, fontsize=12)
         ax.legend(loc='best', fontsize=10, framealpha=0.9)
         ax.grid(axis='y', alpha=0.3, linestyle=':', linewidth=1)
         ax.axhline(y=0, color='black', linewidth=1.5)
         
-        plt.tight_layout()
+        if title:
+            ax.set_title(title, fontsize=13, fontweight='bold')
         
+        plt.tight_layout()
         if output_dir:
-            plt.savefig(output_dir / f"trade_variables_{year}.png", bbox_inches="tight", dpi=300)
+            plt.savefig(output_dir, bbox_inches="tight", dpi=300)
 
 
 def plot_curtailment(networks, scenarios, year, tech_colors, output_dir=None):
@@ -1051,6 +1063,39 @@ if __name__ == "__main__":
                 plt.close(fig)
                 continue
 
+    # CAPACITIES TABLES
+    carriers_sets = [["AC", "low voltage"],
+                    ["urban central heat", "rural heat", "urban decentral heat"],
+                    ["H2"],
+                    ["co2 stored"],
+                    ["oil"],
+                    ["renewable oil"],
+                    ["gas"],
+                    ["renewables gas"],
+                    ["solid biomass"],
+                    ]
+    
+    for year in planning_horizons:
+        for bc in carriers_sets:
+            capa = {}
+            for scenario in scenarios:
+                stats = (
+                    networks[scenario][year]
+                    .statistics.optimal_capacity(bus_carrier=bc, **kwargs)
+                    .filter(like="DE")
+                )
+                if stats.empty:
+                    capa[scenario] = pd.Series(dtype=float)
+                else:
+                    capa[scenario] = stats.groupby(["carrier"]).sum().div(1e3)  # GW
+            
+            capa_df = pd.concat([capa[scenario] for scenario in scenarios], axis=1)
+            capa_df.columns = scenarios
+            
+            if not capa_df.empty:
+                df = round(capa_df[capa_df.gt(1).any(axis=1)], 2)
+                if not df.empty:
+                    df_to_png(df, f"{output_dir}/capacity_{'-'.join(bc)}_{'-'.join(scenarios)}_{year}.png")
 
     ### GENERATION & CONSUMPTION ###
 
@@ -1397,11 +1442,70 @@ if __name__ == "__main__":
 
     ### TRADE ###
 
-    plot_trade_variables(variables, 
-                         scenarios, 
-                         planning_horizons,
-                         sector_colors,
-                         output_dir=output_dir)
+    plot_vars = {
+        "Electricity": "Trade|Secondary Energy|Electricity|Volume",
+        "Gas": "Primary Energy|Gas",
+        "Oil": "Primary Energy|Oil",
+        "Hydrogen": "Trade|Secondary Energy|Hydrogen|Volume", 
+        "eFuels": "Trade|Secondary Energy|Efuels|Volume",
+        "Biomass": "Trade|Primary Energy|Biomass|Net Imports",
+    }
+
+    bar_plot_variables(variables, 
+                        scenarios = scenarios, 
+                        years = planning_horizons,
+                        tech_colors=dict(sector_colors, **tech_colors),
+                        plot_vars=plot_vars,
+                        sign_flip_vars=["Oil", "Gas", "Biomass"],
+                        output_dir=output_dir / f"trade_volume_{year}.png",)
+    
+    plot_vars = {
+        "eFuels": "Trade|Secondary Energy|Efuels|Volume",
+        "Renewable Gas": "Trade|Secondary Energy|Efuels|Renewable Gas|Volume",
+        "Renewable Oil": "Trade|Secondary Energy|Efuels|Renewable Oil|Volume",
+        "Methanol": "Trade|Secondary Energy|Efuels|Methanol|Volume",
+    }
+
+    bar_plot_variables(variables, 
+                        scenarios = scenarios, 
+                        years = planning_horizons,
+                        tech_colors=dict(sector_colors, **tech_colors),
+                        plot_vars=plot_vars,
+                        sign_flip_vars=["Oil"],
+                        output_dir=output_dir / f"trade_volume_efuels_{year}.png")
+    
+    plot_vars = {
+        "Electricity": "Total Energy System Cost|Trade|Electricity",
+        "Gas": "Total Energy System Cost|Trade|Gas",
+        "Oil": "Total Energy System Cost|Trade|Oil",
+        "Hydrogen": "Total Energy System Cost|Trade|Hydrogen", 
+        "eFuels": "Total Energy System Cost|Trade|Efuels",
+        "Biomass": "Total Energy System Cost|Trade|Biomass",
+    }
+
+    bar_plot_variables(variables, 
+                        scenarios = scenarios, 
+                        years = planning_horizons,
+                        tech_colors=dict(sector_colors, **tech_colors),
+                        plot_vars=plot_vars,
+                        sign_flip_vars=[],
+                        output_dir=output_dir / f"trade_cost_{year}.png")
+    
+
+    plot_vars = {
+        "eFuels": "Total Energy System Cost|Trade|Efuels",
+        "Renewable Gas": "Total Energy System Cost|Trade|Efuels|Renewable Gas",
+        "Renewable Oil": "Total Energy System Cost|Trade|Efuels|Renewable Oil",
+        "Methanol": "Total Energy System Cost|Trade|Efuels|Methanol",
+    }
+
+    bar_plot_variables(variables, 
+                        scenarios = scenarios, 
+                        years = planning_horizons,
+                        tech_colors=dict(sector_colors, **tech_colors),
+                        plot_vars=plot_vars,
+                        sign_flip_vars=[],
+                        output_dir=output_dir / f"trade_cost_efuels{year}.png")
 
     ### CURTAILMENT ###
 
