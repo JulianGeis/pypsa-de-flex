@@ -693,7 +693,7 @@ def bar_plot_variables(variables,
         
         plt.tight_layout()
         if output_dir:
-            plt.savefig(output_dir, bbox_inches="tight", dpi=300)
+            plt.savefig(output_dir + f"{year}.png", bbox_inches="tight", dpi=300)
 
 
 def plot_curtailment(networks, scenarios, year, tech_colors, output_dir=None):
@@ -1457,7 +1457,7 @@ if __name__ == "__main__":
                         tech_colors=dict(sector_colors, **tech_colors),
                         plot_vars=plot_vars,
                         sign_flip_vars=["Oil", "Gas", "Biomass"],
-                        output_dir=output_dir / f"trade_volume_{year}.png",)
+                        output_dir=output_dir / "trade_volume")
     
     plot_vars = {
         "eFuels": "Trade|Secondary Energy|Efuels|Volume",
@@ -1472,7 +1472,7 @@ if __name__ == "__main__":
                         tech_colors=dict(sector_colors, **tech_colors),
                         plot_vars=plot_vars,
                         sign_flip_vars=["Oil"],
-                        output_dir=output_dir / f"trade_volume_efuels_{year}.png")
+                        output_dir=output_dir / "trade_volume_efuels")
     
     plot_vars = {
         "Electricity": "Total Energy System Cost|Trade|Electricity",
@@ -1489,7 +1489,7 @@ if __name__ == "__main__":
                         tech_colors=dict(sector_colors, **tech_colors),
                         plot_vars=plot_vars,
                         sign_flip_vars=[],
-                        output_dir=output_dir / f"trade_cost_{year}.png")
+                        output_dir=output_dir / "trade_cost")
     
 
     plot_vars = {
@@ -1505,7 +1505,7 @@ if __name__ == "__main__":
                         tech_colors=dict(sector_colors, **tech_colors),
                         plot_vars=plot_vars,
                         sign_flip_vars=[],
-                        output_dir=output_dir / f"trade_cost_efuels{year}.png")
+                        output_dir=output_dir / "trade_cost_efuels")
 
     ### CURTAILMENT ###
 

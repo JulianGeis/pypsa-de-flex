@@ -497,8 +497,8 @@ industry:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving
 solving:
-  runtime: 12h
-  mem_mb: 70000 #30000 is OK for 22 nodes, 365H; 140000 for 22 nodes 3H; 400000 for 44 nodes 3H
+  runtime: 12h # 10h for 27cl 3H; 20h for 27cl 1H and 49cl 3H; 30h for 49cl 1H
+  mem_mb: 70000 # 20 GB for 27cl 3H; 30 GB for 27cl 1H / 49cl 3H; 45 GB for 49cl 1H (3 networks take 15h for 27cl 1H and 49cl 3H / 48h for 49cl 1H)
   mem_logging_frequency: 5 # in seconds
   options:
     assign_all_duals: true
