@@ -243,10 +243,11 @@ KN2045_NFhoch:
 # main scenarios #
 
 LowFlex:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.9 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 50 % of Base scenario for H2 Store
+# transmission limit v1.5 
+# BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and 0.3 for electrolysis
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
 
   electricity:
     transmission_limit: v1.5
@@ -255,34 +256,36 @@ LowFlex:
     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
-    min_part_load_fischer_tropsch: 0.9
-    min_part_load_methanolisation: 0.9
-    min_part_load_methanation: 0.9
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
 
   must_run:
     2035:
       all:
-        H2 Electrolysis: 0.9
+        H2 Electrolysis: 0.3
     2045:
       all:
-        H2 Electrolysis: 0.9
+        H2 Electrolysis: 0.3
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     where: whole_system
     when: [2035, 2045]
     component_limits:
       Link:
-        battery discharger: 0.5
-        home battery discharger: 0.5
-        urban central water pits discharger: 0.5
-        urban central water tanks discharger: 0.5
-        urban decentral water pits discharger: 0.5
-        urban decentral water tanks discharger: 0.5
-        rural water tanks discharger: 0.5
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks discharger: 0.75
       Store:
-        H2 Store: 0.5
+        H2 Store: 0.75
+
 
 LowBattery:
+# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home)
 
   electricity:
     transmission_limit: v1.5
@@ -312,6 +315,9 @@ Base:
 
 
 HighFlex:
+# high BEV DSM an V2G
+# industry DSM
+# dynamic line rating
 
   electricity:
     transmission_limit: v1.5
@@ -353,419 +359,7 @@ HighFlex:
 # solving for 49cl 1H is not guranteed
 
 # LowFlex variations
-
-LowFlex75_pminpu_FT_electrolysis0.9:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.9 in all regions for FT and electrolysis
-# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 75 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 0.9
-    # min_part_load_methanolisation: 0.9
-    # min_part_load_methanation: 0.9
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.9
-    2045:
-      all:
-        H2 Electrolysis: 0.9
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-LowFlex75_pminpu_not_electrolysis0.9:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.9 in all regions for FT, methanolisation and methanation
-# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 75 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 0.9
-    min_part_load_methanolisation: 0.9
-    min_part_load_methanation: 0.9
-
-  # must_run:
-  #   2035:
-  #     all:
-  #       H2 Electrolysis: 0.9
-  #   2045:
-  #     all:
-  #       H2 Electrolysis: 0.9
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-LowFlex75_pminpu_only_electrolysis0.9:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.9 in all regions for electrolysis
-# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 75 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    # min_part_load_fischer_tropsch: 1
-    # min_part_load_methanolisation: 1
-    # min_part_load_methanation: 1
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.9
-    2045:
-      all:
-        H2 Electrolysis: 0.9
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-LowFlex75_pminpu_0.9:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.9 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 75 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 0.9
-    min_part_load_methanolisation: 0.9
-    min_part_load_methanation: 0.9
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.9
-    2045:
-      all:
-        H2 Electrolysis: 0.9
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-
-LowFlex75_pminpu_0.8:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.8 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 75 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 0.8
-    min_part_load_methanolisation: 0.8
-    min_part_load_methanation: 0.8
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.8
-    2045:
-      all:
-        H2 Electrolysis: 0.8
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-LowFlex75_CapRestrictDEWide: 
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 75 % of Base scenario for battery discharger and home battery discharger
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 1
-    2045:
-      all:
-        H2 Electrolysis: 1
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: outside_de
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-    solving:
-      constraints:
-        limits_capacity_max:
-          Link: # in GW
-            urban central water pits discharger:    # Base capa (49cl/1H): 2045 (60.78 GW)
-              DE:
-                # 2025: 6
-                2035: 24
-                2045: 30
-            urban central water tanks discharger:   # Base capa (49cl/1H): 2045 (0 GW)
-              DE:
-                # 2025: 0
-                2035: 0
-                2045: 0
-            urban decentral water pits discharger:   # Base capa (49cl/1H): 2045 (0 GW)
-              DE:
-                # 2025: 0
-                2035: 0
-                2045: 0
-            urban decentral water tanks discharger:   # Base capa (49cl/1H): 2045 (38.78 GW)
-              DE:
-                # 2025: 5
-                2035: 20
-                2045: 20
-            rural water tanks discharger:             # Base capa (49cl/1H): 2045 (43.35 GW)
-              DE:
-                # 2025: 10
-                2035: 22
-                2045: 22
-            battery discharger:                       # Base capa (49cl/1H): 2045 (40.04 GW)
-              DE:
-                # 2025: 0
-                2035: 15
-                2045: 20
-            home battery discharger:                  # Base capa (49cl/1H): 2045 (7.83 GW)
-              DE:
-                # 2025: 0
-                2035: 3.5
-                2045: 4
-          Store: # in GWh 
-            H2 Store:                                 # Base capa (49cl/1H): 2045 (22230 GWh = 22.23 TWh)
-              DE:
-                # 2025: 0
-                2035: 3500
-                2045: 10000
-
-LowFlex75_excludeHeat_H2Store: 
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 75 % of Base scenario for battery discharger and home battery discharger
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 1
-    2045:
-      all:
-        H2 Electrolysis: 1
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-
-LowFlex75_excludeHeat: 
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 75 % of Base scenario for battery discharger and home battery discharger
-# Store capacity restricted to 75 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 1
-    2045:
-      all:
-        H2 Electrolysis: 1
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        # urban central water pits discharger: 0.75
-        # urban central water tanks discharger: 0.75
-        # urban decentral water pits discharger: 0.75
-        # urban decentral water tanks discharger: 0.75
-        # rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-LowFlex75_exclude_pminpu: 
-# transmission limit v1.5 and BEV DSM restricted
-# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 75 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-LowFlex75_exclude_pminpu_onlyStores: 
-# transmission limit v1.5 and BEV DSM restricted
-# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 75 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Store:
-        battery: 0.75
-        home battery: 0.75
-        urban central water pits: 0.75
-        urban central water tanks: 0.75
-        urban decentral water pits: 0.75
-        urban decentral water tanks: 0.75
-        rural water tanks: 0.75
-        H2 Store: 0.75
+# all scenarios with p_min_pu > 0.5 for electrolysis are considered too strict
 
 LowFlex75:
 # transmission limit v1.5 and BEV DSM restricted
@@ -807,7 +401,324 @@ LowFlex75:
       Store:
         H2 Store: 0.75
 
-LowFlex50:
+
+LowFlex75_Electrolysis_pminpu_0.5_Other_pminpu_1:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and 0.5 for electrolysis
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 0.5
+    2045:
+      all:
+        H2 Electrolysis: 0.5
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks discharger: 0.75
+      Store:
+        H2 Store: 0.75
+
+
+LowFlex75_Electrolysis_pminpu_0.3_Other_pminpu_1:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and 0.3 for electrolysis
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 0.3
+    2045:
+      all:
+        H2 Electrolysis: 0.3
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks discharger: 0.75
+      Store:
+        H2 Store: 0.75
+
+
+LowFlex75_excludeBattery_Electrolysis_pminpu_0.5_Other_pminpu_1:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and 0.5 for electrolysis
+# Links capacity restricted to 75 % of Base scenario for water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 0.5
+    2045:
+      all:
+        H2 Electrolysis: 0.5
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks discharger: 0.75
+      Store:
+        H2 Store: 0.75
+
+
+LowFlex75_excludeBattery_Electrolysis_pminpu_0.3_Other_pminpu_1:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and 0.3 for electrolysis
+# Links capacity restricted to 75 % of Base scenario for water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 0.3
+    2045:
+      all:
+        H2 Electrolysis: 0.3
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks discharger: 0.75
+      Store:
+        H2 Store: 0.75
+
+
+LowFlex75_excludeHeatStorage: 
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 75 % of Base scenario for battery discharger and home battery discharger
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 1
+    2045:
+      all:
+        H2 Electrolysis: 1
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        # urban central water pits discharger: 0.75
+        # urban central water tanks discharger: 0.75
+        # urban decentral water pits discharger: 0.75
+        # urban decentral water tanks discharger: 0.75
+        # rural water tanks discharger: 0.75
+      Store:
+        H2 Store: 0.75
+
+
+LowFlex75_exclude_pminpu: 
+# transmission limit v1.5 and BEV DSM restricted
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks discharger: 0.75
+      Store:
+        H2 Store: 0.75
+
+
+# LowFlex75_CapRestrictDEWide: 
+# # transmission limit v1.5 and BEV DSM restricted
+# # p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
+# # Links capacity restricted to 75 % of Base scenario for battery discharger and home battery discharger
+
+#   electricity:
+#     transmission_limit: v1.5
+
+#   sector:
+#     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+#     bev_dsm_availability: 0.2
+#     v2g: false
+#     min_part_load_fischer_tropsch: 1
+#     min_part_load_methanolisation: 1
+#     min_part_load_methanation: 1
+
+#   must_run:
+#     2035:
+#       all:
+#         H2 Electrolysis: 1
+#     2045:
+#       all:
+#         H2 Electrolysis: 1
+
+#   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+#     where: outside_de
+#     when: [2035, 2045]
+#     component_limits:
+#       Link:
+#         battery discharger: 0.75
+#         home battery discharger: 0.75
+#         urban central water pits discharger: 0.75
+#         urban central water tanks discharger: 0.75
+#         urban decentral water pits discharger: 0.75
+#         urban decentral water tanks discharger: 0.75
+#         rural water tanks discharger: 0.75
+#       Store:
+#         H2 Store: 0.75
+
+#     solving:
+#       constraints:
+#         limits_capacity_max:
+#           Link: # in GW
+#             urban central water pits discharger:    # Base capa (49cl/1H): 2045 (60.78 GW)
+#               DE:
+#                 # 2025: 6
+#                 2035: 24
+#                 2045: 30
+#             urban central water tanks discharger:   # Base capa (49cl/1H): 2045 (0 GW)
+#               DE:
+#                 # 2025: 0
+#                 2035: 0
+#                 2045: 0
+#             urban decentral water pits discharger:   # Base capa (49cl/1H): 2045 (0 GW)
+#               DE:
+#                 # 2025: 0
+#                 2035: 0
+#                 2045: 0
+#             urban decentral water tanks discharger:   # Base capa (49cl/1H): 2045 (38.78 GW)
+#               DE:
+#                 # 2025: 5
+#                 2035: 20
+#                 2045: 20
+#             rural water tanks discharger:             # Base capa (49cl/1H): 2045 (43.35 GW)
+#               DE:
+#                 # 2025: 10
+#                 2035: 22
+#                 2045: 22
+#             battery discharger:                       # Base capa (49cl/1H): 2045 (40.04 GW)
+#               DE:
+#                 # 2025: 0
+#                 2035: 15
+#                 2045: 20
+#             home battery discharger:                  # Base capa (49cl/1H): 2045 (7.83 GW)
+#               DE:
+#                 # 2025: 0
+#                 2035: 3.5
+#                 2045: 4
+#           Store: # in GWh 
+#             H2 Store:                                 # Base capa (49cl/1H): 2045 (22230 GWh = 22.23 TWh)
+#               DE:
+#                 # 2025: 0
+#                 2035: 3500
+#                 2045: 10000
+
+
+LowFlex50: 
 # transmission limit v1.5 and BEV DSM restricted
 # p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
 # Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
@@ -847,45 +758,6 @@ LowFlex50:
       Store:
         H2 Store: 0.5
 
-LowFlex50_pminpu0.9: # set as LowFlex scenarios for 49cl 1H
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.9 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 50 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 0.9
-    min_part_load_methanolisation: 0.9
-    min_part_load_methanation: 0.9
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.9
-    2045:
-      all:
-        H2 Electrolysis: 0.9
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.5
-        home battery discharger: 0.5
-        urban central water pits discharger: 0.5
-        urban central water tanks discharger: 0.5
-        urban decentral water pits discharger: 0.5
-        urban decentral water tanks discharger: 0.5
-        rural water tanks discharger: 0.5
-      Store:
-        H2 Store: 0.5
 
 LowFlex50_pminpu0.8:
 # transmission limit v1.5 and BEV DSM restricted
@@ -927,7 +799,12 @@ LowFlex50_pminpu0.8:
       Store:
         H2 Store: 0.5
 
-LowFlex50HeatDecentral25:
+
+LowFlex50_exclude_pminpu:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 0.8 in all regions for FT, methanolisation, methanation and electrolysis
+# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 50 % of Base scenario for H2 Store
 
   electricity:
     transmission_limit: v1.5
@@ -936,17 +813,6 @@ LowFlex50HeatDecentral25:
     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 1
-    2045:
-      all:
-        H2 Electrolysis: 1
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     where: whole_system
@@ -957,14 +823,18 @@ LowFlex50HeatDecentral25:
         home battery discharger: 0.5
         urban central water pits discharger: 0.5
         urban central water tanks discharger: 0.5
-        urban decentral water pits discharger: 0.25
-        urban decentral water tanks discharger: 0.25
-        rural water tanks discharger: 0.25
+        urban decentral water pits discharger: 0.5
+        urban decentral water tanks discharger: 0.5
+        rural water tanks discharger: 0.5
       Store:
         H2 Store: 0.5
 
 
-LowFlexHeatModelMargin0.1: # used as LowFlex for most runs except the 49cl 1H
+LowFlex50_Electrolysis_pminpu_0.5_Other_pminpu_1:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and 0.5 for electrolysis
+# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 50 % of Base scenario for H2 Store
 
   electricity:
     transmission_limit: v1.5
@@ -973,22 +843,17 @@ LowFlexHeatModelMargin0.1: # used as LowFlex for most runs except the 49cl 1H
     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
-    force_pth_profiles_decentral_rural_p_min_pu: false
     min_part_load_fischer_tropsch: 1
     min_part_load_methanolisation: 1
     min_part_load_methanation: 1
 
-  solving:
-    force_pth_profiles_decentral_rural: true
-    force_pth_profiles_decentral_rural_margin: 0.1
-
   must_run:
     2035:
       all:
-        H2 Electrolysis: 1
+        H2 Electrolysis: 0.5
     2045:
       all:
-        H2 Electrolysis: 1
+        H2 Electrolysis: 0.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     where: whole_system
@@ -997,15 +862,20 @@ LowFlexHeatModelMargin0.1: # used as LowFlex for most runs except the 49cl 1H
       Link:
         battery discharger: 0.5
         home battery discharger: 0.5
+        urban central water pits discharger: 0.5
+        urban central water tanks discharger: 0.5
+        urban decentral water pits discharger: 0.5
+        urban decentral water tanks discharger: 0.5
+        rural water tanks discharger: 0.5
       Store:
         H2 Store: 0.5
-        rural water tanks: 0.5
-        urban decentral water tanks: 0.5
-        urban decentral water pits: 0.5
-        urban central water tanks: 0.5
-        urban central water pits: 0.5
 
-LowFlexHeatModelMargin0.1pminpu0.9: 
+
+LowFlex50_Electrolysis_pminpu_0.3_Other_pminpu_1:
+# transmission limit v1.5 and BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and 0.3 for electrolysis
+# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 50 % of Base scenario for H2 Store
 
   electricity:
     transmission_limit: v1.5
@@ -1014,22 +884,17 @@ LowFlexHeatModelMargin0.1pminpu0.9:
     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
-    force_pth_profiles_decentral_rural_p_min_pu: false
-    min_part_load_fischer_tropsch: 0.9
-    min_part_load_methanolisation: 0.9
-    min_part_load_methanation: 0.9
-
-  solving:
-    force_pth_profiles_decentral_rural: true
-    force_pth_profiles_decentral_rural_margin: 0.1
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
 
   must_run:
     2035:
       all:
-        H2 Electrolysis: 0.9
+        H2 Electrolysis: 0.3
     2045:
       all:
-        H2 Electrolysis: 0.9
+        H2 Electrolysis: 0.3
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     where: whole_system
@@ -1038,99 +903,57 @@ LowFlexHeatModelMargin0.1pminpu0.9:
       Link:
         battery discharger: 0.5
         home battery discharger: 0.5
+        urban central water pits discharger: 0.5
+        urban central water tanks discharger: 0.5
+        urban decentral water pits discharger: 0.5
+        urban decentral water tanks discharger: 0.5
+        rural water tanks discharger: 0.5
       Store:
         H2 Store: 0.5
-        rural water tanks: 0.5
-        urban decentral water tanks: 0.5
-        urban decentral water pits: 0.5
-        urban central water tanks: 0.5
-        urban central water pits: 0.5
+
+# LowFlexHeatModelMargin0.1: # used as LowFlex for most runs except the 49cl 1H
+
+#   electricity:
+#     transmission_limit: v1.5
+
+#   sector:
+#     bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+#     bev_dsm_availability: 0.2
+#     v2g: false
+#     force_pth_profiles_decentral_rural_p_min_pu: false
+#     min_part_load_fischer_tropsch: 1
+#     min_part_load_methanolisation: 1
+#     min_part_load_methanation: 1
+
+#   solving:
+#     force_pth_profiles_decentral_rural: true
+#     force_pth_profiles_decentral_rural_margin: 0.1
+
+#   must_run:
+#     2035:
+#       all:
+#         H2 Electrolysis: 1
+#     2045:
+#       all:
+#         H2 Electrolysis: 1
+
+#   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+#     where: whole_system
+#     when: [2035, 2045]
+#     component_limits:
+#       Link:
+#         battery discharger: 0.5
+#         home battery discharger: 0.5
+#       Store:
+#         H2 Store: 0.5
+#         rural water tanks: 0.5
+#         urban decentral water tanks: 0.5
+#         urban decentral water pits: 0.5
+#         urban central water tanks: 0.5
+#         urban central water pits: 0.5
 
 
-LowFlexHeatModelMargin0.2:
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    force_pth_profiles_decentral_rural_p_min_pu: false
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  solving:
-    force_pth_profiles_decentral_rural: true
-    force_pth_profiles_decentral_rural_margin: 0.2
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 1
-    2045:
-      all:
-        H2 Electrolysis: 1
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.50
-        home battery discharger: 0.50
-      Store:
-        H2 Store: 0.50
-        rural water tanks: 0.5
-        urban decentral water tanks: 0.5
-        urban decentral water pits: 0.5
-        urban central water tanks: 0.5
-        urban central water pits: 0.5
-
-
-LowFlexHeatModelMargin0.3:
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    force_pth_profiles_decentral_rural_p_min_pu: false
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  solving:
-    force_pth_profiles_decentral_rural: true
-    force_pth_profiles_decentral_rural_margin: 0.3
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 1
-    2045:
-      all:
-        H2 Electrolysis: 1
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.50
-        home battery discharger: 0.50
-      Store:
-        H2 Store: 0.50
-        rural water tanks: 0.5
-        urban decentral water tanks: 0.5
-        urban decentral water pits: 0.5
-        urban central water tanks: 0.5
-        urban central water pits: 0.5
-
-LowFlexHeatPMINPU50:
+LowFlex50HeatPMINPU:
 
   electricity:
     transmission_limit: v1.5
@@ -1172,48 +995,7 @@ LowFlexHeatPMINPU50:
         urban central water pits: 0.50
 
 
-LowFlexHeatPMINPU25:
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    force_pth_profiles_decentral_rural_p_min_pu: true
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  solving:
-    force_pth_profiles_decentral_rural: false
-    force_pth_profiles_decentral_rural_margin: 0
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 1
-    2045:
-      all:
-        H2 Electrolysis: 1
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.50
-        home battery discharger: 0.50
-      Store:
-        H2 Store: 0.50
-        rural water tanks: 0.25
-        urban decentral water tanks: 0.25
-        urban decentral water pits: 0.25
-        urban central water tanks: 0.25
-        urban central water pits: 0.25
-
-LowFlexHeatMinStore:
+LowFlex50HeatMinStore:
 
   electricity:
     transmission_limit: v1.5
@@ -1254,6 +1036,7 @@ LowFlexHeatMinStore:
         urban central water tanks: 0.25
         urban central water pits: 0.25
 
+
 LowFlexBEVDSMOFF:
 
   electricity:
@@ -1263,241 +1046,6 @@ LowFlexBEVDSMOFF:
     bev_dsm: 2050 # set to year > 2050 to turn off bev_dsm
     bev_dsm_availability: 0.2
     v2g: false
-
-
-### New LowFlex scenarios
-
-LowFlex75_pminpu0.3:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.8 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 50 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.3
-    2045:
-      all:
-        H2 Electrolysis: 0.3
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-LowFlex75_pminpu0.5:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.8 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 50 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.5
-    2045:
-      all:
-        H2 Electrolysis: 0.5
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-LowFlex75_pminpu0.5_onlyElectrolysis:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.8 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 50 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.5
-    2045:
-      all:
-        H2 Electrolysis: 0.5
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-
-LowFlex75_pminpu0.3_onlyElectrolysis:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.8 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 50 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.3
-    2045:
-      all:
-        H2 Electrolysis: 0.3
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        battery discharger: 0.75
-        home battery discharger: 0.75
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-
-LowFlex75_excludeBattery_pminpu_electrolysis_0.3:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.8 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 50 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.3
-    2045:
-      all:
-        H2 Electrolysis: 0.3
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
-
-LowFlex75_excludeBattery_pminpu_electrolysis_0.5:
-# transmission limit v1.5 and BEV DSM restricted
-# p_min_pu = 0.8 in all regions for FT, methanolisation, methanation and electrolysis
-# Links capacity restricted to 50 % of Base scenario for batteries (stationary, home), water storages
-# Store capacity restricted to 50 % of Base scenario for H2 Store
-
-  electricity:
-    transmission_limit: v1.5
-
-  sector:
-    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
-    bev_dsm_availability: 0.2
-    v2g: false
-    min_part_load_fischer_tropsch: 1
-    min_part_load_methanolisation: 1
-    min_part_load_methanation: 1
-
-  must_run:
-    2035:
-      all:
-        H2 Electrolysis: 0.5
-    2045:
-      all:
-        H2 Electrolysis: 0.5
-
-  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
-    where: whole_system
-    when: [2035, 2045]
-    component_limits:
-      Link:
-        urban central water pits discharger: 0.75
-        urban central water tanks discharger: 0.75
-        urban decentral water pits discharger: 0.75
-        urban decentral water tanks discharger: 0.75
-        rural water tanks discharger: 0.75
-      Store:
-        H2 Store: 0.75
 
 
 # LowFlex75_min_up_time_electrolysis_24H:

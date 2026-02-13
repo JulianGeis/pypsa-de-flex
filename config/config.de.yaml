@@ -4,75 +4,67 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260210-flex-system-cost-export
+  prefix: 20260213-flex-weaker-low-flex-scenarios
   name:
   # # main scenarios
   - LowFlex
   - LowBattery
   - Base
   - HighFlex
-  # # sensitivity scenarios
-  # - LowFlex75_pminpu_FT_electrolysis0.9
-  # - LowFlex75_pminpu_not_electrolysis0.9
-  # - LowFlex75_pminpu_only_electrolysis0.9
-  # - LowFlex75_pminpu_0.9
-  # - LowFlex75_pminpu_0.8
-  # - LowFlex75_CapRestrictDEWide
-  # - LowFlex75_excludeHeat_H2Store
+  # # LowFlex variations:
+  # - LowFlex75
+  # - LowFlex75_Electrolysis_pminpu_0.5_Other_pminpu_1
+  # - LowFlex75_Electrolysis_pminpu_0.3_Other_pminpu_1
+  # - LowFlex75_excludeBattery_Electrolysis_pminpu_0.5_Other_pminpu_1
+  # - LowFlex75_excludeBattery_Electrolysis_pminpu_0.3_Other_pminpu_1
   # - LowFlex75_excludeHeat
   # - LowFlex75_exclude_pminpu
-  # - LowFlex75_exclude_pminpu_onlyStores
-  # - LowFlex75
   # - LowFlex50
-  # - LowFlex50_pminpu0.9
   # - LowFlex50_pminpu0.8
-  # - LowFlex50HeatDecentral25
-  # - LowFlexHeatModelMargin0.1
-  # - LowFlexHeatModelMargin0.1pminpu0.9
-  # - LowFlexHeatModelMargin0.2
-  # - LowFlexHeatModelMargin0.3
-  # - LowFlexHeatPMINPU50
-  # - LowFlexHeatPMINPU25
-  # - LowFlexHeatMinStore
+  # - LowFlex50_exclude_pminpu
+  # - LowFlex50_Electrolysis_pminpu_0.5_Other_pminpu_1
+  # - LowFlex50_Electrolysis_pminpu_0.3_Other_pminpu_1
+  # - LowFlex50HeatPMINPU
+  # - LowFlex50HeatMinStore
   # - LowFlexBEVDSMOFF
-  # # battery:
+  # # Battery variations:
   # - LowBattery75
   # - LowBattery50
   # - LowBattery25
   # - LowBattery0
-  # # PtG / Electrolysis
+  # # PtG / Electrolysis variations:
   # - LowPtG75
   # - LowPtG50
   # - LowPtG25
-  # # PtX:
+  # # PtX variations:
   # - LowPtX75
   # - LowPtX50
   # - LowPtX25
-  # # PtH:
+  # # PtH variations:
   # - LowPtH75
   # - LowPtH50
   # - LowPtH25
-  # # H2 storage
+  # # H2 storage variations:
   # - LowH2Store75
   # - LowH2Store50
   # - LowH2Store25
   # - LowH2Store0
-  # # Heat storage:
+  # # Heat storage variations:
   # - LowHeatStore75
   # - LowHeatStore50
   # - LowHeatStore25
   # - LowHeatStore0
-  # # Transmission:
+  # # Transmission variations:
   # - LowTransmission25
   # - LowTransmission10
-  # # High flex variations:
+  # # High Flex variations:
   # - HighFlexIndustry
   # - HighFlexIronAir
   # - HighFlexDLR
   # - HighFlexBEV70
   # - HighFlexBEV80
   # - HighFlexBEV90
-  # # Ariadne scenarios
+  # # Ariadne scenarios:
   # - KN2045_Mix
   # - KN2045_Elek
   # - KN2045_H2
@@ -810,10 +802,10 @@ offshore_nep_force:
   delay_years: 0
 
 scale_capacity:
-  2020:
+  2025:
     DE:
-      CCGT: 10000
-      "urban central gas CHP": 22000
+      CCGT: 9350
+      "urban central gas CHP": 20826
 
 
 ### Flexibility options
@@ -826,68 +818,60 @@ system_comparison:
   - LowBattery
   - Base
   - HighFlex
-  # # sensitivity scenarios
-  # - LowFlex75_pminpu_FT_electrolysis0.9
-  # - LowFlex75_pminpu_not_electrolysis0.9
-  # - LowFlex75_pminpu_only_electrolysis0.9
-  # - LowFlex75_pminpu_0.9
-  # - LowFlex75_pminpu_0.8
-  # - LowFlex75_CapRestrictDEWide
-  # - LowFlex75_excludeHeat_H2Store
+  # # LowFlex variations:
+  # - LowFlex75
+  # - LowFlex75_Electrolysis_pminpu_0.5_Other_pminpu_1
+  # - LowFlex75_Electrolysis_pminpu_0.3_Other_pminpu_1
+  # - LowFlex75_excludeBattery_Electrolysis_pminpu_0.5_Other_pminpu_1
+  # - LowFlex75_excludeBattery_Electrolysis_pminpu_0.3_Other_pminpu_1
   # - LowFlex75_excludeHeat
   # - LowFlex75_exclude_pminpu
-  # - LowFlex75_exclude_pminpu_onlyStores
-  # - LowFlex75
   # - LowFlex50
-  # - LowFlex50_pminpu0.9
   # - LowFlex50_pminpu0.8
-  # - LowFlex50HeatDecentral25
-  # - LowFlexHeatModelMargin0.1
-  # - LowFlexHeatModelMargin0.1pminpu0.9
-  # - LowFlexHeatModelMargin0.2
-  # - LowFlexHeatModelMargin0.3
-  # - LowFlexHeatPMINPU50
-  # - LowFlexHeatPMINPU25
-  # - LowFlexHeatMinStore
+  # - LowFlex50_exclude_pminpu
+  # - LowFlex50_Electrolysis_pminpu_0.5_Other_pminpu_1
+  # - LowFlex50_Electrolysis_pminpu_0.3_Other_pminpu_1
+  # - LowFlex50HeatPMINPU
+  # - LowFlex50HeatMinStore
   # - LowFlexBEVDSMOFF
-  # # battery:
+  # # Battery variations:
   # - LowBattery75
   # - LowBattery50
   # - LowBattery25
   # - LowBattery0
-  # # PtG / Electrolysis
+  # # PtG / Electrolysis variations:
   # - LowPtG75
   # - LowPtG50
   # - LowPtG25
-  # # PtX:
+  # # PtX variations:
   # - LowPtX75
   # - LowPtX50
   # - LowPtX25
-  # # PtH:
+  # # PtH variations:
   # - LowPtH75
   # - LowPtH50
   # - LowPtH25
-  # # H2 storage
+  # # H2 storage variations:
   # - LowH2Store75
   # - LowH2Store50
   # - LowH2Store25
   # - LowH2Store0
-  # # Heat storage:
+  # # Heat storage variations:
   # - LowHeatStore75
   # - LowHeatStore50
   # - LowHeatStore25
   # - LowHeatStore0
-  # # Transmission:
+  # # Transmission variations:
   # - LowTransmission25
   # - LowTransmission10
-  # # High flex variations:
+  # # High Flex variations:
   # - HighFlexIndustry
   # - HighFlexIronAir
   # - HighFlexDLR
   # - HighFlexBEV70
   # - HighFlexBEV80
   # - HighFlexBEV90
-  # # Ariadne scenarios
+  # # Ariadne scenarios:
   # - KN2045_Mix
   # - KN2045_Elek
   # - KN2045_H2

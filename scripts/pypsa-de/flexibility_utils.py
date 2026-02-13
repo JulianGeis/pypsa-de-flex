@@ -237,70 +237,67 @@ def find_project_root():
 
 
 # Scenario abbreviations dictionary
-# Scenario abbreviations dictionary
 scenario_abbrev = {
+    # Main scenarios
     "LowFlex": "LF",
     "LowBattery": "LB",
     "Base": "BA",
     "HighFlex": "HF",
-    "LowFlex50": "LF50",
+    
+    # LowFlex variations
     "LowFlex75": "LF75",
-    "LowBatt50": "LB50",
-    "LowBatt75": "LB75",
-    "LowBatt25": "LB25",
-    "MedFlex": "MedF",
-    "HigFlex": "HigF",
-    "LowTransmission110": "LT10",
-    "LowTransmission125": "LT25",
-    "LowTransmission25": "LT25",
-    "LowTransmission10": "LT10",
-    "LowPtX75": "LX75",
-    "LowPtX50": "LX50",
-    "LowPtX25": "LX25",
-    "LowH2Store75": "LH75",
-    "LowH2Store50": "LH50",
-    "LowH2Store25": "LH25",
-    "LowH2Store0": "LH0",
-    "LowHeatStore75": "HS75",
-    "LowHeatStore50": "HS50",
-    "LowHeatStore25": "HS25",
-    "LowHeatStore0": "HS0",
-    # LowFlex variations with pminpu
-    "LowFlex75_pminpu_FT_electrolysis0.9": "LF75_FTE9",
-    "LowFlex75_pminpu_not_electrolysis0.9": "LF75_NE9",
-    "LowFlex75_pminpu_only_electrolysis0.9": "LF75_OE9",
-    "LowFlex75_pminpu_0.9": "LF75_P9",
-    "LowFlex75_pminpu_0.8": "LF75_P8",
-    "LowFlex75_CapRestrictDEWide": "LF75_CR",
-    "LowFlex75_excludeHeat_H2Store": "LF75_XHH",
-    "LowFlex75_excludeHeat": "LF75_XH",
+    "LowFlex75_Electrolysis_pminpu_0.5_Other_pminpu_1": "LF75_E5O1",
+    "LowFlex75_Electrolysis_pminpu_0.3_Other_pminpu_1": "LF75_E3O1",
+    "LowFlex75_excludeBattery_Electrolysis_pminpu_0.5_Other_pminpu_1": "LF75_XBE5",
+    "LowFlex75_excludeBattery_Electrolysis_pminpu_0.3_Other_pminpu_1": "LF75_XBE3",
+    "LowFlex75_excludeHeatStorage": "LF75_XHS",
     "LowFlex75_exclude_pminpu": "LF75_XP",
-    "LowFlex75_exclude_pminpu_onlyStores": "LF75_XPS",
-    "LowFlex50_pminpu0.9": "LF50_P9",
+    "LowFlex50": "LF50",
     "LowFlex50_pminpu0.8": "LF50_P8",
-    "LowFlex50HeatDecentral25": "LF50_HD25",
-    # Heat model variations
-    "LowFlexHeatModelMargin0.1": "LFHM01",
-    "LowFlexHeatModelMargin0.1pminpu0.9": "LFHM01P9",
-    "LowFlexHeatModelMargin0.2": "LFHM02",
-    "LowFlexHeatModelMargin0.3": "LFHM03",
-    "LowFlexHeatPMINPU50": "LFHP50",
-    "LowFlexHeatPMINPU25": "LFHP25",
-    "LowFlexHeatMinStore": "LFHMS",
-    "LowFlexBEVDSMOFF": "LFBEV_OFF",
+    "LowFlex50_exclude_pminpu": "LF50_XP",
+    "LowFlex50_Electrolysis_pminpu_0.5_Other_pminpu_1": "LF50_E5O1",
+    "LowFlex50_Electrolysis_pminpu_0.3_Other_pminpu_1": "LF50_E3O1",
+    "LowFlex50HeatPMINPU": "LF50_HP",
+    "LowFlex50HeatMinStore": "LF50_HMS",
+    "LowFlexBEVDSMOFF": "LF_BEV_OFF",
+    
     # Battery variations
     "LowBattery75": "LB75",
     "LowBattery50": "LB50",
     "LowBattery25": "LB25",
     "LowBattery0": "LB0",
+    
     # PtG / Electrolysis
     "LowPtG75": "LG75",
     "LowPtG50": "LG50",
     "LowPtG25": "LG25",
+    
+    # PtX
+    "LowPtX75": "LX75",
+    "LowPtX50": "LX50",
+    "LowPtX25": "LX25",
+    
     # PtH
     "LowPtH75": "LPH75",
     "LowPtH50": "LPH50",
     "LowPtH25": "LPH25",
+    
+    # H2 storage
+    "LowH2Store75": "LH75",
+    "LowH2Store50": "LH50",
+    "LowH2Store25": "LH25",
+    "LowH2Store0": "LH0",
+    
+    # Heat storage
+    "LowHeatStore75": "HS75",
+    "LowHeatStore50": "HS50",
+    "LowHeatStore25": "HS25",
+    "LowHeatStore0": "HS0",
+    
+    # Transmission
+    "LowTransmission25": "LT25",
+    "LowTransmission10": "LT10",
+    
     # High flex variations
     "HighFlexIndustry": "HF_IND",
     "HighFlexIronAir": "HF_IA",
@@ -308,7 +305,9 @@ scenario_abbrev = {
     "HighFlexBEV70": "HF_B70",
     "HighFlexBEV80": "HF_B80",
     "HighFlexBEV90": "HF_B90",
+
     # Ariadne scenarios
+    "ExPol": "EP",
     "KN2045_Mix": "KN_MIX",
     "KN2045_Elek": "KN_EL",
     "KN2045_H2": "KN_H2",
