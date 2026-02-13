@@ -606,7 +606,8 @@ def bar_plot_variables(variables,
                          sign_flip_vars=["Electricity", "Hydrogen", "eFuels"],
                          title=None, 
                          ylabel="TWh/a",
-                         output_dir=None):
+                         output_dir=None,
+                         filename_prefix="trade_volume"):
     """Plot multiple trade variables across scenarios for each year in one plot."""
     
     
@@ -693,7 +694,7 @@ def bar_plot_variables(variables,
         
         plt.tight_layout()
         if output_dir:
-            plt.savefig(output_dir + f"{year}.png", bbox_inches="tight", dpi=300)
+            plt.savefig(output_dir / f"{filename_prefix}_{year}.png", bbox_inches="tight", dpi=300)
 
 
 def plot_curtailment(networks, scenarios, year, tech_colors, output_dir=None):
@@ -1457,7 +1458,8 @@ if __name__ == "__main__":
                         tech_colors=dict(sector_colors, **tech_colors),
                         plot_vars=plot_vars,
                         sign_flip_vars=["Oil", "Gas", "Biomass"],
-                        output_dir=output_dir / "trade_volume")
+                        output_dir=output_dir,
+                        filename_prefix="trade_volume")
     
     plot_vars = {
         "eFuels": "Trade|Secondary Energy|Efuels|Volume",
@@ -1472,7 +1474,8 @@ if __name__ == "__main__":
                         tech_colors=dict(sector_colors, **tech_colors),
                         plot_vars=plot_vars,
                         sign_flip_vars=["Oil"],
-                        output_dir=output_dir / "trade_volume_efuels")
+                        output_dir=output_dir,
+                        filename_prefix="trade_volume_efuels")
     
     plot_vars = {
         "Electricity": "Total Energy System Cost|Trade|Electricity",
@@ -1489,7 +1492,8 @@ if __name__ == "__main__":
                         tech_colors=dict(sector_colors, **tech_colors),
                         plot_vars=plot_vars,
                         sign_flip_vars=[],
-                        output_dir=output_dir / "trade_cost")
+                        output_dir=output_dir,
+                        filename_prefix="trade_cost")
     
 
     plot_vars = {
@@ -1505,7 +1509,8 @@ if __name__ == "__main__":
                         tech_colors=dict(sector_colors, **tech_colors),
                         plot_vars=plot_vars,
                         sign_flip_vars=[],
-                        output_dir=output_dir / "trade_cost_efuels")
+                        output_dir=output_dir,
+                        filename_prefix="trade_cost_efuels")
 
     ### CURTAILMENT ###
 

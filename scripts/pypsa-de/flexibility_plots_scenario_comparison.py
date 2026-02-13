@@ -490,10 +490,11 @@ def plot_flexibility_causes_scenario_comparison(
         tech_handles,
         tech_labels,
         loc="lower center",
-        bbox_to_anchor=(0.5, -0.05),
-        ncol=min(8, len(tech_labels)),
+        bbox_to_anchor=(0.5, -0.1),
+        ncol=min(6, len(tech_labels)),
         title="Technologies",
         fontsize=14,
+        title_fontsize=14,
     )
 
     # Create legend for scenarios (top left of first subplot)
@@ -717,10 +718,11 @@ def plot_flexibility_provision_scenario_comparison(
         tech_handles,
         tech_labels,
         loc="lower center",
-        bbox_to_anchor=(0.5, -0.05),
-        ncol=min(8, len(tech_labels)),
+        bbox_to_anchor=(0.5, -0.1),
+        ncol=min(6, len(tech_labels)),
         title="Technologies",
         fontsize=14,
+        title_fontsize=14,
     )
 
     # Create legend for scenarios (top left of first subplot)
