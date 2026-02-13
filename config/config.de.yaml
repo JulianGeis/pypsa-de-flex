@@ -13,6 +13,8 @@ run:
   - HighFlex
   # # LowFlex variations:
   # - LowFlex75
+  # - LowFlex75_pminpu_0.5
+  # - LowFlex75_pminpu_0.3
   # - LowFlex75_Electrolysis_pminpu_0.5_Other_pminpu_1
   # - LowFlex75_Electrolysis_pminpu_0.3_Other_pminpu_1
   # - LowFlex75_excludeBattery_Electrolysis_pminpu_0.5_Other_pminpu_1
@@ -820,6 +822,8 @@ system_comparison:
   - HighFlex
   # # LowFlex variations:
   # - LowFlex75
+  # - LowFlex75_pminpu_0.5
+  # - LowFlex75_pminpu_0.3
   # - LowFlex75_Electrolysis_pminpu_0.5_Other_pminpu_1
   # - LowFlex75_Electrolysis_pminpu_0.3_Other_pminpu_1
   # - LowFlex75_excludeBattery_Electrolysis_pminpu_0.5_Other_pminpu_1
