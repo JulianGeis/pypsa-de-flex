@@ -254,6 +254,8 @@ scenario_abbrev = {
     "LowFlex75_exclude_pminpu": "LF75_XP",
     "LowFlex50": "LF50",
     "LowFlex50_pminpu0.8": "LF50_P8",
+    "LowFlex50_pminpu0.5": "LF50_P5",
+    "LowFlex50_pminpu0.3": "LF50_P3",
     "LowFlex50_exclude_pminpu": "LF50_XP",
     "LowFlex50_Electrolysis_pminpu_0.5_Other_pminpu_1": "LF50_E5O1",
     "LowFlex50_Electrolysis_pminpu_0.3_Other_pminpu_1": "LF50_E3O1",

@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260213-flex-weaker-low-flex-scenarios
+  prefix: 20260218-flex-one-node-per-country
   name:
   # # main scenarios
   - LowFlex
@@ -23,6 +23,8 @@ run:
   # - LowFlex75_exclude_pminpu
   # - LowFlex50
   # - LowFlex50_pminpu0.8
+  # - LowFlex50_pminpu0.5
+  # - LowFlex50_pminpu0.3
   # - LowFlex50_exclude_pminpu
   # - LowFlex50_Electrolysis_pminpu_0.5_Other_pminpu_1
   # - LowFlex50_Electrolysis_pminpu_0.3_Other_pminpu_1
@@ -113,7 +115,7 @@ foresight: myopic
 # Wildcard docs in https://pypsa-eur.readthedocs.io/en/latest/wildcards.html
 scenario:
   clusters:
-  - 27 #current options: 27, 49
+  - 27 #current options: 27, 49, adm (one node per country)
   opts:
   - ''
   sector_opts:
@@ -247,6 +249,9 @@ renewable:
 #     cutout: europe-2019-sarah3-era5
 
 clustering:
+  # mode: administrative  # comment in next three lines for administrative clustering (focus weights need to be commented out)
+  # administrative:
+  #   level: 0
   # simplify_network:
   #   to_substations: true
   # Code snippet for editing focus_weights
@@ -491,7 +496,7 @@ industry:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving
 solving:
-  runtime: 12h # 10h for 27cl 3H; 20h for 27cl 1H and 49cl 3H; 30h for 49cl 1H
+  runtime: 12h # 10h for 27cl 3H; 15h for 27cl 1H and 49cl 3H; 20h for 49cl 1H
   mem_mb: 70000 # 20 GB for 27cl 3H; 30 GB for 27cl 1H / 49cl 3H; 45 GB for 49cl 1H (3 networks take 15h for 27cl 1H and 49cl 3H / 48h for 49cl 1H)
   mem_logging_frequency: 5 # in seconds
   options:
@@ -832,6 +837,8 @@ system_comparison:
   # - LowFlex75_exclude_pminpu
   # - LowFlex50
   # - LowFlex50_pminpu0.8
+  # - LowFlex50_pminpu0.5
+  # - LowFlex50_pminpu0.3
   # - LowFlex50_exclude_pminpu
   # - LowFlex50_Electrolysis_pminpu_0.5_Other_pminpu_1
   # - LowFlex50_Electrolysis_pminpu_0.3_Other_pminpu_1
