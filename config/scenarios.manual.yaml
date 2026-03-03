@@ -245,7 +245,7 @@ KN2045_NFhoch:
 LowFlex:
 # transmission limit v1.5 
 # BEV DSM restricted
-# p_min_pu = 1 in all regions for FT, methanolisation, methanation and 0.3 for electrolysis
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and 0.5 for electrolysis
 # Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
 # Store capacity restricted to 75 % of Base scenario for H2 Store
 
@@ -263,10 +263,10 @@ LowFlex:
   must_run:
     2035:
       all:
-        H2 Electrolysis: 0.3
+        H2 Electrolysis: 0.5
     2045:
       all:
-        H2 Electrolysis: 0.3
+        H2 Electrolysis: 0.5
 
   restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
     where: whole_system

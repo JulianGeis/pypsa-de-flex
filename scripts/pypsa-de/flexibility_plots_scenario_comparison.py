@@ -716,7 +716,7 @@ def plot_flexibility_provision_scenario_comparison(
         tech_handles,
         tech_labels,
         loc="lower center",
-        bbox_to_anchor=(0.5, -0.1),
+        bbox_to_anchor=(0.5, -0.15),
         ncol=min(6, len(tech_labels)),
         title="Technologies",
         fontsize=14,
