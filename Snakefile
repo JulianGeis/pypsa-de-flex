@@ -997,6 +997,10 @@ rule flexibility_analysis:
         + "flexibility/data/flexibility_causes_per_node.pkl",
         flex_contributions_per_node=RESULTS
         + "flexibility/data/flexibility_contributions_per_node.pkl",
+        flex_needs_monthly=RESULTS + "flexibility/data/flexibility_needs_monthly.csv",
+        flex_causes_monthly_raw=RESULTS + "flexibility/data/flexibility_causes_monthly_raw.pkl",
+        flex_contributions_monthly_raw=RESULTS + "flexibility/data/flexibility_contributions_monthly_raw.pkl",
+        flex_contributions_monthly_clean=RESULTS + "flexibility/data/flexibility_contributions_monthly_clean.csv",
     resources:
         mem_mb=40000,
     log:
@@ -1034,11 +1038,17 @@ rule flexibility_plots:
             clusters=config["scenario"]["clusters"],
             allow_missing=True,
         ),
+        flex_needs_monthly=RESULTS + "flexibility/data/flexibility_needs_monthly.csv",
+        flex_causes_monthly_raw=RESULTS + "flexibility/data/flexibility_causes_monthly_raw.pkl",
+        flex_contributions_monthly_clean=RESULTS + "flexibility/data/flexibility_contributions_monthly_clean.csv",
     output:
         flex_needs_plot=RESULTS + "flexibility/plots/flexibility_needs.png",
         flex_causes_plot=RESULTS + "flexibility/plots/flexibility_causes.png",
         flex_contributions_plot=RESULTS
         + "flexibility/plots/flexibility_contributions.png",
+        flex_needs_monthly_plot=RESULTS + "flexibility/plots/flexibility_needs_monthly.png",
+        flex_causes_monthly_plot=RESULTS + "flexibility/plots/flexibility_causes_monthly.png",
+        flex_contributions_monthly_plot=RESULTS + "flexibility/plots/flexibility_contributions_monthly.png",
     resources:
         mem_mb=40000,
     log:

@@ -18,7 +18,7 @@ logger = logging.getLogger(__name__)
 
 def calc_supply_demand(
     n,
-    bus_carrier=["low voltage", "AC"],
+    bus_carrier=["low voltage", "AC", "EV battery"],
     region="DE",
     energy=True,
     interconnectors=True,
@@ -93,6 +93,12 @@ def calc_supply_demand(
         supply = supply.drop(["AC", "DC"], errors="ignore")
         demand = demand.drop(["AC", "DC"], errors="ignore")
 
+    if "land transport EV" in demand.index:
+        charge_efficiency = demand.loc["land transport EV"].sum() / demand.loc["BEV charger"].sum()
+        supply = supply.drop("BEV charger", errors="ignore")
+        demand = demand.drop("BEV charger", errors="ignore")
+        demand.loc["land transport EV"] = demand.loc["land transport EV"] / charge_efficiency
+
     if merge_dist_grid:
         # merge AC & low voltage such that electricity distribution grid does only function as a demand representing the grid losses
         demand.loc["electricity distribution grid losses", :] = abs(
@@ -139,6 +145,11 @@ def calc_residual_load(
         "electricity",
         "agriculture electricity",
         "industry electricity",
+        "agriculture machinery electric",
+        "land transport EV",
+        'rural air heat pump',
+        'rural ground heat pump',
+        'urban decentral air heat pump',
     ],
 ):
     """
@@ -314,6 +325,11 @@ def calc_flexibility_contributions(
         "electricity",
         "agriculture electricity",
         "industry electricity",
+        "agriculture machinery electric",
+        "land transport EV",
+        'rural air heat pump',
+        'rural ground heat pump',
+        'urban decentral air heat pump',
     ],
     granularity: str = "all",
     analyze: str = "both",
@@ -355,7 +371,7 @@ def calc_flexibility_contributions(
     if analyze not in ["flexible", "inflexible", "both"]:
         raise ValueError("analyze must be 'flexible', 'inflexible', or 'both'")
 
-    # Calculate residual load
+    # Calculate residual load (default specification)
     residual_load = calc_residual_load(
         electricity_supply,
         electricity_demand,
@@ -563,6 +579,11 @@ def calc_flexibility_contributions_with_monthly(
         "electricity",
         "agriculture electricity",
         "industry electricity",
+        "agriculture machinery electric",
+        "land transport EV",
+        'rural air heat pump',
+        'rural ground heat pump',
+        'urban decentral air heat pump',
     ],
     granularity: str = "all",
     analyze: str = "both",
@@ -1114,7 +1135,17 @@ if __name__ == "__main__":
             print_info=False,
         )
 
-        flex_causes_raw[year] = inflexible_df
+        # aggreate decentral heat pump techs if in flex_causes
+        df_clean = inflexible_df.copy()
+        hp_groups = {
+            "heat pump (decentral)": ["rural air heat pump", "rural ground heat pump", "urban decentral air heat pump"],
+        }
+        df_agg = pd.concat([
+            aggregate_by_keywords(df_clean.xs(gran), hp_groups).assign(Granularity=gran)
+            for gran in df_clean.index.get_level_values("Granularity").unique()
+        ]).set_index("Granularity", append=True).swaplevel()
+        
+        flex_causes_raw[year] = df_agg # inflexible_df
         flex_contributions_raw[year] = flexible_df
 
     # Save raw results as pickle
@@ -1233,3 +1264,67 @@ if __name__ == "__main__":
     logger.info(
         f"Saved flexibility causes per node to {snakemake.output.flex_causes_per_node}"
     )
+
+    # MONTHLY ANALYSIS: Calculate flexibility needs
+    all_flex_needs_monthly = {}
+
+    logger.info("Calculating flexibility needs (with monthly) for all years...")
+    for year in planning_horizons:
+        logger.info(f"Processing year {year}...")
+        s, d = calc_supply_demand(networks[year], energy=False)
+        electricity_supply = expand_to_1h(s, unit="power")
+        electricity_demand = expand_to_1h(d, unit="power")
+        residual_load = calc_residual_load(electricity_supply, electricity_demand)
+        flex_needs = calc_flexibility_needs_with_monthly(residual_load)
+        all_flex_needs_monthly[year] = flex_needs["Flexibility (TWh/year)"]
+
+    flex_needs_monthly_df = pd.DataFrame(all_flex_needs_monthly)
+    flex_needs_monthly_df.to_csv(snakemake.output.flex_needs_monthly)
+    logger.info(f"Saved monthly flexibility needs to {snakemake.output.flex_needs_monthly}")
+
+    # Calculate flexibility causes and contributions (monthly, raw)
+    flex_causes_monthly_raw = {}
+    flex_contributions_monthly_raw = {}
+
+    logger.info("Calculating flexibility causes and contributions (monthly) for all years...")
+    for year in planning_horizons:
+        s, d = calc_supply_demand(
+            networks[year],
+            energy=False,
+            interconnectors=False,
+            merge_dist_grid=True,
+            drop_dist_grid=True,
+            add_diff_as_import=True,
+        )
+        electricity_supply = expand_to_1h(s, unit="power")
+        electricity_demand = expand_to_1h(d, unit="power")
+
+        flexible_df, inflexible_df = calc_flexibility_contributions_with_monthly(
+            electricity_supply=electricity_supply,
+            electricity_demand=electricity_demand,
+            granularity="all",
+            analyze="both",
+            print_info=False,
+        )
+        flex_causes_monthly_raw[year] = inflexible_df
+        flex_contributions_monthly_raw[year] = flexible_df
+
+    with open(snakemake.output.flex_causes_monthly_raw, "wb") as f:
+        pickle.dump(flex_causes_monthly_raw, f)
+    logger.info(f"Saved monthly flexibility causes to {snakemake.output.flex_causes_monthly_raw}")
+
+    with open(snakemake.output.flex_contributions_monthly_raw, "wb") as f:
+        pickle.dump(flex_contributions_monthly_raw, f)
+    logger.info(f"Saved monthly flexibility contributions to {snakemake.output.flex_contributions_monthly_raw}")
+
+    # Calculate cleaned monthly flexibility contributions
+    logger.info("Calculating cleaned monthly flexibility contributions for all years...")
+    flexibility_provision_monthly_df = collect_and_summarize_flexibility_provision(
+        networks,
+        calc_flexibility_contributions_with_monthly,
+        calc_supply_demand,
+        expand_to_1h,
+        tech_groups,
+    )
+    flexibility_provision_monthly_df.to_csv(snakemake.output.flex_contributions_monthly_clean)
+    logger.info(f"Saved cleaned monthly flexibility contributions to {snakemake.output.flex_contributions_monthly_clean}")

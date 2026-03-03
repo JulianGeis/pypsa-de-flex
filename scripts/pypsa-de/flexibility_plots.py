@@ -717,7 +717,7 @@ def plot_flexibility_causes_map(
         ax.coastlines(edgecolor="black", linewidth=0.5)
         ax.set_facecolor("white")
         ax.add_feature(cartopy.feature.OCEAN, color="azure")
-        ax.set_title(title, pad=15)
+        ax.set_title(title, pad=15, fontsize=14)
 
         # Add region boundaries
         onshore_regions.to_crs(display_projection.proj4_init).plot(
@@ -832,12 +832,17 @@ def plot_flexibility_causes_map(
             "Circle Size\n(Flexibility needs)",
             transform=ax.transAxes,
             fontweight="bold",
-            fontsize=8,
+            fontsize=9,
         )
 
     # Add unified technology legend below all subplots
     legend_elements = [
-        plt.matplotlib.patches.Patch(facecolor=color, label=tech)
+        plt.matplotlib.patches.Patch(
+            facecolor=color,
+            label=tech
+                .replace("industry electricity", "industrial demand")
+                .replace("electricity", "demand")
+        )
         for tech, color in all_used_techs_with_colors.items()
     ]
 
@@ -845,16 +850,16 @@ def plot_flexibility_causes_map(
     fig.legend(
         handles=legend_elements,
         loc="lower center",
-        bbox_to_anchor=(0.5, -0.05),
+        bbox_to_anchor=(0.5, 0.1),
         ncol=min(len(legend_elements), 8),  # Max 8 columns
         title="Technologies",
-        fontsize=9,
-        title_fontsize=10,
+        fontsize=12,
+        title_fontsize=14,
         frameon=True,
     )
 
-    # Add overall title with year
-    fig.suptitle(f"Flexibility Causes - {year}", fontsize=16, y=0.98)
+    # # Add overall title with year
+    # fig.suptitle(f"Flexibility Causes - {year}", fontsize=16, y=0.98)
 
     # Adjust layout to make room for legend
     plt.subplots_adjust(bottom=0.12)
@@ -953,7 +958,7 @@ def plot_flexibility_provision_map(
         ax.coastlines(edgecolor="black", linewidth=0.5)
         ax.set_facecolor("white")
         ax.add_feature(cartopy.feature.OCEAN, color="azure")
-        ax.set_title(title, pad=15)
+        ax.set_title(title, pad=15, fontsize=14)
 
         # Add region boundaries
         onshore_regions.to_crs(display_projection.proj4_init).plot(
@@ -1098,7 +1103,7 @@ def plot_flexibility_provision_map(
             "Circle Size\n(Flexibility)",
             transform=ax.transAxes,
             fontweight="bold",
-            fontsize=8,
+            fontsize=9,
         )
 
     # Add unified technology legend below all subplots
@@ -1111,16 +1116,16 @@ def plot_flexibility_provision_map(
     fig.legend(
         handles=legend_elements,
         loc="lower center",
-        bbox_to_anchor=(0.5, -0.05),
+        bbox_to_anchor=(0.5, 0.1),
         ncol=min(len(legend_elements), 8),  # Max 8 columns
         title="Technologies",
-        fontsize=9,
-        title_fontsize=10,
+        fontsize=12,
+        title_fontsize=14,
         frameon=True,
     )
 
-    # Add overall title with year
-    fig.suptitle(f"Flexibility Provision - {year}", fontsize=16, y=0.98)
+    # # Add overall title with year
+    # fig.suptitle(f"Flexibility Provision - {year}", fontsize=16, y=0.98)
 
     # Adjust layout to make room for legend
     plt.subplots_adjust(bottom=0.12)
@@ -1357,3 +1362,38 @@ if __name__ == "__main__":
             year=year,
             output_path=f"{snakemake.params.output_dir}/flex_contributions_maps_{year}.png",
         )
+
+    # MONTHLY ANALYSIS
+    # Load monthly results
+    flex_needs_monthly = pd.read_csv(snakemake.input.flex_needs_monthly, index_col=0)
+    with open(snakemake.input.flex_causes_monthly_raw, "rb") as f:
+        flex_causes_monthly_raw = pickle.load(f)
+    flex_contributions_monthly_clean = pd.read_csv(
+        snakemake.input.flex_contributions_monthly_clean, index_col=[0, 1]
+    )
+
+    # Plot monthly flexibility needs
+    logger.info("Plotting monthly flexibility needs...")
+    plot_flex_needs(
+        flex_needs_monthly.transpose(),
+        year_colors_gradient,
+        snakemake.output.flex_needs_monthly_plot,
+    )
+
+    # Plot monthly flexibility causes
+    logger.info("Plotting monthly flexibility causes...")
+    plot_flexibility_causes_multiyear(
+        flex_causes_monthly_raw,
+        tech_colors,
+        figsize=(24, 10),  # wider to accommodate 4 granularities
+        save_path=snakemake.output.flex_causes_monthly_plot,
+    )
+
+    # Plot monthly flexibility contributions
+    logger.info("Plotting monthly flexibility contributions...")
+    plot_flexibility_provision_multiyear(
+        flex_contributions_monthly_clean,
+        tech_colors,
+        figsize=(24, 10),
+        save_path=snakemake.output.flex_contributions_monthly_plot,
+    )

@@ -52,11 +52,8 @@ capa_groups = {
         "Gas CHP": ["urban central gas CHP", "urban central gas CHP CC"],
         "H2": ["H2 turbine", "H2 OCGT", "H2 CCGT"],
         "H2 CHP": ["urban central H2 CHP"],
+        "Coal incl. CHP": ["coal", "lignite", "urban central coal CHP", "urban central lignite CHP"],
         "Others": [
-            "coal",
-            "lignite",
-            "urban central coal CHP",
-            "urban central lignite CHP",
             "solid biomass",
             "urban central solid biomass CHP",
             "urban central solid biomass CHP CC",
@@ -485,6 +482,7 @@ def plot_flexibility_causes_scenario_comparison(
         plt.Line2D([0], [0], color="black", linewidth=2, linestyle="--", alpha=0.8)
     )
     tech_labels = list(df_filtered.columns) + ["Total Flexibility Needs"]
+    tech_labels = [label.replace("industry electricity", "industrial demand").replace("electricity", "demand") for label in tech_labels]
 
     fig.legend(
         tech_handles,

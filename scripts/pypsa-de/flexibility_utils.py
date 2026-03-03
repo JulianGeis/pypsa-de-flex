@@ -96,11 +96,13 @@ tech_colors = {
     "solar rooftop": "#ffea80",
     "land transport EV": "#baf238",
     "industry electricity": "violet",
+    "industrial demand": "violet",
     "low-temperature heat for industry": "#8f2727",
     "H2 for industry": "#f073da",
     "agriculture heat": "#d9a5a5",
     "land transport fuel cell": "#6b3161",
     "electricity": "#110d63",
+    "demand": "#110d63",
     "agriculture electricity": "#494778",
     "low voltage": "#97ad8c",
     "non-sequestered HVC": "",
@@ -152,7 +154,11 @@ tech_colors = {
     "PHS charging": "darkgreen",
     "PHS discharging": "darkgreen",
     "heat pump": "red",
+    "heat pump (central)": "red",   
+    "heat pump (decentral)": "firebrick",   
     "resistive heater": "khaki",
+    "resistive heater (central)": "khaki",
+    "resistive heater (decentral)": "darkkhaki",
     "Import/Export": "dimgrey",
     "Sonstige": "gainsboro",
     "industry DSM": "navy",
@@ -184,6 +190,7 @@ tech_colors = {
     "Renewable Gas": "gold",
     "Renewable Oil": "darkviolet",
     "Methanol": "#FF7B00",
+    "Coal incl. CHP": "#826837",
 }
 
 sector_colors = {
@@ -214,8 +221,10 @@ tech_groups = {
     "waste (+CHP)": ["waste"],
     "H2 (+CHP)": ["H2 retrofit", "H2  CCGT", "H2 OCGT", "H2 CHP"],
     "biomass (+CHP)": ["biomass"],
-    "heat pump": ["heat pump"],
-    "resistive heater": ["resistive heater"],
+    "heat pump (central)": ["urban central air heat pump"],
+    "resistive heater (central)": ["urban central resistive heater"],
+    "heat pump (decentral)": ["rural air heat pump","rural ground heat pump","urban decentral air heat pump"],
+    "resistive heater (decentral)": ["rural resistive heater", "urban decentral resistive heater"],
     "industry DSM": ["industry DSM"],
     "interconnectors": [
         "AC",
@@ -225,7 +234,6 @@ tech_groups = {
         "electricity distribution grid losses",
     ],
 }
-
 
 def find_project_root():
     """Find project root by looking for .git or Snakefile."""
