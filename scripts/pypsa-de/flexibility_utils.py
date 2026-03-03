@@ -233,6 +233,7 @@ tech_groups = {
         "export",
         "electricity distribution grid losses",
     ],
+    "V2G": ["V2G", "V2G charging", "V2G discharging losses"],
 }
 
 def find_project_root():

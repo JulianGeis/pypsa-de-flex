@@ -98,15 +98,23 @@ def calc_supply_demand(
         ev_sum = demand.loc["land transport EV"].sum()
         v2g_sum = demand.loc["V2G"].sum() if has_v2g else 0
 
-        charge_efficiency = (ev_sum + v2g_sum) / demand.loc["BEV charger"].sum()
+        bev_charge_efficiency = (ev_sum + v2g_sum) / demand.loc["BEV charger"].sum()
 
         supply.drop("BEV charger", inplace=True, errors="ignore")
         demand.drop("BEV charger", inplace=True, errors="ignore")
 
-        demand.loc["land transport EV"] /= charge_efficiency
+        demand.loc["land transport EV"] /= bev_charge_efficiency
 
         if has_v2g:
+            
+            # extract V2G triggered demand from EV battery ts
+            demand.loc["V2G charging"] = demand.loc["EV battery"] * (v2g_sum / demand.loc["EV battery"].sum())
+            demand.loc["EV battery"] -= demand.loc["V2G charging"]
             demand.loc["V2G"] -= supply.loc["V2G"]
+            demand.rename(index={"V2G": "V2G discharging losses"}, inplace=True)
+
+            supply.loc["EV battery"] -= supply.loc["V2G"]
+            supply.loc["EV battery"] -= demand.loc["V2G discharging losses"]
 
     if merge_dist_grid:
         # merge AC & low voltage such that electricity distribution grid does only function as a demand representing the grid losses
