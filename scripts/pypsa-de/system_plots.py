@@ -177,7 +177,7 @@ def calculate_storage_capacity(n, scenario, year, region="DE", save_plot=True, p
     h2_capas = (
         n.statistics.optimal_capacity(bus_carrier=["H2"], **kwargs)
         .filter(like=region)
-        .drop("Store")
+        .drop("Store", errors="ignore")
         .groupby("carrier")
         .sum()
         .div(1e3)

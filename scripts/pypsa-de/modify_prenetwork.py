@@ -1849,7 +1849,6 @@ def restrict_component_buildout(n, component_limits, capacities_csv, where="only
                         f"No extendable {c.name} with carrier {carrier} found at bus {limits_bus} to restrict."
                     )
 
-    synchronize_TES_extendability(n)
 
 
 def synchronize_TES_extendability(n: pypsa.Network) -> None:
@@ -2124,6 +2123,8 @@ if __name__ == "__main__":
 
     if snakemake.params.force_pth_profiles_decentral_rural_p_min_pu:
         force_pth_profiles_decentral_rural(n)
+
+    synchronize_TES_extendability(n)
 
     # End Flexibility implementations
 

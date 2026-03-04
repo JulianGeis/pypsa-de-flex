@@ -1514,7 +1514,7 @@ if __name__ == "__main__":
 
     ### CURTAILMENT ###
 
-    for year in planning_horizons:
+    for year in planning_horizons[1:]:  # Skip 2025 for curtailment
         plot_curtailment(networks, 
                          scenarios,
                          year,

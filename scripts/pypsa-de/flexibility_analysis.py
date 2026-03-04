@@ -107,14 +107,16 @@ def calc_supply_demand(
 
         if has_v2g:
             
+            v2g_discharge_efficiency = supply.loc["V2G"].sum() / v2g_sum
+            
             # extract V2G triggered demand from EV battery ts
-            demand.loc["V2G charging"] = demand.loc["EV battery"] * (v2g_sum / demand.loc["EV battery"].sum())
-            demand.loc["EV battery"] -= demand.loc["V2G charging"]
-            demand.loc["V2G"] -= supply.loc["V2G"]
-            demand.rename(index={"V2G": "V2G discharging losses"}, inplace=True)
+            demand.loc["V2G charging"] = demand.loc["EV battery"] * ((demand.loc["V2G"].sum() / v2g_discharge_efficiency) / demand.loc["EV battery"].sum()) # scale V2G charging demand to match total V2G discharging (adjusted for discharge efficiency)
+            demand.loc["EV battery"] -= demand.loc["V2G charging"] # remove V2G charging profile from EV battery demand (splitting is necessary to calc flexibility potential seperately)
 
-            supply.loc["EV battery"] -= supply.loc["V2G"]
-            supply.loc["EV battery"] -= demand.loc["V2G discharging losses"]
+            supply.loc["EV battery"] -= demand.loc["V2G"] # remove V2G discharging profile from EV battery supply (splitting is necessary to calc flexibility potential seperately)
+            supply.loc["EV battery"] -= demand.loc["V2G charging"] * (1 - v2g_discharge_efficiency) # remove V2G discharging losses from supply of EV battery
+
+            demand.drop("V2G", inplace=True, errors="ignore") # drop V2G demand (demand at EV battery bus) 
 
     if merge_dist_grid:
         # merge AC & low voltage such that electricity distribution grid does only function as a demand representing the grid losses
@@ -167,6 +169,8 @@ def calc_residual_load(
         'rural air heat pump',
         'rural ground heat pump',
         'urban decentral air heat pump',
+        "rural resistive heater", 
+        "urban decentral resistive heater",
     ],
 ):
     """
@@ -347,6 +351,8 @@ def calc_flexibility_contributions(
         'rural air heat pump',
         'rural ground heat pump',
         'urban decentral air heat pump',
+        "rural resistive heater", 
+        "urban decentral resistive heater",
     ],
     granularity: str = "all",
     analyze: str = "both",
@@ -601,6 +607,8 @@ def calc_flexibility_contributions_with_monthly(
         'rural air heat pump',
         'rural ground heat pump',
         'urban decentral air heat pump',
+        "rural resistive heater", 
+        "urban decentral resistive heater",
     ],
     granularity: str = "all",
     analyze: str = "both",
@@ -1152,13 +1160,14 @@ if __name__ == "__main__":
             print_info=False,
         )
 
-        # aggreate decentral heat pump techs if in flex_causes
+        # aggreate decentral PtH techs if in flex_causes
         df_clean = inflexible_df.copy()
-        hp_groups = {
+        decentral_pth_groups = {
             "heat pump (decentral)": ["rural air heat pump", "rural ground heat pump", "urban decentral air heat pump"],
+            "resistive heater (decentral)": ["rural resistive heater", "urban decentral resistive heater"],
         }
         df_agg = pd.concat([
-            aggregate_by_keywords(df_clean.xs(gran), hp_groups).assign(Granularity=gran)
+            aggregate_by_keywords(df_clean.xs(gran), decentral_pth_groups).assign(Granularity=gran)
             for gran in df_clean.index.get_level_values("Granularity").unique()
         ]).set_index("Granularity", append=True).swaplevel()
         
