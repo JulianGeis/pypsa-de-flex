@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260304-flex-config-updates
+  prefix: 20260305-flex-update-component-restriction
   name:
   # # main scenarios
   - LowFlex

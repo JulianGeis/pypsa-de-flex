@@ -22,15 +22,16 @@ logger = logging.getLogger(__name__)
 
 def first_technology_occurrence(n):
     """
-    Sets p_nom_extendable to false for carriers with configured first
-    occurrence if investment year is before configured year.
+    Drop configured technologies before configured year.
     """
 
     for c, carriers in snakemake.params.technology_occurrence.items():
         for carrier, first_year in carriers.items():
             if int(snakemake.wildcards.planning_horizons) < first_year:
-                logger.info(f"{carrier} not extendable before {first_year}.")
-                n.df(c).loc[n.df(c).carrier == carrier, "p_nom_extendable"] = False
+                to_drop = n.df(c).query(f"carrier == '{carrier}'").index
+                if to_drop.empty:
+                    continue
+                n.remove(c, to_drop)
 
 
 def fix_new_boiler_profiles(n):
@@ -1849,6 +1850,8 @@ def restrict_component_buildout(n, component_limits, capacities_csv, where="only
                         f"No extendable {c.name} with carrier {carrier} found at bus {limits_bus} to restrict."
                     )
 
+    synchronize_TES_extendability(n)
+
 
 
 def synchronize_TES_extendability(n: pypsa.Network) -> None:
@@ -2102,15 +2105,12 @@ if __name__ == "__main__":
         )
 
     restrict_components_config = snakemake.params.restrict_component_buildout
+    
     if restrict_components_config is not None:
-        if 'component_limits' in restrict_components_config: # ensures it works with the old and new format
-            where = restrict_components_config.get('where', 'only_de')
-            when = restrict_components_config.get('when', [2035, 2045])
-            component_limits = restrict_components_config['component_limits']
-        else:
-            where = "only_de"
-            when = [2035, 2045]
-            component_limits = restrict_components_config
+
+        where = restrict_components_config.get('where', 'whole_system')
+        when = restrict_components_config.get('when', [2035, 2045])
+        component_limits = restrict_components_config['component_limits']
 
         if n.snapshot_weightings.generators.iloc[0] == 1.0:
             base_capacities_csv = snakemake.input.base_capacities_1H
@@ -2123,8 +2123,6 @@ if __name__ == "__main__":
 
     if snakemake.params.force_pth_profiles_decentral_rural_p_min_pu:
         force_pth_profiles_decentral_rural(n)
-
-    synchronize_TES_extendability(n)
 
     # End Flexibility implementations
 

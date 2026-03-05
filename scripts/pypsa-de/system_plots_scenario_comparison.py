@@ -695,12 +695,11 @@ def bar_plot_variables(variables,
         plt.tight_layout()
         if output_dir:
             plt.savefig(output_dir / f"{filename_prefix}_{year}.png", bbox_inches="tight", dpi=300)
+        plt.close(fig)
 
 
 def plot_curtailment(networks, scenarios, year, tech_colors, output_dir=None):
     """Plot curtailment for wind and solar technologies across scenarios."""
-    
-    fig, ax = plt.subplots(figsize=(8, 5))
     
     # Define technology groupings
     wind_techs = ['onwind', 'offwind-ac', 'offwind-dc']
@@ -708,31 +707,26 @@ def plot_curtailment(networks, scenarios, year, tech_colors, output_dir=None):
     
     # Prepare data structure
     scenario_data = {sc: {'wind': {}, 'solar': {}} for sc in scenarios}
-    
     for scenario in scenarios:
         n = networks[scenario][year]
-        
-        # Calculate curtailment
         curtailment = (
             n.statistics.curtailment(bus_carrier=["AC", "low voltage"], **kwargs)
             .filter(like="DE")
             .groupby("carrier")
             .sum()
         )
-        
-        # Extract wind data
         for tech in wind_techs:
-            if tech in curtailment.index:
-                scenario_data[scenario]['wind'][tech] = curtailment[tech] / 1e6  # Convert to TWh
-            else:
-                scenario_data[scenario]['wind'][tech] = 0.0
-        
-        # Extract solar data
+            scenario_data[scenario]['wind'][tech] = curtailment[tech] / 1e6 if tech in curtailment.index else 0.0
         for tech in solar_techs:
-            if tech in curtailment.index:
-                scenario_data[scenario]['solar'][tech] = curtailment[tech] / 1e6  # Convert to TWh
-            else:
-                scenario_data[scenario]['solar'][tech] = 0.0
+            scenario_data[scenario]['solar'][tech] = curtailment[tech] / 1e6 if tech in curtailment.index else 0.0
+
+    # Early exit BEFORE creating the figure
+    wind_total_all = sum(v for sc in scenarios for v in scenario_data[sc]['wind'].values())
+    solar_total_all = sum(v for sc in scenarios for v in scenario_data[sc]['solar'].values())
+    if wind_total_all < 1 and solar_total_all < 1:
+        return
+
+    fig, ax = plt.subplots(figsize=(8, 5))
     
     # Set up bar positions
     x = np.arange(len(scenarios))
@@ -756,6 +750,9 @@ def plot_curtailment(networks, scenarios, year, tech_colors, output_dir=None):
     
     # Calculate max value for y-axis limit
     max_value = max(max(bottom_wind), max(bottom_solar))
+
+    if max_value < 1.0:
+        return  # Skip plotting if curtailment is negligible across all scenarios
     
     # Add only total sum labels on top of bars
     for i, scenario in enumerate(scenarios):
@@ -790,6 +787,8 @@ def plot_curtailment(networks, scenarios, year, tech_colors, output_dir=None):
     
     if output_dir:
         plt.savefig(output_dir / f"curtailment_{year}.png", bbox_inches="tight", dpi=300)
+    plt.close(fig)
+
 
 
 def plot_energy_system_cost_comparison(
@@ -931,6 +930,7 @@ def plot_energy_system_cost_comparison(
     # Save if path provided
     if save_path:
         plt.savefig(save_path, dpi=300, bbox_inches='tight')
+    plt.close(fig)
     
     return fig, ax
 
@@ -1281,6 +1281,7 @@ if __name__ == "__main__":
         
     ### SYSTEM COSTS ###
     # Plot system cost per year
+    logger.info("\nPlotting system costs...")
 
     for year in planning_horizons:
 
@@ -1442,7 +1443,7 @@ if __name__ == "__main__":
             df[(df > 1).any(axis=1)]
 
     ### TRADE ###
-
+    logger.info("\nPlotting trade...")
     plot_vars = {
         "Electricity": "Trade|Secondary Energy|Electricity|Volume",
         "Gas": "Primary Energy|Gas",
@@ -1513,10 +1514,13 @@ if __name__ == "__main__":
                         filename_prefix="trade_cost_efuels")
 
     ### CURTAILMENT ###
-
-    for year in planning_horizons[1:]:  # Skip 2025 for curtailment
+    logger.info("\nPlotting curtailment...")
+    for year in planning_horizons:  
         plot_curtailment(networks, 
                          scenarios,
                          year,
                          tech_colors,
                          output_dir)
+        
+    logger.info(f"\n✓ All plots saved to: {output_dir}")
+    

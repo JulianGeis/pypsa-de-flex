@@ -86,7 +86,7 @@ def calculate_storage_capacity(n, scenario, year, region="DE", save_plot=True, p
         "battery", "home battery", "EV battery", 
         "rural water tanks", "urban central water pits",
         "urban central water tanks", "urban decentral water tanks",
-        "H2 Store", "PHS", "Iron-Air battery"
+        "H2 Store", "PHS", "iron-air battery"
     ]
     
     result = pd.DataFrame(
@@ -107,21 +107,7 @@ def calculate_storage_capacity(n, scenario, year, region="DE", save_plot=True, p
         .sum() / 1e3
     )
     
-    result.loc["battery", "energy (GWh)"] = stores_capa.loc["battery", "e_nom_opt"] 
-    result.loc["home battery", "energy (GWh)"] = stores_capa.loc["home battery", "e_nom_opt"] 
-    try:
-        result.loc["EV battery", "energy (GWh)"] = stores_capa.loc["EV battery", "e_nom_opt"] 
-    except KeyError:
-        pass
-    result.loc["rural water tanks", "energy (GWh)"] = stores_capa.loc["rural water tanks", "e_nom_opt"] 
-    result.loc["urban central water pits", "energy (GWh)"] = stores_capa.loc["urban central water pits", "e_nom_opt"] 
-    result.loc["urban central water tanks", "energy (GWh)"] = stores_capa.loc["urban central water tanks", "e_nom_opt"] 
-    result.loc["urban decentral water tanks", "energy (GWh)"] = stores_capa.loc["urban decentral water tanks", "e_nom_opt"] 
-    result.loc["H2 Store", "energy (GWh)"] = stores_capa.loc["H2 Store", "e_nom_opt"]
-    try:
-        result.loc["Iron-Air battery", "energy (GWh)"] = stores_capa.loc["iron-air battery", "e_nom_opt"]
-    except KeyError:
-        pass
+    result["energy (GWh)"] = stores_capa.reindex(result.index)["e_nom_opt"].values
 
     # ============= Storage - Storage Units =============
     su_capa = (
@@ -133,6 +119,19 @@ def calculate_storage_capacity(n, scenario, year, region="DE", save_plot=True, p
     result.loc["PHS", "energy (GWh)"] = su_capa.loc["PHS"]
 
     # ============= Elec Components =============
+    discharge_map = {
+        "EV battery": "V2G",
+        "iron-air battery": "iron-air battery discharger",
+        "battery": "battery discharger",
+        "home battery": "home battery discharger",
+    }
+    charge_map = {
+        "EV battery": "BEV charger",
+        "iron-air battery": "iron-air battery charger",
+        "battery": "battery charger",
+        "home battery": "home battery charger",
+    }
+
     elec_capas = (
         n.statistics.optimal_capacity(bus_carrier=["AC", "low voltage"], **kwargs)
         .filter(like=region)
@@ -141,18 +140,12 @@ def calculate_storage_capacity(n, scenario, year, region="DE", save_plot=True, p
         .div(1e3)
     )
 
-    result.loc["PHS", "discharge (GW)"] = elec_capas.get("PHS", 0)
-    result.loc["PHS", "charge (GW)"] = -elec_capas.get("PHS", 0)
+    # Default: carrier name == result index (covers PHS, water tanks, H2 Store)
+    discharge_labels = [discharge_map.get(t, t) for t in result.index]
+    charge_labels = [charge_map.get(t, t) for t in result.index]
 
-    result.loc["EV battery", "discharge (GW)"] = elec_capas.get("V2G", 0)
-    result.loc["EV battery", "charge (GW)"] = elec_capas.get("BEV charger", 0)
-
-    result.loc["Iron-Air battery", "discharge (GW)"] = elec_capas.get("iron-air battery discharger", 0)
-    result.loc["Iron-Air battery", "charge (GW)"] = elec_capas.get("iron-air battery charger", 0)
-
-    for tech in ["battery", "home battery"]:
-        result.loc[tech, "charge (GW)"] = elec_capas.get(f"{tech} charger", 0)
-        result.loc[tech, "discharge (GW)"] = elec_capas.get(f"{tech} discharger", 0)
+    result["discharge (GW)"] = elec_capas.reindex(discharge_labels).values
+    result["charge (GW)"] = elec_capas.reindex(charge_labels).values
 
     # ============= Heat Components =============
     heat_capas = (
@@ -166,12 +159,16 @@ def calculate_storage_capacity(n, scenario, year, region="DE", save_plot=True, p
         .div(1e3)
     )
 
-    for tech in ["rural water tanks",
-                "urban central water pits",
-                "urban central water tanks",
-                "urban decentral water tanks"]:
-        result.loc[tech, "charge (GW)"] = heat_capas.get(f"{tech} charger", 0)
-        result.loc[tech, "discharge (GW)"] = heat_capas.get(f"{tech} discharger", 0)
+    heat_techs = [
+        "rural water tanks", "urban central water pits",
+        "urban central water tanks", "urban decentral water tanks",
+    ]
+
+    discharge_labels = [f"{t} discharger" if t in heat_techs else t for t in result.index]
+    charge_labels = [f"{t} charger" if t in heat_techs else t for t in result.index]
+
+    result["discharge (GW)"] = heat_capas.reindex(discharge_labels).values
+    result["charge (GW)"] = heat_capas.reindex(charge_labels).values
 
     # ============= H2 Components =============
     h2_capas = (
@@ -183,8 +180,10 @@ def calculate_storage_capacity(n, scenario, year, region="DE", save_plot=True, p
         .div(1e3)
     )
 
-    result.loc["H2 Store", "discharge (GW)"] = h2_capas.clip(upper=0).sum()
-    result.loc["H2 Store", "charge (GW)"] = h2_capas.clip(lower=0).sum()
+    result.loc["H2 Store", ["discharge (GW)", "charge (GW)"]] = [
+        h2_capas.clip(upper=0).sum(),
+        h2_capas.clip(lower=0).sum(),
+    ]
     
     # ============= Energy-to-Power Ratio =============
     result["energy-to-power (h)"] = (
@@ -212,35 +211,38 @@ def calculate_storage_capacity(n, scenario, year, region="DE", save_plot=True, p
         .sum()
     )
 
-    result.loc["PHS", "max discharge (GW)"] = supply.loc["PHS"].max()
-    result.loc["PHS", "max charge (GW)"] = demand.loc["PHS"].max()
-    try:
-        result.loc["EV battery", "max discharge (GW)"] = supply.loc["V2G"].max()
-    except KeyError:
-        result.loc["EV battery", "max discharge (GW)"] = 0.0
-    result.loc["EV battery", "max charge (GW)"] = demand.loc["BEV charger"].max()
-    try: 
-        result.loc["Iron-Air battery", "max discharge (GW)"] = supply.loc["iron-air battery discharger"].max()
-        result.loc["Iron-Air battery", "max charge (GW)"] = demand.loc["iron-air battery charger"].max()
-    except KeyError:
-        pass
+    def safe_max(df, carrier):
+        return df.loc[carrier].max() if carrier in df.index else np.nan
 
-    for tech in ["battery", "home battery"]:
-        result.loc[tech, "max charge (GW)"] = demand.loc[f"{tech} charger"].max()
-        result.loc[tech, "max discharge (GW)"] = supply.loc[f"{tech} discharger"].max()
+    heat_techs = ["rural water tanks", "urban central water pits",
+                "urban central water tanks", "urban decentral water tanks"]
 
-    for tech in ["rural water tanks",
-                "urban central water pits",
-                "urban central water tanks",
-                "urban decentral water tanks"]:
-        result.loc[tech, "max charge (GW)"] = supply.loc[f"{tech} charger"].max()
-        result.loc[tech, "max discharge (GW)"] = demand.loc[f"{tech} discharger"].max()
+    discharge_map = {
+        "PHS": (supply, "PHS"),
+        "EV battery": (supply, "V2G"),
+        "iron-air battery": (supply, "iron-air battery discharger"),
+        "battery": (supply, "battery discharger"),
+        "home battery": (supply, "home battery discharger"),
+        **{t: (demand, f"{t} discharger") for t in heat_techs},
+    }
+    charge_map = {
+        "PHS": (demand, "PHS"),
+        "EV battery": (demand, "BEV charger"),
+        "iron-air battery": (demand, "iron-air battery charger"),
+        "battery": (demand, "battery charger"),
+        "home battery": (demand, "home battery charger"),
+        **{t: (supply, f"{t} charger") for t in heat_techs},
+    }
 
-    result.loc["H2 Store", "max discharge (GW)"] = supply.loc[h2_capas[h2_capas < 0].index].sum().max()
-    result.loc["H2 Store", "max charge (GW)"] = supply.loc[h2_capas[h2_capas > 0].index].sum().max()
+    for key, (df, carrier) in discharge_map.items():
+        result.loc[key, "max discharge (GW)"] = safe_max(df, carrier)
+    for key, (df, carrier) in charge_map.items():
+        result.loc[key, "max charge (GW)"] = safe_max(df, carrier)
 
-    result["max charge (GW)"] = result["max charge (GW)"] / 1e3
-    result["max discharge (GW)"] = result["max discharge (GW)"] / 1e3
+    result.loc["H2 Store", "max discharge (GW)"] = supply.reindex(h2_capas[h2_capas < 0].index).sum().max()
+    result.loc["H2 Store", "max charge (GW)"] = supply.reindex(h2_capas[h2_capas > 0].index).sum().max()
+
+    result[["max charge (GW)", "max discharge (GW)"]] /= 1e3
 
     # ============= Save Plot =============
     if save_plot:
