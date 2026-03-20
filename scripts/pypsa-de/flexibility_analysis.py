@@ -11,7 +11,7 @@ import numpy as np
 import pandas as pd
 import pypsa
 from _helpers import configure_logging, mock_snakemake
-from flexibility_utils import tech_groups
+from flexibility_utils import tech_groups, NON_DISPATCHABLE_SUPPLY_CARRIERS, NON_DISPATCHABLE_DEMAND_CARRIERS
 
 logger = logging.getLogger(__name__)
 
@@ -151,27 +151,8 @@ def calc_supply_demand(
 def calc_residual_load(
     supply,
     demand,
-    non_dispatchable_supply_carriers=[
-        "onwind",
-        "offwind-ac",
-        "offwind-dc",
-        "solar",
-        "solar-hsat",
-        "solar rooftop",
-        "ror",
-    ],
-    non_dispatchable_demand_carriers=[
-        "electricity",
-        "agriculture electricity",
-        "industry electricity",
-        "agriculture machinery electric",
-        "land transport EV",
-        'rural air heat pump',
-        'rural ground heat pump',
-        'urban decentral air heat pump',
-        "rural resistive heater", 
-        "urban decentral resistive heater",
-    ],
+    non_dispatchable_supply_carriers=NON_DISPATCHABLE_SUPPLY_CARRIERS,
+    non_dispatchable_demand_carriers=NON_DISPATCHABLE_DEMAND_CARRIERS,
 ):
     """
     Calculate residual load from supply and demand data.
@@ -333,27 +314,8 @@ def calc_flexibility_needs_with_monthly(
 def calc_flexibility_contributions(
     electricity_supply: pd.DataFrame,
     electricity_demand: pd.DataFrame,
-    non_dispatchable_supply_carriers=[
-        "onwind",
-        "offwind-ac",
-        "offwind-dc",
-        "solar",
-        "solar-hsat",
-        "solar rooftop",
-        "ror",
-    ],
-    non_dispatchable_demand_carriers=[
-        "electricity",
-        "agriculture electricity",
-        "industry electricity",
-        "agriculture machinery electric",
-        "land transport EV",
-        'rural air heat pump',
-        'rural ground heat pump',
-        'urban decentral air heat pump',
-        "rural resistive heater", 
-        "urban decentral resistive heater",
-    ],
+    non_dispatchable_supply_carriers=NON_DISPATCHABLE_SUPPLY_CARRIERS,
+    non_dispatchable_demand_carriers=NON_DISPATCHABLE_DEMAND_CARRIERS,
     granularity: str = "all",
     analyze: str = "both",
     print_info: bool = False,
@@ -589,27 +551,8 @@ def calc_flexibility_contributions(
 def calc_flexibility_contributions_with_monthly(
     electricity_supply: pd.DataFrame,
     electricity_demand: pd.DataFrame,
-    non_dispatchable_supply_carriers=[
-        "onwind",
-        "offwind-ac",
-        "offwind-dc",
-        "solar",
-        "solar-hsat",
-        "solar rooftop",
-        "ror",
-    ],
-    non_dispatchable_demand_carriers=[
-        "electricity",
-        "agriculture electricity",
-        "industry electricity",
-        "agriculture machinery electric",
-        "land transport EV",
-        'rural air heat pump',
-        'rural ground heat pump',
-        'urban decentral air heat pump',
-        "rural resistive heater", 
-        "urban decentral resistive heater",
-    ],
+    non_dispatchable_supply_carriers=NON_DISPATCHABLE_SUPPLY_CARRIERS,
+    non_dispatchable_demand_carriers=NON_DISPATCHABLE_DEMAND_CARRIERS,
     granularity: str = "all",
     analyze: str = "both",
     print_info: bool = False,

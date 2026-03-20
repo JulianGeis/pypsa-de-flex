@@ -3,6 +3,30 @@ from numpy import isclose
 import matplotlib.pyplot as plt
 
 
+NON_DISPATCHABLE_SUPPLY_CARRIERS = [
+    "onwind",
+    "offwind-ac",
+    "offwind-dc",
+    "solar",
+    "solar-hsat",
+    "solar rooftop",
+    "ror",
+]
+
+NON_DISPATCHABLE_DEMAND_CARRIERS = [
+    "electricity",
+    "agriculture electricity",
+    "industry electricity",
+    "agriculture machinery electric",
+    "land transport EV",
+    'rural air heat pump',
+    'rural ground heat pump',
+    'urban decentral air heat pump',
+    "rural resistive heater", 
+    "urban decentral resistive heater",
+]
+
+
 tech_colors = {
     "AC": "#70af1d",
     "DC": "#8a1caf",
@@ -219,7 +243,7 @@ tech_groups = {
     "coal (+CHP)": ["coal", "lignite"],
     "oil (+CHP)": ["oil"],
     "waste (+CHP)": ["waste"],
-    "H2 (+CHP)": ["H2 retrofit", "H2  CCGT", "H2 OCGT", "H2 CHP"],
+    "H2 (+CHP)": ["H2 retrofit", "H2 CCGT", "H2 OCGT", "H2 CHP"],
     "biomass (+CHP)": ["biomass"],
     "heat pump (central)": ["urban central air heat pump"],
     "resistive heater (central)": ["urban central resistive heater"],
@@ -234,6 +258,8 @@ tech_groups = {
         "electricity distribution grid losses",
     ],
     "V2G": ["V2G", "V2G charging", "V2G discharging losses"],
+    "battery charger": ["battery charger", "home battery charger"],
+    "battery discharger": ["battery discharger", "home battery discharger"],
 }
 
 def find_project_root():
@@ -316,6 +342,12 @@ scenario_abbrev = {
     "HighFlexBEV70": "HF_B70",
     "HighFlexBEV80": "HF_B80",
     "HighFlexBEV90": "HF_B90",
+
+    # OtherWeatherYears variations
+    "Base_2012": "BA2012",
+    "Base_2013": "BA2013",
+    "Base_2020": "BA2020",
+    "Base_2023": "BA2023",
 
     # Ariadne scenarios
     "ExPol": "EP",

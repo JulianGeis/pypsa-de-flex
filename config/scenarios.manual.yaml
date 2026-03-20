@@ -1663,3 +1663,172 @@ HighFlexBEV90:
     bev_dsm: 2030
     bev_dsm_availability: 0.9
     v2g: true
+
+# DifferentWeatherYears
+
+Base_2012:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.5
+    v2g: false
+
+  snapshots:
+    start: "2012-01-01"
+    end: "2013-01-01"
+    inclusive: 'left'
+
+  atlite:
+    default_cutout: europe-2012-sarah3-era5
+    cutouts:
+      europe-2012-sarah3-era5:
+        module: [sarah, era5] # in priority order
+        x: [-12., 42.]
+        y: [33., 72]
+        dx: 0.3
+        dy: 0.3
+        time: ['2012', '2012']
+
+  renewable:
+    onwind:
+      cutout: europe-2012-sarah3-era5
+    offwind-ac:
+      cutout: europe-2012-sarah3-era5
+    offwind-dc:
+      cutout: europe-2012-sarah3-era5
+    offwind-float: # disabled at the moment
+      cutout: europe-2012-sarah3-era5
+    solar:
+      cutout: europe-2012-sarah3-era5
+    solar-hsat:
+      cutout: europe-2012-sarah3-era5
+    hydro:
+      cutout: europe-2012-sarah3-era5
+Base_2013:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.5
+    v2g: false
+
+  snapshots:
+    start: "2013-01-01"
+    end: "2014-01-01"
+    inclusive: 'left'
+
+  atlite:
+    default_cutout: europe-2013-sarah3-era5
+    cutouts:
+      europe-2013-sarah3-era5:
+        module: [sarah, era5] # in priority order
+        x: [-12., 42.]
+        y: [33., 72]
+        dx: 0.3
+        dy: 0.3
+        time: ['2013', '2013']
+
+  renewable:
+    onwind:
+      cutout: europe-2013-sarah3-era5
+    offwind-ac:
+      cutout: europe-2013-sarah3-era5
+    offwind-dc:
+      cutout: europe-2013-sarah3-era5
+    offwind-float: # disabled at the moment
+      cutout: europe-2013-sarah3-era5
+    solar:
+      cutout: europe-2013-sarah3-era5
+    solar-hsat:
+      cutout: europe-2013-sarah3-era5
+    hydro:
+      cutout: europe-2013-sarah3-era5
+
+Base_2020:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.5
+    v2g: false
+
+  snapshots:
+    start: "2020-01-01"
+    end: "2021-01-01"
+    inclusive: 'left'
+
+  atlite:
+    default_cutout: europe-2020-sarah3-era5
+    cutouts:
+      europe-2013-sarah3-era5:
+        module: [sarah, era5] # in priority order
+        x: [-12., 42.]
+        y: [33., 72]
+        dx: 0.3
+        dy: 0.3
+        time: ['2020', '2020']
+
+  renewable:
+    onwind:
+      cutout: europe-2020-sarah3-era5
+    offwind-ac:
+      cutout: europe-2020-sarah3-era5
+    offwind-dc:
+      cutout: europe-2020-sarah3-era5
+    offwind-float: # disabled at the moment
+      cutout: europe-2020-sarah3-era5
+    solar:
+      cutout: europe-2020-sarah3-era5
+    solar-hsat:
+      cutout: europe-2020-sarah3-era5
+    hydro:
+      cutout: europe-2020-sarah3-era5
+
+Base_2023:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.5
+    v2g: false
+
+  snapshots:
+    start: "2023-01-01"
+    end: "2024-01-01"
+    inclusive: 'left'
+
+  atlite:
+    default_cutout: europe-2023-sarah3-era5
+    cutouts:
+      europe-2023-sarah3-era5:
+        module: [sarah, era5] # in priority order
+        x: [-12., 42.]
+        y: [33., 72]
+        dx: 0.3
+        dy: 0.3
+        time: ['2023', '2023']
+
+  renewable:
+    onwind:
+      cutout: europe-2023-sarah3-era5
+    offwind-ac:
+      cutout: europe-2023-sarah3-era5
+    offwind-dc:
+      cutout: europe-2023-sarah3-era5
+    offwind-float: # disabled at the moment
+      cutout: europe-2023-sarah3-era5
+    solar:
+      cutout: europe-2023-sarah3-era5
+    solar-hsat:
+      cutout: europe-2023-sarah3-era5
+    hydro:
+      cutout: europe-2023-sarah3-era5

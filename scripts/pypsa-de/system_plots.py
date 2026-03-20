@@ -164,11 +164,12 @@ def calculate_storage_capacity(n, scenario, year, region="DE", save_plot=True, p
         "urban central water tanks", "urban decentral water tanks",
     ]
 
-    discharge_labels = [f"{t} discharger" if t in heat_techs else t for t in result.index]
-    charge_labels = [f"{t} charger" if t in heat_techs else t for t in result.index]
+    # Only update heat_techs rows — avoids overwriting electricity values with NaNs
+    heat_discharge_labels = [f"{t} discharger" for t in heat_techs]
+    heat_charge_labels = [f"{t} charger" for t in heat_techs]
 
-    result["discharge (GW)"] = heat_capas.reindex(discharge_labels).values
-    result["charge (GW)"] = heat_capas.reindex(charge_labels).values
+    result.loc[heat_techs, "discharge (GW)"] = heat_capas.reindex(heat_discharge_labels).values
+    result.loc[heat_techs, "charge (GW)"] = heat_capas.reindex(heat_charge_labels).values
 
     # ============= H2 Components =============
     h2_capas = (
@@ -707,7 +708,7 @@ if __name__ == "__main__":
             clusters=27,
             opts="",
             sector_opts="None",
-            run="LowBattery",
+            run="HighFlex",
         )
 
     configure_logging(snakemake)
