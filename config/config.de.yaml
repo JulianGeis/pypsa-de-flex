@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260324-flex-update-capacities
+  prefix: 20260402-flex-include-load_shedding
   name:
   # # main scenarios
   - LowFlex
@@ -515,7 +515,7 @@ solving:
   mem_logging_frequency: 5 # in seconds
   options:
     assign_all_duals: true
-    load_shedding: false
+    load_shedding: 4  # Eur/kWh = 4000 Eur/MWh
     skip_iterations: true # settings for post-discretization: false
     min_iterations: 1 # settings for post-discretization: 1
     max_iterations: 1 # settings for post-discretization: 1
