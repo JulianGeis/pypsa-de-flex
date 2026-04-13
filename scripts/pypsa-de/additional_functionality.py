@@ -980,10 +980,13 @@ def additional_functionality(n, snapshots, snakemake):
 
     add_power_limits(n, investment_year, constraints["limits_power_max"])
 
-    if (snakemake.wildcards.clusters != "1") & ("h2_import" in constraints["limits_volume_max"]):
-        h2_import_limits(n, investment_year, constraints["limits_volume_max"])
+    if snakemake.wildcards.clusters != "1":
+    
+        if "h2_import" in constraints["limits_volume_max"]:
+            h2_import_limits(n, investment_year, constraints["limits_volume_max"])
 
-        electricity_import_limits(n, investment_year, constraints["limits_volume_max"])
+        if "electricity_import" in constraints["limits_volume_max"]:
+            electricity_import_limits(n, investment_year, constraints["limits_volume_max"])
 
     limits_volume_max = constraints.get("limits_volume_max", None)
     limits_volume_min = constraints.get("limits_volume_min", None)
