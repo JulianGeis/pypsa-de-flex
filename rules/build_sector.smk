@@ -952,6 +952,7 @@ rule build_industrial_energy_demand_per_node:
         industrial_energy_demand_per_node_today=resources(
             "industrial_energy_demand_today_base_s_{clusters}.csv"
         ),
+        normalized_industry_load_profiles="flex-data/id_opendata_59_year_2017.json",
     output:
         industrial_energy_demand_per_node=resources(
             "industrial_energy_demand_base_s_{clusters}_{planning_horizons}.csv"
