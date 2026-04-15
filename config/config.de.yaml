@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260402-flex-include-load_shedding
+  prefix: 20260415-flex-own-load-shedding-implementation
   name:
   # # main scenarios
   - LowFlex
@@ -84,7 +84,7 @@ run:
     manual_file: config/scenarios.manual.yaml
     file: config/scenarios.automated.yaml
   shared_resources:
-    policy: false # set to false for different weather years #stops recalculating
+    policy: base # set to false for different weather years (base otherwise) #stops recalculating
     exclude:
     - existing_heating.csv   # specify files which should not be shared between scenarios
     - costs
@@ -515,7 +515,7 @@ solving:
   mem_logging_frequency: 5 # in seconds
   options:
     assign_all_duals: true
-    load_shedding: 4  # Eur/kWh = 4000 Eur/MWh
+    load_shedding: false  # Eur/kWh
     skip_iterations: true # settings for post-discretization: false
     min_iterations: 1 # settings for post-discretization: 1
     max_iterations: 1 # settings for post-discretization: 1
@@ -948,3 +948,10 @@ restrict_cross_border_flows: # restricts cross border flows between all countrie
   2040: 0.6
   2045: 0.6
   2050: 0.7
+
+demand_modelling:
+  enable: true
+  voll: true
+  voll_price: 4000  # €/MWh
+  voll_pnom_multiplier: 3.0  # scales p_nom relative to peak direct load at bus
+  voll_pnom_constant: null  # if set, overrides multiplier and uses this fixed value [MW]

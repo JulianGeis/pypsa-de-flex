@@ -1988,6 +1988,69 @@ def force_pth_profiles_decentral_rural(n):
     n.links_t.p_min_pu[pth_links] = pth_profiles_pu
 
 
+def adapt_demand_modelling(n, params):
+    """..."""
+
+    existing = n.generators[n.generators.carrier == "load-shedding"].index
+    if not existing.empty:
+        n.remove("Generator", existing)
+        logger.info(
+            f"Removed {len(existing)} load-shedding generators from previous horizon."
+        )
+
+    if "load-shedding" not in n.carriers.index:
+        n.add("Carrier", "load-shedding", color="#dd2e23", nice_name="Load shedding")
+
+    if params["voll"]:
+        use_constant = params.get("voll_pnom_constant") is not None
+
+        for carrier in ["AC", "low voltage"]:
+            buses_i = n.buses[n.buses.carrier == carrier].index
+
+            for bus in buses_i:
+                loads_temporal_i = n.loads[
+                    (n.loads.bus == bus) & (n.loads.p_set == 0)
+                ].index
+                # Some loads have p_set==0 statically but no time series entry
+                loads_temporal_i = loads_temporal_i.intersection(
+                    n.loads_t.p_set.columns
+                )
+                loads_static_i = n.loads[
+                    (n.loads.bus == bus) & (n.loads.p_set > 0)
+                ].index
+                loads_temporal = (
+                    n.loads_t.p_set[loads_temporal_i].sum(axis=1)
+                    + n.loads.p_set[loads_static_i].sum()
+                )
+
+                if loads_temporal.max() == 0:
+                    continue
+
+                if use_constant:
+                    p_nom = params["voll_pnom_constant"]
+                    pnom_info = f"constant p_nom={p_nom:.1f} MW"
+                else:
+                    p_nom = loads_temporal.max() * params["voll_pnom_multiplier"]
+                    pnom_info = (
+                        f"p_nom={p_nom:.1f} MW "
+                        f"({params['voll_pnom_multiplier']}x peak direct load of "
+                        f"{loads_temporal.max():.1f} MW)"
+                    )
+
+                logger.info(
+                    f"Adding VOLL Generator at {bus} ({carrier}) "
+                    f"with marginal cost of {params['voll_price']} €/MWh, {pnom_info}."
+                )
+                n.add(
+                    "Generator",
+                    f"load-shedding-{bus}",
+                    bus=bus,
+                    carrier="load-shedding",
+                    marginal_cost=params["voll_price"],  # €/MWh
+                    p_nom=p_nom,                          # MW
+                )
+
+
 if __name__ == "__main__":
     if "snakemake" not in globals():
         snakemake = mock_snakemake(
@@ -2123,6 +2186,9 @@ if __name__ == "__main__":
 
     if snakemake.params.force_pth_profiles_decentral_rural_p_min_pu:
         force_pth_profiles_decentral_rural(n)
+
+    if snakemake.params.demand_modelling["enable"]:
+        adapt_demand_modelling(n, snakemake.params.demand_modelling)
 
     # End Flexibility implementations
 

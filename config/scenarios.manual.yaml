@@ -349,6 +349,8 @@ HighFlex:
       shift_capacity: 10  # GW
       holding_hours: 4
 
+  # this is already activated in 2025: would need to move functionality 
+  # to prepare_sector_network to activate per planning horizon
   lines:
     dynamic_line_rating:
       activate: true

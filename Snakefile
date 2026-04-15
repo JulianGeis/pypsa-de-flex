@@ -562,6 +562,7 @@ rule modify_prenetwork:
         force_pth_profiles_decentral_rural_p_min_pu=config_provider(
             "sector", "force_pth_profiles_decentral_rural_p_min_pu"
         ),
+        demand_modelling=config_provider("demand_modelling"),
     input:
         costs_modifications="ariadne-data/costs_{planning_horizons}-modifications.csv",
         network=resources(
