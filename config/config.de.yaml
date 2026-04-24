@@ -12,6 +12,7 @@ run:
   - Base
   - HighFlex
   # # LowFlex variations:
+  # - LowFlexEnergyAndPowerCapRestrict
   # - LowFlex75
   # - LowFlex75_pminpu_0.5
   # - LowFlex75_pminpu_0.3
@@ -30,6 +31,10 @@ run:
   # - LowFlex50_Electrolysis_pminpu_0.3_Other_pminpu_1
   # - LowFlex50HeatPMINPU
   # - LowFlex50HeatMinStore
+  # # LowFlex sensitivities:
+  # - LowFlexElectrolysis_pminpu_0.5
+  # - LowFlexElectrolysis+PtX
+  # - LowFlexCapacities
   # - LowFlexBEVDSMOFF
   # # Battery variations:
   # - LowBattery75
@@ -73,6 +78,11 @@ run:
   # - Base_2013
   # - Base_2020
   # - Base_2023 
+  # # CAPEX sensitivities
+  # - Base_DoubleBattery
+  # - Base_DoubleElectrolysis
+  # - HighFlexDoubleIronAir
+  # - HighFlexFiveIronAir
   # # Ariadne scenarios:
   # - KN2045_Mix
   # - KN2045_Elek

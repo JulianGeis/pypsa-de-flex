@@ -363,6 +363,49 @@ HighFlex:
 # LowFlex variations
 # all scenarios with p_min_pu > 0.5 for electrolysis are considered too strict
 
+LowFlexEnergyAndPowerCapRestrict:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 # set to year > 2050 to turn off bev_dsm
+    bev_dsm_availability: 0.2
+    v2g: false
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 0.5
+    2045:
+      all:
+        H2 Electrolysis: 0.5
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks discharger: 0.75
+      Store:
+        H2 Store: 0.75
+        home battery: 0.75
+        battery: 0.75
+        urban central water pits: 0.75
+        urban central water tanks: 0.75
+        urban decentral water pits: 0.75
+        urban decentral water tanks: 0.75
+        rural water tanks: 0.75
+
 LowFlex75:
 # transmission limit v1.5 and BEV DSM restricted
 # p_min_pu = 1 in all regions for FT, methanolisation, methanation and electrolysis
@@ -1201,6 +1244,64 @@ LowFlex50HeatMinStore:
         urban central water tanks: 0.25
         urban central water pits: 0.25
 
+### LowFlex sensitivities
+
+LowFlexElectrolysis_pminpu_0.5:
+
+  electricity:
+    transmission_limit: v1.5
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 0.5
+    2045:
+      all:
+        H2 Electrolysis: 0.5
+
+LowFlexElectrolysis+PtX:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    min_part_load_fischer_tropsch: 1
+    min_part_load_methanolisation: 1
+    min_part_load_methanation: 1
+
+  must_run:
+    2035:
+      all:
+        H2 Electrolysis: 0.5
+    2045:
+      all:
+        H2 Electrolysis: 0.5
+
+LowFlexCapacities:
+# transmission limit v1.5 
+# BEV DSM restricted
+# p_min_pu = 1 in all regions for FT, methanolisation, methanation and 0.5 for electrolysis
+# Links capacity restricted to 75 % of Base scenario for batteries (stationary, home), water storages
+# Store capacity restricted to 75 % of Base scenario for H2 Store
+
+  electricity:
+    transmission_limit: v1.5
+
+  restrict_component_buildout: # restricts the max buildout of specified components to a fraction of the Base scenario
+    where: whole_system
+    when: [2035, 2045]
+    component_limits:
+      Link:
+        battery discharger: 0.75
+        home battery discharger: 0.75
+        urban central water pits discharger: 0.75
+        urban central water tanks discharger: 0.75
+        urban decentral water pits discharger: 0.75
+        urban decentral water tanks discharger: 0.75
+        rural water tanks discharger: 0.75
+      Store:
+        H2 Store: 0.75
+
 
 LowFlexBEVDSMOFF:
 
@@ -1834,3 +1935,143 @@ Base_2023:
       cutout: europe-2023-sarah3-era5
     hydro:
       cutout: europe-2023-sarah3-era5
+
+
+# CAPEX sensitivities
+
+Base_DoubleBattery:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.5
+    v2g: false
+
+  adjustments:
+    electricity: false
+    sector:
+      factor:
+        links:
+          battery charger:
+            capital_cost: 2
+        stores:
+          battery:
+            capital_cost: 2
+      absolute: false
+
+
+Base_DoubleElectrolysis:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.5
+    v2g: false
+
+  adjustments:
+    electricity: false
+    sector:
+      factor:
+        links:
+          H2 Electrolysis:
+            capital_cost: 2
+      absolute: false
+
+HighFlexDoubleIronAir:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.8
+    v2g: true
+    iron_air_battery: true
+
+  adjustments:
+    electricity: false
+    sector:
+      factor:
+        links:
+          iron-air battery:
+            capital_cost: 2
+      absolute: false
+
+  industry_dsm:
+    enable: true
+    2030:
+      shift_capacity: 5  # GW
+      holding_hours: 4
+      compensate_hours: 24
+      ramp_down_cost: 0
+      compensate_cost: 0
+    2035:
+      shift_capacity: 6  # GW
+      holding_hours: 4
+    2040:
+      shift_capacity: 8  # GW
+      holding_hours: 4
+    2045:
+      shift_capacity: 10  # GW
+      holding_hours: 4
+    2050:
+      shift_capacity: 10  # GW
+      holding_hours: 4
+
+  # this is already activated in 2025: would need to move functionality 
+  # to prepare_sector_network to activate per planning horizon
+  lines:
+    dynamic_line_rating:
+      activate: true
+
+
+HighFlexFiveIronAir:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2030
+    bev_dsm_availability: 0.8
+    v2g: true
+    iron_air_battery: true
+
+  adjustments:
+    electricity: false
+    sector:
+      factor:
+        links:
+          iron-air battery:
+            capital_cost: 5
+      absolute: false
+
+  industry_dsm:
+    enable: true
+    2030:
+      shift_capacity: 5  # GW
+      holding_hours: 4
+      compensate_hours: 24
+      ramp_down_cost: 0
+      compensate_cost: 0
+    2035:
+      shift_capacity: 6  # GW
+      holding_hours: 4
+    2040:
+      shift_capacity: 8  # GW
+      holding_hours: 4
+    2045:
+      shift_capacity: 10  # GW
+      holding_hours: 4
+    2050:
+      shift_capacity: 10  # GW
+      holding_hours: 4
+
+  # this is already activated in 2025: would need to move functionality 
+  # to prepare_sector_network to activate per planning horizon
+  lines:
+    dynamic_line_rating:
+      activate: true

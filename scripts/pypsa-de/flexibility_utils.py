@@ -280,6 +280,7 @@ scenario_abbrev = {
     "HighFlex": "HF",
     
     # LowFlex variations
+    "LowFlexEnergyAndPowerCapRestrict" : "LF_EPC",
     "LowFlex75": "LF75",
     "LowFlex75_Electrolysis_pminpu_0.5_Other_pminpu_1": "LF75_E5O1",
     "LowFlex75_Electrolysis_pminpu_0.3_Other_pminpu_1": "LF75_E3O1",
@@ -296,6 +297,11 @@ scenario_abbrev = {
     "LowFlex50_Electrolysis_pminpu_0.3_Other_pminpu_1": "LF50_E3O1",
     "LowFlex50HeatPMINPU": "LF50_HP",
     "LowFlex50HeatMinStore": "LF50_HMS",
+
+    # LowFlex sensitivities
+    "LowFlexElectrolysis_pminpu_0.5": "LF_E5",
+    "LowFlexElectrolysis+PtX": "LF_EPtX",
+    "LowFlexCapacities": "LF_CAP",
     "LowFlexBEVDSMOFF": "LF_BEV_OFF",
     
     # Battery variations
@@ -348,6 +354,12 @@ scenario_abbrev = {
     "Base_2013": "BA2013",
     "Base_2020": "BA2020",
     "Base_2023": "BA2023",
+
+    # CAPEX sensitivities
+    "Base_DoubleBattery" : "BA_2BAT",
+    "Base_DoubleElectrolysis" : "BA_2ELEC",
+    "HighFlexDoubleIronAir" : "HF_2IA",
+    "HighFlexFiveIronAir" : "HF_5IA",
 
     # Ariadne scenarios
     "ExPol": "EP",
