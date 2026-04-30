@@ -326,7 +326,7 @@ HighFlex:
     bev_dsm: 2030
     bev_dsm_availability: 0.8
     v2g: true
-    iron_air_battery: true
+    iron_air_battery: 2035
 
   industry_dsm:
     enable: true
@@ -1726,7 +1726,7 @@ HighFlexIronAir:
     transmission_limit: v1.5
 
   sector:
-    iron_air_battery: true
+    iron_air_battery: 2035
 
 HighFlexDLR:
 
@@ -1953,10 +1953,10 @@ Base_DoubleBattery:
     electricity: false
     sector:
       factor:
-        links:
-          battery charger:
+        Link:
+          battery charger: # inverter costs only applied to battery charger
             capital_cost: 2
-        stores:
+        Store:
           battery:
             capital_cost: 2
       absolute: false
@@ -1976,7 +1976,7 @@ Base_DoubleElectrolysis:
     electricity: false
     sector:
       factor:
-        links:
+        Link:
           H2 Electrolysis:
             capital_cost: 2
       absolute: false
@@ -1990,13 +1990,16 @@ HighFlexDoubleIronAir:
     bev_dsm: 2030
     bev_dsm_availability: 0.8
     v2g: true
-    iron_air_battery: true
+    iron_air_battery: 2035
 
   adjustments:
     electricity: false
     sector:
       factor:
-        links:
+        Link:
+          iron-air battery charger:
+            capital_cost: 2
+        Store:
           iron-air battery:
             capital_cost: 2
       absolute: false
@@ -2038,13 +2041,16 @@ HighFlexFiveIronAir:
     bev_dsm: 2030
     bev_dsm_availability: 0.8
     v2g: true
-    iron_air_battery: true
+    iron_air_battery: 2035
 
   adjustments:
     electricity: false
     sector:
       factor:
-        links:
+        Link:
+          iron-air battery charger:
+            capital_cost: 5
+        Store:
           iron-air battery:
             capital_cost: 5
       absolute: false

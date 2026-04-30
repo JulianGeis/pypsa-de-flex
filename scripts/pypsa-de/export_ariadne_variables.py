@@ -1445,8 +1445,10 @@ def get_primary_energy(n, region):
 
     var["Primary Energy|Wind"] = renewable_electricity.filter(like="wind").sum()
 
-    assert isclose(     # FLEX may fail for LowFlex
-        renewable_electricity.sum() + solar_thermal_heat,
+    load_shedding = renewable_electricity.get("load-shedding", 0)
+
+    assert isclose(     # FLEX
+        renewable_electricity.sum() - load_shedding + solar_thermal_heat,
         (
             var["Primary Energy|Hydro"]
             + var["Primary Energy|Solar"]
@@ -1747,13 +1749,13 @@ def get_secondary_energy(n, region, _industry_demand):
         + var["Secondary Energy|Hydrogen|Other"]
     )
 
-    assert isclose( # FLEX may fail for LowFlex
+    # Sabatier appears with very low volumes as H2 producer (which makes no sense), 
+    # but can trigger this assertion in low resolutiin runs if not excluded (numerical issues?)
+    assert isclose(
         var["Secondary Energy|Hydrogen"],
         hydrogen_production[
-            ~hydrogen_production.index.str.startswith("H2 pipeline")
+            ~hydrogen_production.index.str.startswith(("H2 pipeline", "Sabatier"))
         ].sum(),
-        rtol=0.01,
-        atol=1e-5,
     )
 
     # Liquids

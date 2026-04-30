@@ -4,7 +4,7 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260415-flex-own-load-shedding-implementation
+  prefix: 20260430-flex-cleaner-iron-air-battery-implementation
   name:
   # # main scenarios
   - LowFlex
@@ -454,6 +454,7 @@ sector:
     2045: 0.149
     2050: 0
   force_pth_profiles_decentral_rural_p_min_pu: false
+  iron_air_battery: false # set false to deactivate otherwise starting year of deployment
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#industry
 industry:
@@ -524,6 +525,7 @@ solving:
   mem_mb: 70000 # 20 GB for 27cl 3H; 30 GB for 27cl 1H / 49cl 3H; 45 GB for 49cl 1H (3 networks take 15h for 27cl 1H and 49cl 3H / 48h for 49cl 1H)
   mem_logging_frequency: 5 # in seconds
   options:
+    ironair_duration: 100 # duration of iron-air battery in hours
     assign_all_duals: true
     load_shedding: false  # Eur/kWh
     skip_iterations: true # settings for post-discretization: false
@@ -847,8 +849,8 @@ scale_capacity:
 system_comparison:
   scenarios:
   # # main scenarios
-  - LowFlex
-  - LowBattery
+  # - LowFlex
+  # - LowBattery
   - Base
   - HighFlex
   # # LowFlex variations:
@@ -913,6 +915,11 @@ system_comparison:
   # - Base_2013
   # - Base_2020
   # - Base_2023 
+  # # CAPEX sensitivities
+  # - Base_DoubleBattery
+  # - Base_DoubleElectrolysis
+  # - HighFlexDoubleIronAir
+  # - HighFlexFiveIronAir
   # # Ariadne scenarios:
   # - KN2045_Mix
   # - KN2045_Elek
