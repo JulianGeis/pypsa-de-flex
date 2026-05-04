@@ -356,13 +356,11 @@ HighFlex:
       activate: true
 
 
-
 ####### Definition of sensitivity scenarios #######
 # solving for 49cl 1H is not guranteed
 
 # LowFlex variations
 # all scenarios with p_min_pu > 0.5 for electrolysis are considered too strict
-
 LowFlexEnergyAndPowerCapRestrict:
 
   electricity:
@@ -1303,6 +1301,19 @@ LowFlexCapacities:
         H2 Store: 0.75
 
 
+LowFlexBEVDSM:
+
+  electricity:
+    transmission_limit: v1.5
+
+  sector:
+    bev_dsm: 2040 
+    bev_dsm_availability: 0.2
+    v2g: false
+
+
+# note: this scenario is not really a LowFlex sensitivity as it goes beyond
+# the low BEV chargin in LowFlex
 LowFlexBEVDSMOFF:
 
   electricity:
@@ -1949,6 +1960,7 @@ Base_DoubleBattery:
     bev_dsm_availability: 0.5
     v2g: false
 
+  # cost adjustments are applied in all years and regions
   adjustments:
     electricity: false
     sector:
@@ -1972,6 +1984,7 @@ Base_DoubleElectrolysis:
     bev_dsm_availability: 0.5
     v2g: false
 
+  # cost adjustments are applied in all years and regions
   adjustments:
     electricity: false
     sector:
@@ -1992,6 +2005,8 @@ HighFlexDoubleIronAir:
     v2g: true
     iron_air_battery: 2035
 
+  # cost adjustments are applied in all years and regions 
+  # (iron-air only from 2035 as technology does not appear before)
   adjustments:
     electricity: false
     sector:
@@ -2043,6 +2058,8 @@ HighFlexFiveIronAir:
     v2g: true
     iron_air_battery: 2035
 
+  # cost adjustments are applied in all years and regions
+  # (iron-air only from 2035 as technology does not appear before)
   adjustments:
     electricity: false
     sector:

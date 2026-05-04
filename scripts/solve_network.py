@@ -998,32 +998,63 @@ def add_battery_constraints(n):
     n.model.add_constraints(lhs == 0, name="Link-charger_ratio")
 
 
-def add_ironair_duration_fix(n, solve_opts):
-        """
-        Add constraint ensuring that P/E ratio for ironair battery is 100 hours
-        (the only commercial ironair battery product has fixed duration)
-        """
+# def add_ironair_duration_fix(n, solve_opts):
+#         """
+#         Add constraint ensuring that P/E ratio for ironair battery is 100 hours
+#         (the only commercial ironair battery product has fixed duration)
+#         """
 
-        energy_bool = n.stores.index.str.contains("iron-air")
+#         energy_bool = n.stores.index.str.contains("iron-air")
 
-        if not energy_bool.any():
-            logger.warning(
-                "No iron-air battery stores found for iron-air duration constraint. Not enforcing iron-air duration constraint."
-            )
-            return
+#         if not energy_bool.any():
+#             logger.warning(
+#                 "No iron-air battery stores found for iron-air duration constraint. Not enforcing iron-air duration constraint."
+#             )
+#             return
         
-        energy_ext = n.stores[energy_bool].query("e_nom_extendable").index
+#         energy_ext = n.stores[energy_bool].query("e_nom_extendable").index
 
-        charger_bool = n.links.index.str.contains("iron-air battery charger")
-        chargers_ext = n.links[charger_bool].query("p_nom_extendable").index
+#         charger_bool = n.links.index.str.contains("iron-air battery charger")
+#         chargers_ext = n.links[charger_bool].query("p_nom_extendable").index
 
-        expr = (
-            n.model["Store-e_nom"].loc[energy_ext]
-            == n.model["Link-p_nom"].loc[chargers_ext]
-            * solve_opts["ironair_duration"]  # iron-air battery duration in hours
+#         expr = (
+#             n.model["Store-e_nom"].loc[energy_ext]
+#             == n.model["Link-p_nom"].loc[chargers_ext]
+#             * solve_opts["ironair_duration"]  # iron-air battery duration in hours
+#         )
+
+#         n.model.add_constraints(expr, name="Ironair-duration")
+
+
+def add_ironair_duration_fix(n, solve_opts):
+    """
+    Add constraint ensuring that P/E ratio for ironair battery is 100 hours
+    (the only commercial ironair battery product has fixed duration).
+    
+    Duration is enforced on the DISCHARGER side per Form Energy datasheet
+    spec ("100 hours discharge at rated capacity").
+    """
+
+    energy_bool = n.stores.index.str.contains("iron-air")
+
+    if not energy_bool.any():
+        logger.warning(
+            "No iron-air battery stores found for iron-air duration constraint. Not enforcing iron-air duration constraint."
         )
+        return
+    
+    energy_ext = n.stores[energy_bool].query("e_nom_extendable").index
 
-        n.model.add_constraints(expr, name="Ironair-duration")
+    discharger_bool = n.links.index.str.contains("iron-air battery discharger")
+    dischargers_ext = n.links[discharger_bool].query("p_nom_extendable").index
+
+    expr = (
+        n.model["Store-e_nom"].loc[energy_ext]
+        == n.model["Link-p_nom"].loc[dischargers_ext]
+        * solve_opts["ironair_duration"]
+    )
+    n.model.add_constraints(expr, name="Ironair-duration")
+
 
 
 def add_lossy_bidirectional_link_constraints(n):

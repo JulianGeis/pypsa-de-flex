@@ -302,6 +302,7 @@ scenario_abbrev = {
     "LowFlexElectrolysis_pminpu_0.5": "LF_E5",
     "LowFlexElectrolysis+PtX": "LF_EPtX",
     "LowFlexCapacities": "LF_CAP",
+    "LowFlexBEVDSM": "LF_BEV",
     "LowFlexBEVDSMOFF": "LF_BEV_OFF",
     
     # Battery variations

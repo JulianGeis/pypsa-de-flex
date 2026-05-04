@@ -4,8 +4,9 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260430-flex-cleaner-iron-air-battery-implementation
+  prefix: 20260504-flex
   name:
+  # !!! The scenarios have to be commented out before executing build_scenarios otherwise the changes are not applied !!!
   # # main scenarios
   - LowFlex
   - LowBattery
@@ -35,6 +36,7 @@ run:
   # - LowFlexElectrolysis_pminpu_0.5
   # - LowFlexElectrolysis+PtX
   # - LowFlexCapacities
+  # - LowFlexBEVDSM
   # - LowFlexBEVDSMOFF
   # # Battery variations:
   # - LowBattery75
@@ -521,7 +523,7 @@ industry:
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#solving
 solving:
-  runtime: 12h # 10h for 27cl 3H; 15h for 27cl 1H and 49cl 3H; 20h for 49cl 1H
+  runtime: 12h # 15h for 27cl 3H; 20h for 27cl 1H and 49cl 3H; 40h for 49cl 1H
   mem_mb: 70000 # 20 GB for 27cl 3H; 30 GB for 27cl 1H / 49cl 3H; 45 GB for 49cl 1H (3 networks take 15h for 27cl 1H and 49cl 3H / 48h for 49cl 1H)
   mem_logging_frequency: 5 # in seconds
   options:
@@ -848,12 +850,13 @@ scale_capacity:
 # Scenario comparison settings
 system_comparison:
   scenarios:
-  # # main scenarios
-  # - LowFlex
-  # - LowBattery
+# # main scenarios
+  - LowFlex
+  - LowBattery
   - Base
   - HighFlex
   # # LowFlex variations:
+  # - LowFlexEnergyAndPowerCapRestrict
   # - LowFlex75
   # - LowFlex75_pminpu_0.5
   # - LowFlex75_pminpu_0.3
@@ -872,6 +875,11 @@ system_comparison:
   # - LowFlex50_Electrolysis_pminpu_0.3_Other_pminpu_1
   # - LowFlex50HeatPMINPU
   # - LowFlex50HeatMinStore
+  # # LowFlex sensitivities:
+  # - LowFlexElectrolysis_pminpu_0.5
+  # - LowFlexElectrolysis+PtX
+  # - LowFlexCapacities
+  # - LowFlexBEVDSM
   # - LowFlexBEVDSMOFF
   # # Battery variations:
   # - LowBattery75
