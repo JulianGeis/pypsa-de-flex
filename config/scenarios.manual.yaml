@@ -354,6 +354,7 @@ HighFlex:
   lines:
     dynamic_line_rating:
       activate: true
+      cutout: europe-2019-sarah3-era5
 
 
 ####### Definition of sensitivity scenarios #######
@@ -1747,6 +1748,7 @@ HighFlexDLR:
   lines:
     dynamic_line_rating:
       activate: true
+      cutout: europe-2019-sarah3-era5
 
 HighFlexBEV70:
 
@@ -2045,6 +2047,7 @@ HighFlexDoubleIronAir:
   lines:
     dynamic_line_rating:
       activate: true
+      cutout: europe-2019-sarah3-era5
 
 
 HighFlexFiveIronAir:
@@ -2098,3 +2101,4 @@ HighFlexFiveIronAir:
   lines:
     dynamic_line_rating:
       activate: true
+      cutout: europe-2019-sarah3-era5
