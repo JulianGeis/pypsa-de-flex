@@ -31,8 +31,8 @@ iron-air battery charge,efficiency,0.73,per unit,Form Energy 2023,"high end of 6
 iron-air battery discharge,efficiency,0.62,per unit,Form Energy 2023,"high end of 58-62% range, optimistic for 2045"
 iron-air battery inverter,FOM,1,%/year,Riepin et al. 2025,"same as battery (single integrated product per Form Energy)"
 iron-air battery inverter,lifetime,17.5,years,Form Energy 2023,"same as battery module"
-iron-air battery,investment,2.20,EUR2020/kWh,scaled from 1250 USD/kW total,"split 77:23; USD2023->EUR2020 via 0.9248 FX and 0.853 deflator"
-iron-air battery inverter,investment,747,EUR2020/kW,scaled from 1250 USD/kW total,"split 77:23; USD2023->EUR2020 via 0.9248 FX and 0.853 deflator"
+iron-air battery,investment,2.65,EUR2020/kWh,scaled from 1500 USD/kW total,"split 77:23; USD2023->EUR2020 via 0.9248 FX and 0.853 deflator"
+iron-air battery inverter,investment,900,EUR2020/kW,scaled from 1500 USD/kW total,"split 77:23; USD2023->EUR2020 via 0.9248 FX and 0.853 deflator"
 
 
 
