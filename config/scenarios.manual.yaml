@@ -317,7 +317,6 @@ Base:
 HighFlex:
 # high BEV DSM an V2G
 # industry DSM
-# dynamic line rating
 
   electricity:
     transmission_limit: v1.5
@@ -348,13 +347,6 @@ HighFlex:
     2050:
       shift_capacity: 10  # GW
       holding_hours: 4
-
-  # this is already activated in 2025: would need to move functionality 
-  # to prepare_sector_network to activate per planning horizon
-  lines:
-    dynamic_line_rating:
-      activate: true
-      cutout: europe-2019-sarah3-era5
 
 
 ####### Definition of sensitivity scenarios #######
@@ -1740,15 +1732,6 @@ HighFlexIronAir:
   sector:
     iron_air_battery: 2035
 
-HighFlexDLR:
-
-  electricity:
-    transmission_limit: v1.5
-
-  lines:
-    dynamic_line_rating:
-      activate: true
-      cutout: europe-2019-sarah3-era5
 
 HighFlexBEV70:
 
@@ -2042,12 +2025,6 @@ HighFlexDoubleIronAir:
       shift_capacity: 10  # GW
       holding_hours: 4
 
-  # this is already activated in 2025: would need to move functionality 
-  # to prepare_sector_network to activate per planning horizon
-  lines:
-    dynamic_line_rating:
-      activate: true
-      cutout: europe-2019-sarah3-era5
 
 
 HighFlexFiveIronAir:
@@ -2095,10 +2072,3 @@ HighFlexFiveIronAir:
     2050:
       shift_capacity: 10  # GW
       holding_hours: 4
-
-  # this is already activated in 2025: would need to move functionality 
-  # to prepare_sector_network to activate per planning horizon
-  lines:
-    dynamic_line_rating:
-      activate: true
-      cutout: europe-2019-sarah3-era5

@@ -4,9 +4,9 @@
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#run
 run:
-  prefix: 20260504-flex
+  prefix: 20260616-flex
   name:
-  # !!! The scenarios have to be commented out before executing build_scenarios otherwise the changes are not applied !!!
+  # !!! The scenarios have to be commented in before executing build_scenarios otherwise the changes are not applied !!!
   # # main scenarios
   - LowFlex
   - LowBattery
@@ -71,7 +71,6 @@ run:
   # # High Flex variations:
   # - HighFlexIndustry
   # - HighFlexIronAir
-  # - HighFlexDLR
   # - HighFlexBEV70
   # - HighFlexBEV80
   # - HighFlexBEV90
@@ -266,7 +265,7 @@ renewable:
 #     cutout: europe-2019-sarah3-era5
 
 clustering:
-  # mode: administrative  # comment in next three lines for administrative clustering (focus weights need to be commented out)
+  # mode: administrative  # comment in until level: 0 for administrative clustering (focus weights need to be commented out)
   # administrative:
   #   level: 0
   # simplify_network:
@@ -914,7 +913,6 @@ system_comparison:
   # # High Flex variations:
   # - HighFlexIndustry
   # - HighFlexIronAir
-  # - HighFlexDLR
   # - HighFlexBEV70
   # - HighFlexBEV80
   # - HighFlexBEV90

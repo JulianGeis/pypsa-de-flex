@@ -345,7 +345,6 @@ scenario_abbrev = {
     # High flex variations
     "HighFlexIndustry": "HF_IND",
     "HighFlexIronAir": "HF_IA",
-    "HighFlexDLR": "HF_DLR",
     "HighFlexBEV70": "HF_B70",
     "HighFlexBEV80": "HF_B80",
     "HighFlexBEV90": "HF_B90",
