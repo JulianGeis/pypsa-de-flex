@@ -2,6 +2,7 @@ import logging
 import sys
 
 import pandas as pd
+import pypsa
 from xarray import DataArray
 
 from scripts.prepare_sector_network import determine_emission_sectors
@@ -735,6 +736,234 @@ def adapt_nuclear_output(n):
     )
 
 
+def add_industry_dsm_cycling_constraint(n, industry_dsm):
+    """
+    Add constraint to ensure DSM debt stores are empty every X hours.
+
+    Works with any temporal resolution, including coarse resolutions like 365H.
+
+    Parameters
+    ----------
+    n : pypsa.Network
+        The energy system network with DSM components already added.
+    industry_dsm : dict
+        Configuration dictionary containing:
+        - compensate_hours: int, hours between forced zero debt (e.g. 24 or 48)
+    """
+    compensate_hours = industry_dsm.get("compensate_hours", 24)
+
+    logger.info(
+        f"Adding DSM cycling constraint: debt must be zero every {compensate_hours} hours"
+    )
+
+    # Find all DSM debt stores
+    dsm_stores = n.stores.index[n.stores.carrier == "industry DSM"]
+
+    if dsm_stores.empty:
+        logger.warning("No DSM debt stores found. Skipping cycling constraint.")
+        return
+
+    # Convert snapshots to hours from start
+    start_time = n.snapshots[0]
+    snapshot_hours = [
+        (snap - start_time).total_seconds() / 3600 for snap in n.snapshots
+    ]
+
+    # Find snapshots that are at multiples of compensate_hours
+    # Allow some tolerance for floating point comparison
+    tolerance = 0.1  # hours
+    cycle_snapshots = []
+
+    for i, hours in enumerate(snapshot_hours):
+        # Check if this snapshot is at a multiple of compensate_hours
+        remainder = hours % compensate_hours
+        # Check both remainder near 0 or near compensate_hours (wrapping)
+        if remainder < tolerance or (compensate_hours - remainder) < tolerance:
+            cycle_snapshots.append(n.snapshots[i])
+
+    # Always include the last snapshot to ensure debt is cleared at end
+    if n.snapshots[-1] not in cycle_snapshots:
+        cycle_snapshots.append(n.snapshots[-1])
+
+    if not cycle_snapshots:
+        logger.warning(
+            f"No snapshots found at {compensate_hours}h intervals. "
+            f"Temporal resolution may be too coarse. Adding constraint only at last snapshot."
+        )
+        cycle_snapshots = [n.snapshots[-1]]
+
+    # Calculate average snapshot duration for info
+    if len(n.snapshots) > 1:
+        avg_duration = sum(
+            (n.snapshots[i + 1] - n.snapshots[i]).total_seconds() / 3600
+            for i in range(len(n.snapshots) - 1)
+        ) / (len(n.snapshots) - 1)
+        logger.info(f"Average snapshot duration: {avg_duration:.2f} hours")
+
+    logger.info(
+        f"DSM debt must be zero at {len(cycle_snapshots)} snapshots "
+        f"(approximately every {compensate_hours} hours)"
+    )
+
+    # Add constraints for each store at each cycle point
+    constraint_count = 0
+    for store in dsm_stores:
+        for snapshot in cycle_snapshots:
+            cname = f"DSM_cycling-{store}-{snapshot}"
+
+            # Store state of charge must be zero at this snapshot
+            lhs = n.model["Store-e"].loc[snapshot, store]
+
+            n.model.add_constraints(lhs == 0, name=cname)
+            constraint_count += 1
+
+    # not adding to network as the shadow prices are not needed
+
+    logger.info(
+        f"Added {constraint_count} DSM cycling constraints across {len(dsm_stores)} stores"
+    )
+
+
+def force_pth_profiles_decentral_rural(n, flexibility_margin=0.0):
+    """
+    Constrains PtH asset dispatch to follow load profile with optional flexibility margin.
+
+    Parameters
+    ----------
+    n : pypsa.Network
+        The network object
+    flexibility_margin : float, default 0.0
+        Allowed deviation from profile as a fraction (e.g., 0.1 for ±10%).
+        - 0.0: Strict equality constraint (no flexibility)
+        - >0.0: Assets can operate within [profile*(1-margin), profile*(1+margin)]
+
+    Applies to heat pumps and resistive heaters in rural and urban decentral areas.
+    """
+    logger.info(
+        f"Constraining PtH dispatch to load profile "
+        f"(flexibility margin: {flexibility_margin * 100:.1f}%)"
+    )
+
+    # Filter for PtH assets in rural and decentral areas
+    pth_links = n.links.index[
+        (
+            (
+                n.links.carrier.str.contains("rural")
+                | n.links.carrier.str.contains("decentral")
+            )
+            & (
+                n.links.carrier.str.contains("heat pump")
+                | n.links.carrier.str.contains("resistive heater")
+            )
+        )
+        & ~n.links.carrier.str.contains("urban central")
+    ]
+
+    if pth_links.empty:
+        logger.warning("No PtH links found matching criteria")
+        return
+
+    # Get the heat buses these PtH assets supply
+    pth_loads = n.links.loc[pth_links, "bus1"]
+    pth_loads = pth_loads[pth_loads.isin(n.loads_t.p_set.columns)]
+    pth_links = pth_loads.index
+
+    if pth_links.empty:
+        logger.warning("No valid heat loads found for PtH links")
+        return
+
+    # Create normalized load profiles (per-unit, 0-1 range)
+    pth_profiles_pu = n.loads_t.p_set[pth_loads].div(
+        n.loads_t.p_set[pth_loads].max(), axis=1
+    )
+    pth_profiles_pu.columns = pth_links
+
+    # Separate extendable and non-extendable links
+    extendable = n.links.loc[pth_links, "p_nom_extendable"]
+    pth_links_ext = pth_links[extendable]
+    pth_links_fixed = pth_links[~extendable]
+
+    if flexibility_margin == 0.0:
+        # Strict equality constraint
+
+        # For extendable links: Link-p = profile_pu × Link-p_nom (variable)
+        if not pth_links_ext.empty:
+            pth_profiles_pu_da_ext = DataArray(pth_profiles_pu[pth_links_ext])
+
+            # Align dimensions by selecting Link-p_nom with matching indices
+            p_nom_ext = n.model["Link-p_nom"].loc[pth_links_ext]
+
+            # Rename the dimension to match Link-p dimension
+            p_nom_ext = p_nom_ext.rename({"Link-ext": "Link"})
+
+            lhs_ext = (
+                (1, n.model["Link-p"].loc[:, pth_links_ext]),
+                (-pth_profiles_pu_da_ext, p_nom_ext),
+            )
+
+            n.model.add_constraints(lhs_ext, "=", 0, "Link-pth_profile_extendable")
+            logger.info(
+                f"Applied strict equality constraint to {len(pth_links_ext)} extendable PtH assets"
+            )
+
+        # For non-extendable links: Link-p = profile_pu × p_nom (fixed)
+        if not pth_links_fixed.empty:
+            pth_profiles_fixed = DataArray(
+                pth_profiles_pu[pth_links_fixed].multiply(
+                    n.links.loc[pth_links_fixed, "p_nom"], axis=1
+                )
+            )
+
+            lhs_fixed = (
+                (1, n.model["Link-p"].loc[:, pth_links_fixed]),
+            )  # Note: tuple of tuple
+
+            n.model.add_constraints(
+                lhs_fixed, "=", pth_profiles_fixed, "Link-pth_profile_fixed"
+            )
+            logger.info(
+                f"Applied strict equality constraint to {len(pth_links_fixed)} non-extendable PtH assets"
+            )
+
+    else:
+        # Flexible band: profile × (1±margin)
+        # Initialize if needed
+        if not hasattr(n, "links_t"):
+            n.links_t = pypsa.descriptors.Dict()
+
+        if not hasattr(n.links_t, "p_min_pu") or n.links_t.p_min_pu.empty:
+            n.links_t.p_min_pu = pd.DataFrame(
+                0.0, index=n.snapshots, columns=n.links.index
+            )
+        else:
+            n.links_t.p_min_pu = n.links_t.p_min_pu.reindex(
+                columns=n.links.index, fill_value=0.0
+            )
+
+        if not hasattr(n.links_t, "p_max_pu") or n.links_t.p_max_pu.empty:
+            n.links_t.p_max_pu = pd.DataFrame(
+                1.0, index=n.snapshots, columns=n.links.index
+            )
+        else:
+            n.links_t.p_max_pu = n.links_t.p_max_pu.reindex(
+                columns=n.links.index, fill_value=1.0
+            )
+
+        # Set min and max bounds (works for both extendable and non-extendable)
+        n.links_t.p_min_pu[pth_links] = pth_profiles_pu * (1 - flexibility_margin)
+        n.links_t.p_max_pu[pth_links] = pth_profiles_pu * (1 + flexibility_margin)
+
+        # Ensure bounds don't go below 0 or above 1
+        n.links_t.p_min_pu[pth_links] = n.links_t.p_min_pu[pth_links].clip(lower=0.0)
+        n.links_t.p_max_pu[pth_links] = n.links_t.p_max_pu[pth_links].clip(upper=1.0)
+
+        logger.info(
+            f"Applied ±{flexibility_margin * 100:.1f}% flexibility band to "
+            f"{len(pth_links)} PtH assets ({len(pth_links_ext)} extendable, "
+            f"{len(pth_links_fixed)} fixed)"
+        )
+
+
 def additional_functionality(n, snapshots, snakemake):
     logger.info("Adding Ariadne-specific functionality")
 
@@ -751,20 +980,42 @@ def additional_functionality(n, snapshots, snakemake):
 
     add_power_limits(n, investment_year, constraints["limits_power_max"])
 
+    limits_volume_max = constraints.get("limits_volume_max", None)
+    limits_volume_min = constraints.get("limits_volume_min", None)
+
     if snakemake.wildcards.clusters != "1":
-        h2_import_limits(n, investment_year, constraints["limits_volume_max"])
+    
+        if (
+            "h2_import" in constraints["limits_volume_max"]
+            and any(
+                investment_year in year_limits
+                for year_limits in limits_volume_max["h2_import"].values()
+            )
+        ):
+            h2_import_limits(n, investment_year, constraints["limits_volume_max"])
 
-        electricity_import_limits(n, investment_year, constraints["limits_volume_max"])
 
-    if investment_year >= 2025:
-        h2_production_limits(
-            n,
-            investment_year,
-            constraints["limits_volume_min"],
-            constraints["limits_volume_max"],
-        )
+        if (
+            "electricity_import" in constraints["limits_volume_max"]
+            and any(
+                investment_year in year_limits
+                for year_limits in limits_volume_max["electricity_import"].values()
+            )
+        ):
+            electricity_import_limits(n, investment_year, constraints["limits_volume_max"])
 
-    add_h2_derivate_limit(n, investment_year, constraints["limits_volume_max"])
+    
+    if limits_volume_max is not None and limits_volume_min is not None:
+        if (investment_year >= 2025) & ("electrolysis" in constraints["limits_volume_max"]) & ("electrolysis" in constraints["limits_volume_min"]):
+            h2_production_limits(
+                n,
+                investment_year,
+                constraints["limits_volume_min"],
+                constraints["limits_volume_max"],
+            )
+
+        if "h2_derivate_import" in constraints["limits_volume_max"]:
+            add_h2_derivate_limit(n, investment_year, constraints["limits_volume_max"])
 
     # force_boiler_profiles_existing_per_load(n)
     force_boiler_profiles_existing_per_boiler(n)
@@ -781,3 +1032,20 @@ def additional_functionality(n, snapshots, snakemake):
 
     if investment_year == 2020:
         adapt_nuclear_output(n)
+
+    # Flexibility implementations
+
+    if (snakemake.params.industry_dsm["enable"]) & (
+        investment_year in snakemake.params.industry_dsm.keys()
+    ):
+        add_industry_dsm_cycling_constraint(
+            n, snakemake.params.industry_dsm[investment_year]
+        )
+
+    if snakemake.params.solving.get("force_pth_profiles_decentral_rural", False):
+        force_pth_profiles_decentral_rural(
+            n,
+            snakemake.params.solving.get(
+                "force_pth_profiles_decentral_rural_margin", 0.0
+            ),
+        )

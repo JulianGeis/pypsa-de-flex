@@ -6,8 +6,13 @@ Adds all sector-coupling components to the network, including demand and supply
 technologies for the buildings, transport and industry sectors.
 """
 
-import logging
 import os
+import sys
+
+sys.path.append(os.path.abspath(os.path.dirname(__file__)))
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+
+import logging
 from itertools import product
 from types import SimpleNamespace
 
@@ -2260,6 +2265,52 @@ def add_storage_and_grids(
         p_nom_extendable=True,
         lifetime=costs.at["battery inverter", "lifetime"],
     )
+
+    if options["iron_air_battery"] and options["iron_air_battery"] <= investment_year:
+
+        logger.info("Adding iron-air battery storage system.")
+
+        n.add(
+            "Bus",
+            nodes + " iron-air battery",
+            location=nodes,
+            carrier="iron-air battery",
+            unit="MWh_el",
+        )
+
+        n.add(
+            "Store",
+            nodes + " iron-air battery",
+            bus=nodes + " iron-air battery",
+            e_cyclic=True,
+            e_nom_extendable=True,
+            carrier="iron-air battery",
+            capital_cost=costs.at["iron-air battery", "capital_cost"],
+            lifetime=costs.at["iron-air battery", "lifetime"],
+        )
+
+        n.add(
+            "Link",
+            nodes + " iron-air battery charger",
+            bus0=nodes,
+            bus1=nodes + " iron-air battery",
+            carrier="iron-air battery charger",
+            efficiency=costs.at["iron-air battery charge", "efficiency"],
+            capital_cost=costs.at["iron-air battery inverter", "capital_cost"],
+            p_nom_extendable=True,
+            lifetime=costs.at["iron-air battery inverter", "lifetime"],
+        )
+
+        n.add(
+            "Link",
+            nodes + " iron-air battery discharger",
+            bus0=nodes + " iron-air battery",
+            bus1=nodes,
+            carrier="iron-air battery discharger",
+            efficiency=costs.at["iron-air battery discharge", "efficiency"],
+            p_nom_extendable=True,
+            lifetime=costs.at["iron-air battery inverter", "lifetime"],
+        )
 
     if options["methanation"]:
         n.add(
@@ -5328,14 +5379,41 @@ def add_industry(
         )
         n.loads_t.p_set[loads_i] *= factor
 
-    n.add(
-        "Load",
-        nodes,
-        suffix=" industry electricity",
-        bus=nodes,
-        carrier="industry electricity",
-        p_set=industrial_demand.loc[nodes, "electricity"] / nhours,
+    # Check if temporal profiles should be used
+    use_temporal = snakemake.params.industry_load.get(
+        "temporal_electricity_demand", False
     )
+
+    if use_temporal and snakemake.input.industrial_electricity_profiles:
+        logger.info("Using temporal industrial electricity demand profiles")
+
+        # Load hourly profiles (MW)
+        industrial_elec_profiles = pd.read_csv(
+            snakemake.input.industrial_electricity_profiles,
+            index_col=0,
+            parse_dates=True,
+        )
+
+        # Add temporal loads to the network for each node
+        for node in industrial_elec_profiles.columns:
+            # The profile is already in MW for each hour
+            n.add(
+                "Load",
+                f"{node} industry electricity",
+                bus=node,
+                carrier="industry electricity",
+                p_set=industrial_elec_profiles[node],  # MW per hour
+            )
+    else:
+        logger.info("Using constant industrial electricity demand")
+        n.add(
+            "Load",
+            nodes,
+            suffix=" industry electricity",
+            bus=nodes,
+            carrier="industry electricity",
+            p_set=industrial_demand.loc[nodes, "electricity"] / nhours,
+        )
 
     n.add(
         "Bus",
@@ -6579,9 +6657,10 @@ if __name__ == "__main__":
         snakemake = mock_snakemake(
             "prepare_sector_network",
             opts="",
-            clusters="10",
+            clusters="27",
             sector_opts="",
-            planning_horizons="2050",
+            planning_horizons="2025",
+            run="Base",
         )
 
     configure_logging(snakemake)  # pylint: disable=E0606

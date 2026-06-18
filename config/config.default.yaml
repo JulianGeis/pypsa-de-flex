@@ -124,6 +124,7 @@ electricity:
 
   max_hours:
     battery: 6
+    iron-air battery: 100
     H2: 168
 
   extendable_carriers:
@@ -820,6 +821,7 @@ sector:
       methanol: 121
       gas: 122
       oil: 125
+  iron_air_battery: false
 
 # docs in https://pypsa-eur.readthedocs.io/en/latest/configuration.html#industry
 industry:

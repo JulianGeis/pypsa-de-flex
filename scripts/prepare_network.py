@@ -67,8 +67,13 @@ def modify_attribute(n, adjustments, investment_year, modification="factor"):
                 if parameter not in n.df(c).columns:
                     logger.warning(f"Attribute {parameter} needs to be in {c} columns.")
                     continue
-                if investment_year:
-                    factor = get(change_dict[c][carrier][parameter], investment_year)
+                if investment_year & isinstance(change_dict[c][carrier][parameter], dict):
+                    factor = change_dict[c][carrier][parameter].get(investment_year, None)
+                    if factor is None: 
+                        logger.info(
+                            f"Investment year {investment_year} not found for {parameter} of {carrier} in {c}. Skipping modification."
+                            )
+                        continue
                 else:
                     factor = change_dict[c][carrier][parameter]
                 if modification == "factor":

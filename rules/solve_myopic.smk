@@ -117,7 +117,7 @@ rule add_brownfield:
         ),
     threads: 4
     resources:
-        mem_mb=10000,
+        mem_mb=20000,
     log:
         logs(
             "add_brownfield_base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}.log"
@@ -144,6 +144,7 @@ rule solve_sector_network_myopic:
         ),
         custom_extra_functionality=input_custom_extra_functionality,
         energy_year=config_provider("energy", "energy_totals_year"),
+        industry_dsm=config_provider("industry_dsm"),
     input:
         network=resources(
             "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}_final.nc"

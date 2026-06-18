@@ -555,6 +555,14 @@ rule modify_prenetwork:
         bev_charge_rate=config_provider("sector", "bev_charge_rate"),
         bev_energy=config_provider("sector", "bev_energy"),
         bev_dsm_availability=config_provider("sector", "bev_dsm_availability"),
+        industry_dsm=config_provider("industry_dsm"),
+        unit_commitment=config_provider("unit_commitment"),
+        restrict_cross_border_flows=config_provider("restrict_cross_border_flows"),
+        restrict_component_buildout=config_provider("restrict_component_buildout"),
+        force_pth_profiles_decentral_rural_p_min_pu=config_provider(
+            "sector", "force_pth_profiles_decentral_rural_p_min_pu"
+        ),
+        demand_modelling=config_provider("demand_modelling"),
     input:
         costs_modifications="ariadne-data/costs_{planning_horizons}-modifications.csv",
         network=resources(
@@ -582,6 +590,8 @@ rule modify_prenetwork:
         regions_onshore=resources("regions_onshore_base_s_{clusters}.geojson"),
         regions_offshore=resources("regions_offshore_base_s_{clusters}.geojson"),
         offshore_connection_points="ariadne-data/offshore_connection_points.csv",
+        base_capacities_3H="flex-data/Base_capacities_{clusters}cl_3H.csv",
+        base_capacities_1H="flex-data/Base_capacities_{clusters}cl_1H.csv",
     output:
         network=resources(
             "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}_final.nc"
@@ -785,7 +795,7 @@ rule export_ariadne_variables:
         exported_variables=RESULTS + "ariadne/exported_variables.xlsx",
         exported_variables_full=RESULTS + "ariadne/exported_variables_full.xlsx",
     resources:
-        mem_mb=16000,
+        mem_mb=32000,
     log:
         RESULTS + "logs/export_ariadne_variables.log",
     script:
@@ -822,7 +832,7 @@ rule plot_ariadne_variables:
         all_prices=RESULTS + "ariadne/all_prices.png",
         policy_carbon=RESULTS + "ariadne/policy_carbon.png",
         investment_energy_supply=RESULTS + "ariadne/investment_energy_supply.png",
-        elec_val_2020=RESULTS + "ariadne/elec_val_2020.png",
+        # elec_val_2020=RESULTS + "ariadne/elec_val_2020.png",
         trade=RESULTS + "ariadne/trade.png",
         NEP_plot=RESULTS + "ariadne/NEP_plot.png",
         NEP_Trassen_plot=RESULTS + "ariadne/NEP_Trassen_plot.png",
@@ -946,7 +956,7 @@ rule plot_ariadne_report:
         heat_balances=directory(RESULTS + "ariadne/report/heat_balance_timeseries"),
         nodal_balances=directory(RESULTS + "ariadne/report/balance_timeseries_2045"),
     resources:
-        mem_mb=32000,
+        mem_mb=100000,
     log:
         RESULTS + "logs/plot_ariadne_report.log",
     script:
@@ -959,3 +969,271 @@ rule ariadne_report_only:
             RESULTS + "ariadne/report/elec_price_duration_curve.pdf",
             run=config_provider("run", "name"),
         ),
+
+
+####### Flexibility analysis rules #######
+
+
+rule flexibility_analysis:
+    params:
+        planning_horizons=config_provider("scenario", "planning_horizons"),
+        run=config_provider("run", "name"),
+        output_dir=directory(RESULTS + "flexibility/data"),
+    input:
+        networks=expand(
+            RESULTS
+            + "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            **config["scenario"],
+            allow_missing=True,
+        ),
+    output:
+        flex_needs=RESULTS + "flexibility/data/flexibility_needs.csv",
+        flex_causes_raw=RESULTS + "flexibility/data/flexibility_causes_raw.pkl",
+        flex_contributions_raw=RESULTS
+        + "flexibility/data/flexibility_contributions_raw.pkl",
+        flex_contributions_clean=RESULTS
+        + "flexibility/data/flexibility_contributions_clean.csv",
+        flex_needs_per_node=RESULTS + "flexibility/data/flexibility_needs_per_node.pkl",
+        flex_causes_per_node=RESULTS
+        + "flexibility/data/flexibility_causes_per_node.pkl",
+        flex_contributions_per_node=RESULTS
+        + "flexibility/data/flexibility_contributions_per_node.pkl",
+        flex_needs_monthly=RESULTS + "flexibility/data/flexibility_needs_monthly.csv",
+        flex_causes_monthly_raw=RESULTS + "flexibility/data/flexibility_causes_monthly_raw.pkl",
+        flex_contributions_monthly_raw=RESULTS + "flexibility/data/flexibility_contributions_monthly_raw.pkl",
+        flex_contributions_monthly_clean=RESULTS + "flexibility/data/flexibility_contributions_monthly_clean.csv",
+    resources:
+        mem_mb=40000,
+    log:
+        RESULTS + "logs/flexibility_analysis.log",
+    script:
+        "scripts/pypsa-de/flexibility_analysis.py"
+
+
+rule flexibility_plots:
+    params:
+        planning_horizons=config_provider("scenario", "planning_horizons"),
+        plotting=config_provider("plotting"),
+        run=config_provider("run", "name"),
+        output_dir=RESULTS + "flexibility/plots",
+    input:
+        networks=expand(
+            RESULTS
+            + "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            **config["scenario"],
+            allow_missing=True,
+        ),
+        flex_needs=RESULTS + "flexibility/data/flexibility_needs.csv",
+        flex_causes_raw=RESULTS + "flexibility/data/flexibility_causes_raw.pkl",
+        flex_contributions_raw=RESULTS
+        + "flexibility/data/flexibility_contributions_raw.pkl",
+        flex_needs_per_node=RESULTS + "flexibility/data/flexibility_needs_per_node.pkl",
+        flex_causes_per_node=RESULTS
+        + "flexibility/data/flexibility_causes_per_node.pkl",
+        flex_contributions_per_node=RESULTS
+        + "flexibility/data/flexibility_contributions_per_node.pkl",
+        flex_contributions_clean=RESULTS
+        + "flexibility/data/flexibility_contributions_clean.csv",
+        regions_onshore_clustered=expand(
+            resources("regions_onshore_base_s_{clusters}.geojson"),
+            clusters=config["scenario"]["clusters"],
+            allow_missing=True,
+        ),
+        flex_needs_monthly=RESULTS + "flexibility/data/flexibility_needs_monthly.csv",
+        flex_causes_monthly_raw=RESULTS + "flexibility/data/flexibility_causes_monthly_raw.pkl",
+        flex_contributions_monthly_clean=RESULTS + "flexibility/data/flexibility_contributions_monthly_clean.csv",
+    output:
+        flex_needs_plot=RESULTS + "flexibility/plots/flexibility_needs.png",
+        flex_causes_plot=RESULTS + "flexibility/plots/flexibility_causes.png",
+        flex_contributions_plot=RESULTS
+        + "flexibility/plots/flexibility_contributions.png",
+        flex_needs_monthly_plot=RESULTS + "flexibility/plots/flexibility_needs_monthly.png",
+        flex_causes_monthly_plot=RESULTS + "flexibility/plots/flexibility_causes_monthly.png",
+        flex_contributions_monthly_plot=RESULTS + "flexibility/plots/flexibility_contributions_monthly.png",
+    resources:
+        mem_mb=40000,
+    log:
+        RESULTS + "logs/flexibility_plots.log",
+    script:
+        "scripts/pypsa-de/flexibility_plots.py"
+
+
+rule system_plots:
+    params:
+        planning_horizons=config_provider("scenario", "planning_horizons"),
+        plotting=config_provider("plotting"),
+        run=config_provider("run", "name"),
+        output_dir=RESULTS + "system/plots",
+    input:
+        networks=expand(
+            RESULTS + "networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            **config["scenario"],
+            allow_missing=True,
+        ),
+        regions_onshore=expand(
+            resources("regions_onshore_base_s_{clusters}.geojson"),
+            clusters=config["scenario"]["clusters"],
+            allow_missing=True,
+        ),
+    output:
+        flag=touch(RESULTS + "system/plots/.system_plots_complete_{run}.flag"),
+    resources:
+        mem_mb=40000,
+    log:
+        RESULTS + "logs/system_plots_{run}.log",
+    script:
+        "scripts/pypsa-de/system_plots.py"
+
+
+rule flexibility_plots_scenario_comparison:
+    params:
+        planning_horizons=config_provider("scenario", "planning_horizons"),
+        scenarios_to_compare=config.get("system_comparison", {}).get(
+            "scenarios", config["run"]["name"]
+        ),
+        run_prefix=config["run"]["prefix"],
+        output_dir="results/"
+        + config["run"]["prefix"]
+        + "/scenario_comparison/flexibility",
+    input:
+        networks=lambda w: expand(
+            "results/{run_prefix}/{scenario}/networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("system_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+            **config["scenario"],
+            allow_missing=True,
+        ),
+        flex_needs=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_needs.csv",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("system_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+        flex_causes_raw=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_causes_raw.pkl",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("system_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+        flex_contributions_clean=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_contributions_clean.csv",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("system_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+        flex_needs_per_node=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_needs_per_node.pkl",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("system_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+        flex_causes_per_node=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_causes_per_node.pkl",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("system_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+        flex_contributions_per_node=lambda w: expand(
+            "results/{run_prefix}/{scenario}/flexibility/data/flexibility_contributions_per_node.pkl",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("system_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+        ),
+    output:
+        flex_needs_comparison="results/"
+        + config["run"]["prefix"]
+        + "/scenario_comparison/flexibility/flex_needs_scenario_comparison.png",
+    resources:
+        mem_mb=80000,
+    log:
+        "results/"
+        + config["run"]["prefix"]
+        + "/logs/flexibility_plots_scenario_comparison.log",
+    script:
+        "scripts/pypsa-de/flexibility_plots_scenario_comparison.py"
+
+
+rule system_plots_scenario_comparison:
+    params:
+        planning_horizons=config_provider("scenario", "planning_horizons"),
+        scenarios_to_compare=config.get("system_comparison", {}).get(
+            "scenarios", config["run"]["name"]
+        ),
+        run_prefix=config["run"]["prefix"],
+        output_dir="results/"
+        + config["run"]["prefix"]
+        + "/scenario_comparison/system",
+    input:
+        networks=lambda w: expand(
+            "results/{run_prefix}/{scenario}/networks/base_s_{clusters}_{opts}_{sector_opts}_{planning_horizons}.nc",
+            run_prefix=config["run"]["prefix"],
+            scenario=config.get("system_comparison", {}).get(
+                "scenarios", config["run"]["name"]
+            ),
+            **config["scenario"],
+            allow_missing=True,
+        ),
+        exported_variables=expand(
+            RESULTS + "ariadne/exported_variables_full.xlsx",
+            run=config_provider("run", "name"),
+        ),
+    output:
+        flag=touch("results/" + config["run"]["prefix"] + "/scenario_comparison/system/.comparison_complete.flag"),
+    resources:
+        mem_mb=80000,
+    log:
+        "results/"
+        + config["run"]["prefix"]
+        + "/logs/system_plots_scenario_comparison.log",
+    script:
+        "scripts/pypsa-de/system_plots_scenario_comparison.py"
+
+
+rule flex_all:
+    """Run all flexibility analyses and plots."""
+    input:
+        expand(
+            RESULTS + "ariadne/capacity_detailed.png",
+            run=config_provider("run", "name"),
+        ),
+        expand(
+            RESULTS
+            + "maps/base_s_{clusters}_{opts}_{sector_opts}-h2_network_incl_kernnetz_{planning_horizons}.pdf",
+            run=config_provider("run", "name"),
+            **config["scenario"],
+            allow_missing=True,
+        ),
+        expand(
+            RESULTS + "flexibility/data/flexibility_needs.csv",
+            run=config_provider("run", "name"),
+        ),
+        expand(
+            RESULTS + "flexibility/plots/flexibility_needs.png",
+            run=config_provider("run", "name"),
+        ),
+        "results/"
+        + config["run"]["prefix"]
+        + "/scenario_comparison/flexibility/flex_needs_scenario_comparison.png",
+        expand(
+            RESULTS + "ariadne/report/elec_price_duration_curve.pdf",
+            run=config_provider("run", "name"),
+        ),
+        expand(
+            RESULTS + "system/plots/.system_plots_complete_{run}.flag",
+            run=config_provider("run", "name"),
+        ),
+        "results/" + config["run"]["prefix"] + "/scenario_comparison/system/.comparison_complete.flag",
+        exported_variables=expand(
+            RESULTS + "ariadne/exported_variables_full.xlsx",
+            run=config_provider("run", "name"),
+        ),
+    script:
+        "scripts/pypsa-de/plot_ariadne_scenario_comparison.py"

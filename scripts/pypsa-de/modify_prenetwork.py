@@ -1,10 +1,17 @@
 import logging
+import os
+import sys
 
 import geopandas as gpd
 import numpy as np
 import pandas as pd
 import pypsa
 from shapely.geometry import Point
+
+current_dir = os.path.dirname(os.path.abspath(__file__))
+repo_root = os.path.abspath(os.path.join(current_dir, "../.."))
+if repo_root not in sys.path:
+    sys.path.append(repo_root)
 
 from scripts._helpers import configure_logging, mock_snakemake, sanitize_custom_columns
 from scripts.add_electricity import load_costs
@@ -15,15 +22,16 @@ logger = logging.getLogger(__name__)
 
 def first_technology_occurrence(n):
     """
-    Sets p_nom_extendable to false for carriers with configured first
-    occurrence if investment year is before configured year.
+    Drop configured technologies before configured year.
     """
 
     for c, carriers in snakemake.params.technology_occurrence.items():
         for carrier, first_year in carriers.items():
             if int(snakemake.wildcards.planning_horizons) < first_year:
-                logger.info(f"{carrier} not extendable before {first_year}.")
-                n.df(c).loc[n.df(c).carrier == carrier, "p_nom_extendable"] = False
+                to_drop = n.df(c).query(f"carrier == '{carrier}'").index
+                if to_drop.empty:
+                    continue
+                n.remove(c, to_drop)
 
 
 def fix_new_boiler_profiles(n):
@@ -806,6 +814,8 @@ def must_run(n, params):
                     f"Must-run condition disabled: Resetting p_min_pu to 0 for {carrier} "
                     f"in region {region} (was specified in {previous_investment_year}, but not in {investment_year})."
                 )
+                if region == "all":
+                    region = ""
                 links_i = n.links[
                     (n.links.carrier == carrier) & n.links.index.str.contains(region)
                 ].index
@@ -819,6 +829,8 @@ def must_run(n, params):
                 f"Must-run condition enabled: Setting p_min_pu = {p_min_pu} for {carrier} "
                 f"in year {investment_year} and region {region}."
             )
+            if region == "all":
+                region = ""
             links_i = n.links[
                 (n.links.carrier == carrier) & n.links.index.str.contains(region)
             ].index
@@ -1255,6 +1267,790 @@ def scale_capacity(n, scaling):
                 ]
 
 
+def add_industry_dsm(n, dsm_config):
+    """
+    Add demand-side management (DSM) for industrial loads in Germany.
+
+    Creates distributed DSM capacity across industrial load buses, weighted by
+    their load. DSM is implemented as a debt-tracking system where load can be
+    reduced (creating debt) and must be compensated later.
+
+    Parameters
+    ----------
+    n : pypsa.Network
+        The energy system network.
+    dsm_config : dict
+        Configuration dictionary with keys under 'industry_dsm_de':
+        - shift_capacity: float, total DSM capacity in GW
+        - holding_hours: float, maximum hours debt can be held
+        - ramp_down_cost: float, marginal cost of reducing load (€/MWh)
+    """
+
+    logger.info("Adding demand-side management (DSM) for industrial loads in Germany.")
+
+    # Filter industrial loads in Germany
+    industrial_loads = n.loads[
+        (n.loads.carrier == "industry electricity")
+        & (n.loads.bus.str.contains("DE", na=False))
+    ]
+
+    if industrial_loads.empty:
+        logger.warning("No industrial loads found in Germany. Skipping DSM addition.")
+        return
+
+    # Calculate weights based on average load at each bus
+    load_by_bus = {}
+
+    for load_name in industrial_loads.index:
+        bus = n.loads.at[load_name, "bus"]
+
+        # Get average load for weighting
+        if load_name in n.loads_t.p_set.columns:
+            avg_load = n.loads_t.p_set[load_name].mean()
+        elif hasattr(n.loads.at[load_name, "p_set"], "__iter__"):
+            avg_load = n.loads.at[load_name, "p_set"].mean()
+        else:
+            avg_load = n.loads.at[load_name, "p_set"]
+
+        if bus in load_by_bus:
+            load_by_bus[bus] += avg_load
+        else:
+            load_by_bus[bus] = avg_load
+
+    total_load = sum(load_by_bus.values())
+
+    if total_load == 0:
+        logger.warning(
+            "Total industrial load in Germany is zero. Skipping DSM addition."
+        )
+        return
+
+    # Extract config parameters
+    total_shift_capacity = dsm_config["shift_capacity"] * 1e3  # Convert GW to MW
+    holding_hours = dsm_config["holding_hours"]
+    ramp_down_cost = dsm_config.get("ramp_down_cost", 0)
+    compensate_cost = dsm_config.get("compensate_cost", 0)
+
+    logger.info(
+        f"Total DSM capacity: {dsm_config['shift_capacity']} GW, "
+        f"Holding time: {holding_hours} hours, "
+        f"distributed across {len(load_by_bus)} buses"
+    )
+
+    # Define carriers
+    n.add("Carrier", "industry DSM")
+    n.add("Carrier", "industry DSM ramp down")
+    n.add("Carrier", "industry DSM compensate")
+
+    # Add DSM components for each bus
+    for bus, load in load_by_bus.items():
+        # Calculate this bus's share of DSM capacity based on load weight
+        weight = load / total_load
+        bus_shift_capacity = total_shift_capacity * weight  # MW
+        bus_debt_capacity = bus_shift_capacity * holding_hours  # MWh
+
+        logger.debug(
+            f"Bus {bus}: {bus_shift_capacity:.1f} MW DSM ({weight * 100:.1f}%)"
+        )
+
+        # Create bus for debt tracking
+        dsm_bus_name = f"{bus} DSM debt bus"
+        n.add("Bus", dsm_bus_name, carrier="DSM")
+
+        # Store to track production debt
+        n.add(
+            "Store",
+            f"{bus}_DSM_debt",
+            bus=dsm_bus_name,
+            e_nom=bus_debt_capacity,
+            e_initial=0,
+            standing_loss=0,
+            capital_cost=0,
+            carrier="industry DSM",
+            overwrite=True,
+        )
+
+        # Link: Ramp DOWN = reduce load, charges the debt store
+        n.add(
+            "Link",
+            f"{bus} DSM ramp down",
+            bus0=bus,  # Takes from grid
+            bus1=dsm_bus_name,  # Charges debt
+            p_nom=bus_shift_capacity,
+            efficiency=1.0,
+            marginal_cost=ramp_down_cost,
+            capital_cost=0,
+            carrier="industry DSM ramp down",
+            overwrite=True,
+        )
+
+        # Link: Compensate = increase load later to catch up, discharges debt
+        n.add(
+            "Link",
+            f"{bus} DSM compensate",
+            bus0=dsm_bus_name,  # Discharges debt
+            bus1=bus,  # Adds load to grid
+            p_nom=bus_shift_capacity,
+            efficiency=1.0,
+            marginal_cost=compensate_cost,
+            capital_cost=0,
+            carrier="industry DSM compensate",
+            overwrite=True,
+        )
+
+    logger.info(
+        f"Added DSM components to {len(load_by_bus)} buses. "
+        f"Total capacity: {total_shift_capacity / 1e3:.2f} GW, "
+        f"Total storage: {total_shift_capacity * holding_hours / 1e3:.2f} GWh"
+    )
+
+
+uc_params_custom = {
+    "OCGT": {
+        "p_min_pu": 0.2,
+        "start_up_cost": 20,
+        "shut_down_cost": 20,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 1,
+    },
+    "CCGT": {
+        "p_min_pu": 0.45,
+        "start_up_cost": 80,
+        "shut_down_cost": 80,
+        "min_up_time": 3,
+        "min_down_time": 2,
+        "ramp_limit_up": 1,
+    },
+    "coal": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 200,
+        "shut_down_cost": 200,
+        "min_up_time": 24,
+        "min_down_time": 24,
+        "ramp_limit_up": 1,
+    },
+    "lignite": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 200,
+        "shut_down_cost": 200,
+        "min_up_time": 24,
+        "min_down_time": 24,
+        "ramp_limit_up": 1,
+    },
+    "nuclear": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 100,
+        "shut_down_cost": 100,
+        "min_up_time": 8,
+        "min_down_time": 10,
+    },
+    "oil": {
+        "p_min_pu": 0.2,
+        "start_up_cost": 30,
+        "shut_down_cost": 30,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 1,
+    },
+    "urban central solid biomass CHP": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 150,
+        "shut_down_cost": 150,
+        "min_up_time": 5,
+        "min_down_time": 5,
+    },
+}
+
+uc_params_optimistic = {
+    "OCGT": {
+        "p_min_pu": 0.15,
+        "start_up_cost": 20,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 1,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+    "CCGT": {
+        "p_min_pu": 0.4,
+        "start_up_cost": 100,
+        "min_up_time": 2,
+        "min_down_time": 2,
+        "ramp_limit_up": 1,
+        "ramp_limit_start_up": 0.5,
+        "ramp_limit_shut_down": 0.5,
+    },
+    "coal": {
+        "p_min_pu": 0.3,
+        "start_up_cost": 80,
+        "min_up_time": 4,
+        "min_down_time": 4,
+        "ramp_limit_up": 0.8,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+    "lignite": {
+        "p_min_pu": 0.3,
+        "start_up_cost": 120,
+        "min_up_time": 5,
+        "min_down_time": 5,
+        "ramp_limit_up": 0.7,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+    "nuclear": {
+        "p_min_pu": 0.45,
+        "start_up_cost": 200,
+        "min_up_time": 6,
+        "min_down_time": 8,
+        "ramp_limit_up": 0.2,
+        "ramp_limit_start_up": 0.2,
+        "ramp_limit_shut_down": 0.2,
+    },
+    "oil": {
+        "p_min_pu": 0.2,
+        "start_up_cost": 30,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 1,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+    "urban central solid biomass CHP": {
+        "p_min_pu": 0.35,
+        "start_up_cost": 50,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 0.9,
+        "ramp_limit_start_up": 0.4,
+        "ramp_limit_shut_down": 0.4,
+    },
+}
+
+uc_params_average = {
+    "OCGT": {
+        "p_min_pu": 0.2,
+        "start_up_cost": 40,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 1,
+        "ramp_limit_start_up": 0.2,
+        "ramp_limit_shut_down": 0.2,
+    },
+    "CCGT": {
+        "p_min_pu": 0.45,
+        "start_up_cost": 150,
+        "min_up_time": 3,
+        "min_down_time": 2,
+        "ramp_limit_up": 1,
+        "ramp_limit_start_up": 0.45,
+        "ramp_limit_shut_down": 0.45,
+    },
+    "coal": {
+        "p_min_pu": 0.325,
+        "start_up_cost": 120,
+        "min_up_time": 5,
+        "min_down_time": 6,
+        "ramp_limit_up": 0.7,
+        "ramp_limit_start_up": 0.38,
+        "ramp_limit_shut_down": 0.38,
+    },
+    "lignite": {
+        "p_min_pu": 0.325,
+        "start_up_cost": 150,
+        "min_up_time": 7,
+        "min_down_time": 6,
+        "ramp_limit_up": 0.6,
+        "ramp_limit_start_up": 0.4,
+        "ramp_limit_shut_down": 0.4,
+    },
+    "nuclear": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 250,
+        "min_up_time": 6,
+        "min_down_time": 10,
+        "ramp_limit_up": 0.3,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+    "oil": {
+        "p_min_pu": 0.2,
+        "start_up_cost": 50,
+        "min_up_time": 1,
+        "min_down_time": 1,
+        "ramp_limit_up": 0.8,
+        "ramp_limit_start_up": 0.2,
+        "ramp_limit_shut_down": 0.2,
+    },
+    "urban central solid biomass CHP": {
+        "p_min_pu": 0.38,
+        "start_up_cost": 80,
+        "min_up_time": 2,
+        "min_down_time": 2,
+        "ramp_limit_up": 0.7,
+        "ramp_limit_start_up": 0.38,
+        "ramp_limit_shut_down": 0.38,
+    },
+}
+
+uc_params_conservative = {
+    "OCGT": {
+        "p_min_pu": 0.25,
+        "start_up_cost": 60,
+        "min_up_time": 2,
+        "min_down_time": 2,
+        "ramp_limit_up": 0.9,
+        "ramp_limit_start_up": 0.15,
+        "ramp_limit_shut_down": 0.15,
+    },
+    "CCGT": {
+        "p_min_pu": 0.5,
+        "start_up_cost": 200,
+        "min_up_time": 4,
+        "min_down_time": 3,
+        "ramp_limit_up": 0.8,
+        "ramp_limit_start_up": 0.35,
+        "ramp_limit_shut_down": 0.35,
+    },
+    "coal": {
+        "p_min_pu": 0.35,
+        "start_up_cost": 160,
+        "min_up_time": 6,
+        "min_down_time": 8,
+        "ramp_limit_up": 0.5,
+        "ramp_limit_start_up": 0.25,
+        "ramp_limit_shut_down": 0.25,
+    },
+    "lignite": {
+        "p_min_pu": 0.35,
+        "start_up_cost": 200,
+        "min_up_time": 8,
+        "min_down_time": 10,
+        "ramp_limit_up": 0.4,
+        "ramp_limit_start_up": 0.2,
+        "ramp_limit_shut_down": 0.2,
+    },
+    "nuclear": {
+        "p_min_pu": 0.55,
+        "start_up_cost": 400,
+        "min_up_time": 10,
+        "min_down_time": 12,
+        "ramp_limit_up": 0.15,
+        "ramp_limit_start_up": 0.15,
+        "ramp_limit_shut_down": 0.15,
+    },
+    "oil": {
+        "p_min_pu": 0.25,
+        "start_up_cost": 80,
+        "min_up_time": 2,
+        "min_down_time": 2,
+        "ramp_limit_up": 0.6,
+        "ramp_limit_start_up": 0.15,
+        "ramp_limit_shut_down": 0.15,
+    },
+    "urban central solid biomass CHP": {
+        "p_min_pu": 0.4,
+        "start_up_cost": 120,
+        "min_up_time": 3,
+        "min_down_time": 3,
+        "ramp_limit_up": 0.5,
+        "ramp_limit_start_up": 0.3,
+        "ramp_limit_shut_down": 0.3,
+    },
+}
+
+
+def add_unit_commitment(
+    n,
+    uc_params=uc_params_average,
+    carriers=["OCGT", "coal", "lignite", "urban central solid biomass CHP"],
+    regions=["DE"],
+):
+    """
+    Add unit commitment parameters to links in the network based on a UC parameter dictionary.
+
+    Parameters
+    ----------
+    n : pypsa.Network
+        The PyPSA network.
+
+    uc_params : dict
+        Nested dict with carrier names as keys and dict of UC parameters as values.
+        Example:
+        {
+            "OCGT": {
+                "p_min_pu": 0.2,
+                "start_up_cost": 40,
+                "min_up_time": 1,
+                "min_down_time": 1,
+                "ramp_limit_up": 1,
+                "ramp_limit_start_up": 0.2,
+                "ramp_limit_shut_down": 0.2,
+            },
+            ...
+        }
+
+    carriers : list, optional
+        List of carriers to process (default = all carriers in uc_params).
+
+    regions : list
+        List of region codes to filter buses (default = ["DE"]).
+    """
+
+    def get_filtered_links(carrier_list):
+        carrier_mask = n.links.carrier.isin(carrier_list)
+        region_mask = n.links.bus0.str.contains(
+            "|".join(regions), na=False
+        ) | n.links.bus1.str.contains("|".join(regions), na=False)
+        return n.links[carrier_mask & region_mask].index
+
+    # If no carriers specified, use all available in uc_params
+    carriers_to_process = carriers if carriers is not None else list(uc_params.keys())
+
+    available_carriers = set(carriers_to_process) & set(n.links.carrier.unique())
+
+    for carrier in available_carriers:
+        links_i = get_filtered_links([carrier])
+        if len(links_i) == 0:
+            continue
+
+        # apply UC parameters from dict
+        for param, value in uc_params[carrier].items():
+            if param in n.links.columns:
+                n.links.loc[links_i, param] = value
+
+        # ensure committable flag
+        n.links.loc[links_i, "committable"] = True
+
+
+def restrict_cross_border_flows(n, s_max_pu):
+    logger.info(
+        f"Restricting cross-border flows between all countries (AC) to {s_max_pu}."
+    )
+    cross_border_lines = n.lines.index[n.lines.bus0.str[:2] != n.lines.bus1.str[:2]]
+    n.lines.loc[cross_border_lines, "s_max_pu"] = s_max_pu
+
+
+def restrict_component_buildout(n, component_limits, capacities_csv, where="only_de", when=None):
+    """
+    Limit the maximum buildout of energy system components based on predefined capacity limits.
+    
+    Sets p_nom_max/e_nom_max constraints on extendable components to enforce regional capacity 
+    restrictions (e.g., limiting solar/wind expansion). Optionally filters by region (DE only, 
+    outside DE, or all) and planning year.
+    """
+    
+    investment_year = snakemake.wildcards.planning_horizons
+
+    # Check if restrictions should apply this year
+    if (when is not None) and (int(investment_year) not in when):
+        logger.info(f"Skipping component buildout restrictions for year {investment_year} (not in {when})")
+        return
+    
+    logger.info(f"Applying component buildout restrictions for year {investment_year}")
+
+    capacities = pd.read_csv(capacities_csv, index_col=[0, 1, 2])
+
+    # Filter to only DE buses if requested
+    if where == "only_de":
+        buses = capacities.index.get_level_values(1)
+        de_mask = buses.str.startswith('DE')
+        capacities = capacities[de_mask]
+        logger.info("Restricting component buildout to DE buses only")
+
+    elif where == "outside_de":
+        buses = capacities.index.get_level_values(1)
+        non_de_mask = ~buses.str.startswith('DE')
+        capacities = capacities[non_de_mask]    
+        logger.info("Restricting component buildout to all buses outside DE")    
+        
+    else:
+        logger.info("Restricting component buildout to all buses")
+
+    for c in n.iterate_components(component_limits):
+        logger.info(f"Restrict buildout of {c.list_name}")
+        attr = "e" if c.name == "Store" else "p"
+        bus = "bus0" if c.name == "Link" else "bus"
+        units = "MWh or tCO2" if c.name == "Store" else "MW"
+
+        for carrier in component_limits[c.name]:
+            # Check if carrier exists in capacities dataframe
+            if carrier not in capacities[investment_year].index.get_level_values(2):
+                logger.info(
+                    f"Carrier {carrier} not found in capacities data for {c.name}. "
+                    f"Set all {carrier} components to non-extendable."
+                )
+                # Set components with this carrier to non-extendable
+                c.df.loc[c.df.carrier == carrier, f"{attr}_nom_extendable"] = False
+
+                continue
+
+            limits = component_limits[c.name][carrier] * capacities[investment_year].xs(
+                carrier, level=2
+            )
+            limits = limits.droplevel(0)
+
+            extendable_components = c.df[
+                (c.df[bus].isin(limits.index))
+                & (c.df.carrier == carrier)
+                & (c.df[f"{attr}_nom_extendable"])
+            ].index
+
+            for limits_bus in limits.index:
+                extendable_components_at_bus = c.df.loc[extendable_components][
+                    c.df.loc[extendable_components][bus] == limits_bus
+                ]
+                
+                # Calculate total already installed capacity at bus
+                total_installed = c.df[
+                    (c.df[bus] == limits_bus) & (c.df.carrier == carrier)
+                ][f"{attr}_nom"].sum()
+                limit = limits.loc[limits_bus] - total_installed
+                
+                if limit <= 0: # might already set for values smaller 10 to avoid numerical issues
+                    logger.warning(
+                        f"Total installed capacity {total_installed:.2f} {units} for {c.name} {carrier} at bus {limits_bus} "
+                        f"exceeds or meets the limit of {limits.loc[limits_bus]:.2f} {units}. "
+                        f"Setting all extendable components to non-extendable."
+                    )
+                    c.df.loc[extendable_components_at_bus.index, f"{attr}_nom_extendable"] = False
+                    continue
+                
+                if len(extendable_components_at_bus) == 1:
+                    component_idx = extendable_components_at_bus.index[0]
+                    c.df.at[component_idx, f"{attr}_nom_max"] = max(
+                        limit, c.df.at[component_idx, f"{attr}_nom"]
+                    )
+                    logger.info(
+                        f"Restricting {attr}_nom_max of {c.name} {carrier} at bus {limits_bus} "
+                        f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Base capacities)"
+                    )
+                
+                elif len(extendable_components_at_bus) > 1:
+                    # Limit latest component (sort by build year)
+                    component_idxs = extendable_components_at_bus.sort_values(
+                        by="build_year", ascending=True
+                    ).index
+                    latest_component_idx = component_idxs[-1]
+                    c.df.at[latest_component_idx, f"{attr}_nom_max"] = max(
+                        limit, c.df.at[latest_component_idx, f"{attr}_nom"]
+                    )
+                    
+                    # Set older components to not extendable
+                    c.df.loc[component_idxs[:-1], f"{attr}_nom_extendable"] = False
+                    
+                    logger.info(
+                        f"Restricting {attr}_nom_max of latest {c.name} {carrier} at bus {limits_bus} "
+                        f"to {limit:.2f} {units} (factor {component_limits[c.name][carrier]} of Base capacities)"
+                    )
+                
+                else:
+                    logger.warning(
+                        f"No extendable {c.name} with carrier {carrier} found at bus {limits_bus} to restrict."
+                    )
+
+    synchronize_TES_extendability(n)
+
+
+
+def synchronize_TES_extendability(n: pypsa.Network) -> None:
+    """
+    Ensure that TES components have consistent extendability settings.
+    Synchronizes:
+    1. Chargers with their corresponding stores
+    2. Chargers with their corresponding dischargers
+    
+    If any component in a set is non-extendable, all are set to non-extendable.
+    This prevents errors in add_TES_energy_to_power_ratio_constraints and 
+    add_TES_charger_ratio_constraints.
+    """
+    
+    # Find all TES chargers (NOT dischargers!)
+    charger_mask = (
+        (n.links.index.str.contains("water tanks charger") |
+         n.links.index.str.contains("water pits charger") |
+         n.links.index.str.contains("aquifer thermal energy storage charger")) &
+        ~n.links.index.str.contains("discharger")
+    )
+    chargers = n.links.index[charger_mask]
+    
+    # Find all TES stores
+    store_mask = (
+        (n.stores.index.str.contains("water tanks") |
+         n.stores.index.str.contains("water pits") |
+         n.stores.index.str.contains("aquifer thermal energy storage"))
+    )
+    stores = n.stores.index[store_mask]
+    
+    # Find all TES dischargers
+    discharger_mask = (
+        n.links.index.str.contains("water tanks discharger") |
+        n.links.index.str.contains("water pits discharger") |
+        n.links.index.str.contains("aquifer thermal energy storage discharger")
+    )
+    dischargers = n.links.index[discharger_mask]
+    
+    for charger in chargers:
+        # Get corresponding names
+        store = charger.replace(" charger", "")
+        discharger = charger.replace(" charger", " discharger")
+        
+        # Check charger extendability
+        charger_extendable = n.links.at[charger, "p_nom_extendable"]
+        
+        # Initialize tracking
+        store_extendable = None
+        discharger_extendable = None
+        extendability_status = [charger_extendable]
+        
+        # Check if store exists
+        if store in stores:
+            store_extendable = n.stores.at[store, "e_nom_extendable"]
+            extendability_status.append(store_extendable)
+        elif charger_extendable:
+            logger.info(f"Charger {charger} has no matching store {store}")
+        
+        # Check if discharger exists
+        if discharger in dischargers:
+            discharger_extendable = n.links.at[discharger, "p_nom_extendable"]
+            extendability_status.append(discharger_extendable)
+        elif charger_extendable:
+            logger.info(f"Charger {charger} has no matching discharger {discharger}")
+        
+        # If there's any mismatch in extendability, set all to non-extendable
+        if len(set(extendability_status)) > 1:
+            # Set all to non-extendable
+            n.links.at[charger, "p_nom_extendable"] = False
+            if store in stores:
+                n.stores.at[store, "e_nom_extendable"] = False
+            if discharger in dischargers:
+                n.links.at[discharger, "p_nom_extendable"] = False
+            
+            # One-line log message
+            parts = [f"charger={charger_extendable}"]
+            if store_extendable is not None:
+                parts.append(f"store={store_extendable}")
+            if discharger_extendable is not None:
+                parts.append(f"discharger={discharger_extendable}")
+            
+            logger.info(f"Synchronized TES {store}: {', '.join(parts)} -> all False")
+
+
+def force_pth_profiles_decentral_rural(n):
+    """
+    Sets minimum dispatch for PtH assets proportional to load profile.
+    Assets can produce more to charge thermal storage when economically beneficial.
+    Applies to heat pumps and resistive heaters in rural/decentral areas with storage.
+    """
+    logger.info(
+        "Setting minimum PtH dispatch proportional to load profile (allows storage charging)"
+    )
+
+    # Filter for PtH assets
+    pth_links = n.links.index[
+        (
+            (
+                n.links.carrier.str.contains("rural")
+                | n.links.carrier.str.contains("decentral")
+            )
+            & (
+                n.links.carrier.str.contains("heat pump")
+                | n.links.carrier.str.contains("resistive heater")
+            )
+        )
+        & ~n.links.carrier.str.contains("urban central")
+    ]
+
+    if pth_links.empty:
+        return
+
+    # Get the heat buses and load profiles
+    pth_loads = n.links.loc[pth_links, "bus1"]
+    pth_loads = pth_loads[pth_loads.isin(n.loads_t.p_set.columns)]
+    pth_links = pth_loads.index
+
+    # Create normalized load profiles (per-unit, 0-1 range)
+    pth_profiles_pu = n.loads_t.p_set[pth_loads].div(
+        n.loads_t.p_set[pth_loads].max(), axis=1
+    )
+    pth_profiles_pu.columns = pth_links
+
+    # Initialize p_min_pu if it doesn't exist
+    if not hasattr(n, "links_t") or n.links_t.p_min_pu.empty:
+        n.links_t.p_min_pu = pd.DataFrame(0, index=n.snapshots, columns=n.links.index)
+    else:
+        n.links_t.p_min_pu = n.links_t.p_min_pu.reindex(
+            columns=n.links.index, fill_value=0
+        )
+
+    # Set as minimum operation level
+    n.links_t.p_min_pu[pth_links] = pth_profiles_pu
+
+
+def adapt_demand_modelling(n, params):
+    """..."""
+
+    existing = n.generators[n.generators.carrier == "load-shedding"].index
+    if not existing.empty:
+        n.remove("Generator", existing)
+        logger.info(
+            f"Removed {len(existing)} load-shedding generators from previous horizon."
+        )
+
+    if "load-shedding" not in n.carriers.index:
+        n.add("Carrier", "load-shedding", color="#dd2e23", nice_name="Load shedding")
+
+    if params["voll"]:
+        use_constant = params.get("voll_pnom_constant") is not None
+
+        for carrier in ["AC", "low voltage"]:
+            buses_i = n.buses[n.buses.carrier == carrier].index
+
+            for bus in buses_i:
+                loads_temporal_i = n.loads[
+                    (n.loads.bus == bus) & (n.loads.p_set == 0)
+                ].index
+                # Some loads have p_set==0 statically but no time series entry
+                loads_temporal_i = loads_temporal_i.intersection(
+                    n.loads_t.p_set.columns
+                )
+                loads_static_i = n.loads[
+                    (n.loads.bus == bus) & (n.loads.p_set > 0)
+                ].index
+                loads_temporal = (
+                    n.loads_t.p_set[loads_temporal_i].sum(axis=1)
+                    + n.loads.p_set[loads_static_i].sum()
+                )
+
+                if loads_temporal.max() == 0:
+                    continue
+
+                if use_constant:
+                    p_nom = params["voll_pnom_constant"]
+                    pnom_info = f"constant p_nom={p_nom:.1f} MW"
+                else:
+                    p_nom = loads_temporal.max() * params["voll_pnom_multiplier"]
+                    pnom_info = (
+                        f"p_nom={p_nom:.1f} MW "
+                        f"({params['voll_pnom_multiplier']}x peak direct load of "
+                        f"{loads_temporal.max():.1f} MW)"
+                    )
+
+                logger.info(
+                    f"Adding VOLL Generator at {bus} ({carrier}) "
+                    f"with marginal cost of {params['voll_price']} €/MWh, {pnom_info}."
+                )
+                n.add(
+                    "Generator",
+                    f"load-shedding-{bus}",
+                    bus=bus,
+                    carrier="load-shedding",
+                    marginal_cost=params["voll_price"],  # €/MWh
+                    p_nom=p_nom,                          # MW
+                )
+
+
 if __name__ == "__main__":
     if "snakemake" not in globals():
         snakemake = mock_snakemake(
@@ -1265,7 +2061,7 @@ if __name__ == "__main__":
             ll="vopt",
             sector_opts="none",
             planning_horizons="2025",
-            run="KN2045_Mix",
+            run="LowFlex",
         )
 
     configure_logging(snakemake)
@@ -1334,6 +2130,67 @@ if __name__ == "__main__":
     force_connection_nep_offshore(n, current_year, costs)
 
     scale_capacity(n, snakemake.params.scale_capacity)
+
+    # Start Flexibility implementations
+
+    if (snakemake.params.industry_dsm["enable"]) & (
+        current_year in snakemake.params.industry_dsm.keys()
+    ):
+        add_industry_dsm(n, snakemake.params.industry_dsm[current_year])
+
+    unit_commitment = snakemake.params.get("unit_commitment")
+
+    if unit_commitment["enable"]:
+        logger.info(
+            f"Add unit commitment in {unit_commitment['regions']} for carriers {unit_commitment['carriers']} with parameter set '{unit_commitment['params']}' to the network."
+        )
+
+        uc_params_str = unit_commitment["params"]
+        if uc_params_str == "custom":
+            uc_params = uc_params_custom
+        elif uc_params_str == "optimistic":
+            uc_params = uc_params_optimistic
+        elif uc_params_str == "conservative":
+            uc_params = uc_params_conservative
+        elif uc_params_str == "average":
+            uc_params = uc_params_average
+
+        add_unit_commitment(
+            n,
+            uc_params,
+            carriers=unit_commitment["carriers"],
+            regions=unit_commitment["regions"],
+        )
+
+    if current_year in snakemake.params.restrict_cross_border_flows:
+        restrict_cross_border_flows(
+            n, snakemake.params.restrict_cross_border_flows[current_year]
+        )
+
+    restrict_components_config = snakemake.params.restrict_component_buildout
+    
+    if restrict_components_config is not None:
+
+        where = restrict_components_config.get('where', 'whole_system')
+        when = restrict_components_config.get('when', [2035, 2045])
+        component_limits = restrict_components_config['component_limits']
+
+        if n.snapshot_weightings.generators.iloc[0] == 1.0:
+            base_capacities_csv = snakemake.input.base_capacities_1H
+        else:
+            base_capacities_csv = snakemake.input.base_capacities_3H
+
+        restrict_component_buildout(
+            n, component_limits, base_capacities_csv, where, when
+        )
+
+    if snakemake.params.force_pth_profiles_decentral_rural_p_min_pu:
+        force_pth_profiles_decentral_rural(n)
+
+    if snakemake.params.demand_modelling["enable"]:
+        adapt_demand_modelling(n, snakemake.params.demand_modelling)
+
+    # End Flexibility implementations
 
     sanitize_custom_columns(n)
 

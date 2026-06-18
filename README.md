@@ -1,7 +1,3 @@
-# PyPSA-DE - Hochaufgelöstes, sektorengekoppeltes Modell des deutschen Energiesystems
-
-PyPSA-DE ist ein sektorengekoppeltes Energiesystem-Modell auf Basis der Toolbox [PyPSA](https://github.com/PyPSA/pypsa) und des europäischen Modells [PyPSA-Eur](https://github.com/PyPSA/pypsa-eur). Der PyPSA-DE Workflow modelliert das deutsche Energiesystem mit deutschlandspezifischen Datensätzen (MaStR, Netzentwicklungsplan,...) im Verbund mit den direkten Stromnachbarn sowie Spanien und Italien. Der Ausbau und der Betrieb von Kraftwerken, des  Strom- und Wasserstoffübertragunsnetzes und die Energieversorgung aller Sektoren werden dann in einem linearen Optimierungsproblem gelöst, mit hoher zeitlicher und räumlicher Auflösung. PyPSA-DE wurde im Rahmen des Kopernikus-Projekts [Ariadne](https://ariadneprojekt.de/) entwickelt in dem Szenarien für ein klimaneutrales Deutschland untersucht werden, und spielt eine zentrale Rolle im [Ariadne Szenarienreport](https://ariadneprojekt.de/publikation/report-szenarien-zur-klimaneutralitat-2045/), als Leitmodell für den [Sektor Energiewirtschaft und Infrastruktur](https://ariadneprojekt.de/publikation/report-szenarien-zur-klimaneutralitat-2045/#6-sektorale-perspektive-energiewirtschaft) und als eines von drei Gesamtsystemmodellen. Die Ergebnisse aus der Modellierung mit PyPSA-DE werden auch im [Ariadne-Webinar zu den Kernaussagen des Berichts](https://youtu.be/UL3KAH7e0zs) ([Folien](https://ariadneprojekt.de/media/2025/03/Ariadne_Szen2025_Webinar_Folien_Kernaussagen.pdf)) und im [Ariadne-Webinar zur Energiewirtschaft](https://youtu.be/FcmHBL1MKQA) ([Folien](https://ariadneprojekt.de/media/2025/03/Ariadne_Szen2025_Webinar_Folien_Energiewirtschaft.pdf)) vorgestellt. Die [gelösten Netzwerke](https://zenodo.org/records/15096970) sind auf zenodo verfügbar.
-
 # PyPSA-DE - High resolution, sector-coupled model of the German Energy System
 
 PyPSA-DE is a sector-coupled energy system model based on the toolbox [PyPSA](https://github.com/PyPSA/pypsa) and the European model [PyPSA-Eur](https://github.com/PyPSA/pypsa-eur). It solves a linear optimization problem to simulate the electricty and hydrogen transmission networks, as well as supply, demand and storage in all sectors of the energy system in Germany and its neighboring countries, as well as Italy and Spain, with high spatial and temporal resolution. PyPSA-DE was developed in the context of the Kopernikus-Projekt [Ariadne](https://ariadneprojekt.de/en/), which studies scenarios of a carbon-neutral German economcy, and plays a decisive role in the [Ariadne Szenarienreport](https://ariadneprojekt.de/publikation/report-szenarien-zur-klimaneutralitat-2045/), as reference model for the [energy and infrastructure sectors](https://ariadneprojekt.de/publikation/report-szenarien-zur-klimaneutralitat-2045/#6-sektorale-perspektive-energiewirtschaft). The results of modeling with PyPSA-DE are also presented in the [Ariadne-Webinar on the core messages of the report](https://youtu.be/UL3KAH7e0zs) ([slides](https://ariadneprojekt.de/media/2025/03/Ariadne_Szen2025_Webinar_Folien_Kernaussagen.pdf)) and in the [Ariadne-Webinar on the energy sector](https://youtu.be/FcmHBL1MKQA) ([slides](https://ariadneprojekt.de/media/2025/03/Ariadne_Szen2025_Webinar_Folien_Energiewirtschaft.pdf)). The [solved networks](https://zenodo.org/records/15096970) are available on zenodo.
@@ -49,6 +45,61 @@ This will run all analysis steps to reproduce results. If computational resource
 * `results`: will contain all results (does not exist initially)
 * `logs` and `benchmarks`
 * The `Snakefile` contains the PyPSA-DE specific snakemake workflow
+
+## Flexibility Implementations
+
+This repository contains extensions to PyPSA-DE for analysing flexibility needs and provision in a sector-coupled energy system. These are developed as part of a separate research branch and documented below.
+
+### Environment
+
+Use the existing PyPSA-DE environment — no separate environment is required for the flexibility analysis.
+
+### Flexibility scenarios
+
+The flexibility scenarios (e.g. LowFlex, LowBattery, Base, HighFlex) are defined in `config/scenarios.manual.yaml`. As with any PyPSA-DE scenario, the `build_scenarios` rule must be run before executing the flexibility workflow:
+
+    snakemake build_scenarios -f
+
+Then run the flexibility analysis as described above.
+
+### Flexibility-related model modifications
+
+Several flexibility features are injected into the pre-network building stage via `scripts/pypsa-de/modify_prenetwork.py` (within the `# Start/End Flexibility implementations` block):
+
+- **Industrial DSM**: adds demand-side management for industry if enabled and configured for the current planning year
+- **Unit commitment**: optionally enforces unit commitment constraints for configurable carriers and regions, with `optimistic`, `conservative`, `average`, or `custom` parameter sets
+- **Cross-border flow restrictions**: limits cross-border flows in specified planning years
+- **Component buildout restrictions**: caps technology capacities relative to base capacities , configured via `restrict_component_buildout` in the config; base capacity CSVs are read from `flex-data/`
+- **Forced PtH profiles**: optionally enforces minimum output profiles for decentralised rural power-to-heat units
+
+### Flexibility workflow (Snakemake)
+
+The flexibility-specific rules are defined at the end of the `Snakefile`. Run them with:
+```bash
+snakemake flex_all                               # runs all flexibility analyses and plots
+snakemake flexibility_analysis                   # computes flexibility needs/contributions
+snakemake flexibility_plots                      # generates standard flexibility plots
+snakemake flexibility_plots_scenario_comparison  # cross-scenario comparison
+```
+
+`flex_all` also triggers system plots and the Ariadne reporting outputs.
+
+### Scripts
+
+All flexibility scripts are in `scripts/pypsa-de/`:
+
+| File | Purpose |
+|---|---|
+| `flexibility_analysis.py` | Core analysis: computes flexibility needs, causes, and contributions per node and month |
+| `flexibility_plots.py` | Standard plots (needs, causes, contributions, monthly breakdowns) |
+| `flexibility_plots_scenario_comparison.py` | Cross-scenario comparison plots |
+| `system_plots.py` / `system_plots_scenario_comparison.py` | System-level plots |
+| `flexibility_utils.py` | Shared utility functions used across the above scripts |
+
+### Additional data and notebooks
+
+* `flex-data/`: base capacity CSVs used to scale technology capacities in sensitivity scenarios (e.g. LowFlex, LowBattery)
+* `flex_notebooks/`: Jupyter notebooks for exploratory flexibility analysis and figure generation outside the Snakemake workflow
 
 ## Differences to PyPSA-EUR
 

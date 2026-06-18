@@ -402,6 +402,10 @@ plotting:
     land transport EV: '#baf238'
     land transport demand: '#38baf2'
     EV battery: '#baf238'
+    iron-air battery: '#f5e6b3'
+    iron-air battery storage: '#daa520'
+    iron-air battery charger: '#c9954d'
+    iron-air battery discharger: '#8b6f47'
     # hot water storage
     water tanks: '#e69487'
     residential rural water tanks: '#f7b7a3'
@@ -584,3 +588,6 @@ plotting:
     import NH3: '#e2ed74'
     import oil: '#93eda2'
     import methanol: '#87d0e6'
+    industry DSM: "navy"
+    industry DSM ramp down: "mediumslateblue"
+    industry DSM compensate: "cornflowerblue"

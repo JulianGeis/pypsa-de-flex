@@ -102,9 +102,24 @@ if __name__ == "__main__":
         )
         modifications = modifications.query("source != 'NEP2023'")
 
-    costs.loc[modifications.index] = modifications
+    # Split modifications into updates vs. additions
+    existing_idx = modifications.index.intersection(costs.index)
+    new_idx = modifications.index.difference(costs.index)
+
+    # Update rows that already exist
+    costs.loc[existing_idx] = modifications.loc[existing_idx]
+
+    # Append rows that are new (e.g. iron-air battery inverter)
+    if len(new_idx) > 0:
+        logger.info(
+            f"Adding new technologies from modifications:\n"
+            f"{list(new_idx.get_level_values(0).unique())}."
+        )
+        costs = pd.concat([costs, modifications.loc[new_idx]]).sort_index()
+
     logger.info(
-        f"Modifications to the following technologies are applied:\n{list(costs.loc[modifications.index].index.get_level_values(0))}."
+        f"Modifications to the following technologies are applied:\n"
+        f"{list(modifications.index.get_level_values(0).unique())}."
     )
 
     # add carbon component to fossil fuel costs

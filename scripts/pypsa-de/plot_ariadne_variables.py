@@ -814,9 +814,9 @@ if __name__ == "__main__":
         .groupby(["Variable", "Unit"], dropna=False)
         .sum()
     ).round(5)
-    elec_val_plot(df, savepath=snakemake.output.elec_val_2020)
+    # elec_val_plot(df, savepath=snakemake.output.elec_val_2020)
 
-    df.drop(columns=[2020], inplace=True)
+    # df.drop(columns=[2020], inplace=True)
     df.columns = df.columns.astype(str)
     leitmodell = "REMIND-EU v1.1"
 
@@ -864,11 +864,11 @@ if __name__ == "__main__":
         drop_regex=r"^(?!.*(Fossil|Renewables|Losses|Price|Volume)).+",
     )
 
-    if df.loc["Final Energy|Industry excl Non-Energy Use|Hydrogen", "2025"].item() < 0:
-        val = df.loc["Final Energy|Industry excl Non-Energy Use|Hydrogen", "2025"]
-        df.loc["Final Energy|Industry excl Non-Energy Use|Hydrogen", "2025"] = 0
-        df.loc["Final Energy|Hydrogen", "2025"] = 0
-        print("WARNING! NEGATIVE HYDROGEN DEMAND IN INDUSTRY IN 2025! ", val)
+    # if df.loc["Final Energy|Industry excl Non-Energy Use|Hydrogen", "2025"].item() < 0:
+    #     val = df.loc["Final Energy|Industry excl Non-Energy Use|Hydrogen", "2025"]
+    #     df.loc["Final Energy|Industry excl Non-Energy Use|Hydrogen", "2025"] = 0
+    #     df.loc["Final Energy|Hydrogen", "2025"] = 0
+    #     print("WARNING! NEGATIVE HYDROGEN DEMAND IN INDUSTRY IN 2025! ", val)
     side_by_side_plot(
         df,
         dfremind,
