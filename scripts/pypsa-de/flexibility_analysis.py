@@ -896,9 +896,9 @@ def expand_to_1h(df: pd.DataFrame, unit: str, tol: float = 1e-9) -> pd.DataFrame
     return df_1h
 
 
-def aggregate_by_keywords(df, groups):
+def aggregate_by_keywords(df, groups, exclude_patterns=None):
     """
-    Aggregate rows in df according to keyword groups.
+    Aggregate rows in df according to keyword groups using substring matching.
 
     Parameters
     ----------
@@ -906,15 +906,30 @@ def aggregate_by_keywords(df, groups):
         DataFrame with row index as technology names.
     groups : dict
         Keys = new aggregated name,
-        Values = list of substrings to match in the index.
+        Values = list of substrings to match in the index (case-insensitive).
+        Example: {"battery": ["battery charger", "battery discharger"]}
+    exclude_patterns : list of str, optional
+        Substrings that protect a row from being matched by any group.
+        Rows whose index contains any of these patterns are skipped entirely
+        and remain in the output under their original name.
+        Example: ["iron-air"] prevents "iron-air battery charger" from being
+        absorbed into a "battery charger" group.
+        If None or empty, no rows are excluded. Safe to use if patterns are
+        not present in the index.
 
     Returns
     -------
     pd.DataFrame
+        DataFrame with grouped rows summed under new_name, ungrouped rows
+        retained as-is, and excluded rows preserved under their original names.
     """
     df_out = df.copy()
+    exclude_patterns = exclude_patterns or []
     for new_name, keywords in groups.items():
-        mask = df_out.index.to_series().str.contains("|".join(keywords), case=False)
+        pattern = "|".join(keywords)
+        mask = df_out.index.to_series().str.contains(pattern, case=False)
+        for excl in exclude_patterns:
+            mask &= ~df_out.index.to_series().str.contains(excl, case=False)
         if mask.any():
             summed = df_out.loc[mask].sum()
             df_out = df_out.drop(df_out.index[mask])
@@ -996,7 +1011,7 @@ def collect_and_summarize_flexibility_provision(
             gran_data = df_pivot.loc[
                 granularity:granularity
             ].T  # Transpose to get carriers as index
-            gran_aggregated = aggregate_by_keywords(gran_data, groups)
+            gran_aggregated = aggregate_by_keywords(gran_data, groups, exclude_patterns=["iron-air"])
 
             # Group small contributions into "Other" (< 1 TWh)
             # Get the first (and only) column since we're working with one granularity at a time
@@ -1110,7 +1125,7 @@ if __name__ == "__main__":
             "resistive heater (decentral)": ["rural resistive heater", "urban decentral resistive heater"],
         }
         df_agg = pd.concat([
-            aggregate_by_keywords(df_clean.xs(gran), decentral_pth_groups).assign(Granularity=gran)
+            aggregate_by_keywords(df_clean.xs(gran), decentral_pth_groups, exclude_patterns=["iron-air"]).assign(Granularity=gran)
             for gran in df_clean.index.get_level_values("Granularity").unique()
         ]).set_index("Granularity", append=True).swaplevel()
         
